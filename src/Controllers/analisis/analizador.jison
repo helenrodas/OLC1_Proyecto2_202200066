@@ -155,7 +155,7 @@
 ":"						return 'DOSPUNTOS'
 "{"                   	return 'LLAVE_IZQ'
 "}"                   	return 'LLAVE_DER'
-"'"						return 'COMILLA_SIMPLE'
+//"'"						return 'COMILLA_SIMPLE'
 //-------------Operadores Booleanos--------
 "true"                	return 'TRUE'
 "false"               	return 'FALSE'
@@ -193,8 +193,11 @@
 "c_str"			        return 'SENT_TOCHARARRAY'
 "execute"				return 'SENT_RUN'
 //-----------ER----------------
+//^[a-zA-Z0-9_]$      return 'CARACTER_UNICO'
 ([a-zA-Z])([a-zA-Z0-9_])* return 'IDENTIFICADOR'
-//[']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER'
+
+
+[']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER_UNICO'
 '[a-zA-Z0-9_]'					return 'CARACTER'
 [0-9]+"."[0-9]+         return "NUM_DECIMAL"
 [0-9]+                  return "NUM_ENTERO"
@@ -266,12 +269,13 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| NUM_DECIMAL                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.DOUBLE), $1, @1.first_line, @1.first_column );}
 			| TRUE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), $1, @1.first_line, @1.first_column );}
 			| FALSE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), $1, @1.first_line, @1.first_column );}
+			| CARACTER_UNICO							{$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CHAR), $1, @1.first_line, @1.first_column );}
 			| CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.STRING), $1, @1.first_line, @1.first_column );}
 			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    
-			| VARCHAR							{$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CHAR), $1, @1.first_line, @1.first_column );}
+			
 ;
 
-VARCHAR : COMILLA_SIMPLE IDENTIFICADOR COMILLA_SIMPLE    {$$ = $2;}
+VARCHAR : COMILLA_SIMPLE CARACTER_UNICO COMILLA_SIMPLE    {$$ = $2;}
 ;
 
 TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}

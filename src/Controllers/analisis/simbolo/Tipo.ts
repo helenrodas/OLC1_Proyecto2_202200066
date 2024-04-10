@@ -17,12 +17,6 @@ export default class Tipo {
 
 export enum tipoDato {
 
-    // ENTERO,
-    // DECIMAL,
-    // BOOL,
-    // CARACTER,
-    // CADENA,
-    // VOID
     DOUBLE,
     INTEGER,
     BOOLEAN,
