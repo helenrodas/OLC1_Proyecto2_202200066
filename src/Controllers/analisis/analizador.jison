@@ -155,6 +155,7 @@
 ":"						return 'DOSPUNTOS'
 "{"                   	return 'LLAVE_IZQ'
 "}"                   	return 'LLAVE_DER'
+"'"						return 'COMILLA_SIMPLE'
 //-------------Operadores Booleanos--------
 "true"                	return 'TRUE'
 "false"               	return 'FALSE'
@@ -193,7 +194,8 @@
 "execute"				return 'SENT_RUN'
 //-----------ER----------------
 ([a-zA-Z])([a-zA-Z0-9_])* return 'IDENTIFICADOR'
-[']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER'
+//[']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER'
+'[a-zA-Z0-9_]'					return 'CARACTER'
 [0-9]+"."[0-9]+         return "NUM_DECIMAL"
 [0-9]+                  return "NUM_ENTERO"
 ["]						{ cadena = ''; this.begin("string"); }
@@ -265,7 +267,11 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| TRUE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), $1, @1.first_line, @1.first_column );}
 			| FALSE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), $1, @1.first_line, @1.first_column );}
 			| CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.STRING), $1, @1.first_line, @1.first_column );}
-			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}      
+			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    
+			| VARCHAR							{$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CHAR), $1, @1.first_line, @1.first_column );}
+;
+
+VARCHAR : COMILLA_SIMPLE IDENTIFICADOR COMILLA_SIMPLE    {$$ = $2;}
 ;
 
 TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}

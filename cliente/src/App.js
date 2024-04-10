@@ -68,7 +68,7 @@ function App() {
         </ul>
     </div>
       <br></br>
-      <div class='text-center style={{ height: "80%", width: "80%" }} '>
+      <div class='text-center style={{ height: "80%", width: "60%" }} '>
         <div class="container" >
           <div class="row">
             <div class="col">
