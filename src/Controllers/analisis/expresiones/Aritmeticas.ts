@@ -12,7 +12,7 @@ export default class Aritmeticas extends Instruccion {
     private operandoUnico: Instruccion | undefined
 
     constructor(operador: Operadores, fila: number, col: number, op1: Instruccion, op2?: Instruccion) {
-        super(new Tipo(tipoDato.ENTERO), fila, col)
+        super(new Tipo(tipoDato.INTEGER), fila, col)
         this.operacion = operador
         if (!op2) this.operandoUnico = op1
         else {
@@ -53,23 +53,23 @@ export default class Aritmeticas extends Instruccion {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
         switch (tipo1) {
-            case tipoDato.ENTERO:
+            case tipoDato.INTEGER:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1) + parseInt(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) + parseFloat(op2)
-                    case tipoDato.CADENA:
-                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.STRING:
+                        this.tipoDato = new Tipo(tipoDato.STRING)
                         return op1 + op2;
-                    case tipoDato.CARACTER:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         console.log(op2.charCodeAt(0))
                         return parseInt(op1) + parseInt(op2.charCodeAt(0))
-                    case tipoDato.BOOL:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         if(op2 == 'true'){
                             return parseInt(op1) + 1;
                         }else{
@@ -79,56 +79,56 @@ export default class Aritmeticas extends Instruccion {
                     default:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                 }
-            case tipoDato.DECIMAL:
+            case tipoDato.DOUBLE:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) + parseFloat(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         
                         return parseFloat(op1) + parseFloat(op2)
-                    case tipoDato.BOOL:
-                            this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.BOOLEAN:
+                            this.tipoDato = new Tipo(tipoDato.DOUBLE)
                             if(op2 == 'true'){
                                 return parseFloat(op1) + 1
                             }else{
                                 return parseFloat(op1) + 0
                             }
-                    case tipoDato.CARACTER:
-                                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.CHAR:
+                                this.tipoDato = new Tipo(tipoDato.INTEGER)
                                 console.log(op2.charCodeAt(0))
                                 return parseFloat(op1) + parseFloat(op2.charCodeAt(0))
-                    case tipoDato.CADENA:
-                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.STRING:
+                            this.tipoDato = new Tipo(tipoDato.STRING)
                             return op1 + op2;
                             
                     default:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                 }
-            case tipoDato.BOOL:
+            case tipoDato.BOOLEAN:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         if(op1 == 'true'){
                             return 1 + parseInt(op2)
                         }else{
                             return 0 + parseInt(op2)
                         }
                         
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         if(op1 == 'true'){
                             return 1 + parseFloat(op2)
                         }else{
                             return 0 + parseFloat(op2)
                         } 
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)   
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
-                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.STRING:
+                            this.tipoDato = new Tipo(tipoDato.STRING)
                             if(op1 == 'true'){
                                 return 1 + op2
                             }else{
@@ -138,44 +138,44 @@ export default class Aritmeticas extends Instruccion {
                     default:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                 }
-            case tipoDato.CARACTER:
+            case tipoDato.CHAR:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1.charCodeAt(0)) + parseInt(op2)
                         
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.parseFloat(0)) + parseFloat(op2)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:    
-                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.CHAR:    
+                        this.tipoDato = new Tipo(tipoDato.STRING)
                         return op1 + op2
-                    case tipoDato.CADENA:
-                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.STRING:
+                            this.tipoDato = new Tipo(tipoDato.STRING)
                             return op1 + op2
                             
                     default:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                 }
-            case tipoDato.CADENA:
+            case tipoDato.STRING:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.STRING)
                         return op1 + op2
                         
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.STRING)
                         return op1 + op2
-                    case tipoDato.BOOL:    
-                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.BOOLEAN:    
+                        this.tipoDato = new Tipo(tipoDato.STRING)
                         return op1 + op2
-                    case tipoDato.CARACTER:    
-                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.CHAR:    
+                        this.tipoDato = new Tipo(tipoDato.STRING)
                         return op1 + op2
-                    case tipoDato.CADENA:
-                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                    case tipoDato.STRING:
+                            this.tipoDato = new Tipo(tipoDato.STRING)
                             return op1 + op2
                             
                     default:
@@ -191,123 +191,123 @@ export default class Aritmeticas extends Instruccion {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
         switch (tipo1) {
-            case tipoDato.ENTERO:
+            case tipoDato.INTEGER:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1) - parseInt(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) - parseFloat(op2)
-                    case tipoDato.BOOL:
-                        this.tipoDato =  new Tipo(tipoDato.ENTERO)
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato =  new Tipo(tipoDato.INTEGER)
                         if(op2 == 'true'){
                             return parseInt(op1) - 1
                         }else{
                             return parseInt(op1) - 0
                         }
-                    case tipoDato.CARACTER:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseFloat(op1) - parseInt(op2.charCodeAt(0))
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         console.log("ERROR SEMANTICO")
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                 }
-            case tipoDato.DECIMAL:
+            case tipoDato.DOUBLE:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) - parseFloat(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) - parseFloat(op2)
-                    case tipoDato.BOOL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         if(op2 == 'true'){
                             return parseFloat(op1) - 1
                         }else{
                             return parseFloat(op1) - 0
                         }
-                    case tipoDato.CARACTER:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) - parseFloat(op2.charCodeAt(0))
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                 }
-            case tipoDato.BOOL:
+            case tipoDato.BOOLEAN:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         if(op1 == 'true'){
                             return 1 - parseInt(op2)
                         }else{
                             return 0 - parseInt(op2)
                         }    
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         if(op1 == 'true'){
                             return 1 - parseFloat(op2)
                         }else{
                             return 0 - parseFloat(op2)
                         }   
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                 }
-            case tipoDato.CARACTER:
+            case tipoDato.CHAR:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1.charCodeAt(0)) - parseInt(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.charCodeAt(0)) - parseFloat(op2)   
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                 }
-            case tipoDato.CARACTER:
+            case tipoDato.CHAR:
                     switch (tipo2) {
-                        case tipoDato.ENTERO:
-                            this.tipoDato = new Tipo(tipoDato.ENTERO)
+                        case tipoDato.INTEGER:
+                            this.tipoDato = new Tipo(tipoDato.INTEGER)
                             return parseInt(op1.charCodeAt(0)) - parseInt(op2)
-                        case tipoDato.DECIMAL:
-                            this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        case tipoDato.DOUBLE:
+                            this.tipoDato = new Tipo(tipoDato.DOUBLE)
                             return parseFloat(op1.charCodeAt(0)) - parseFloat(op2)   
-                        case tipoDato.BOOL:
+                        case tipoDato.BOOLEAN:
                             return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                        case tipoDato.CARACTER:
+                        case tipoDato.CHAR:
                             return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                        case tipoDato.CADENA:
+                        case tipoDato.STRING:
                             return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                         default:
                             return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     }
-            case tipoDato.CADENA:
+            case tipoDato.STRING:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
+                    case tipoDato.INTEGER:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.DECIMAL:
+                    case tipoDato.DOUBLE:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
@@ -323,100 +323,100 @@ export default class Aritmeticas extends Instruccion {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
         switch (tipo1) {
-            case tipoDato.ENTERO:
+            case tipoDato.INTEGER:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1) * parseInt(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) * parseFloat(op2)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseFloat(op1) * parseInt(op2.charCodeAt(0))
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                 }
-            case tipoDato.DECIMAL:
+            case tipoDato.DOUBLE:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) * parseFloat(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) * parseFloat(op2)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) * parseFloat(op2.charCodeAt(0))
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                 }
-            case tipoDato.BOOL:
+            case tipoDato.BOOLEAN:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
+                    case tipoDato.INTEGER:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)  
-                    case tipoDato.DECIMAL:
+                    case tipoDato.DOUBLE:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col) 
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                 }
-            case tipoDato.CARACTER:
+            case tipoDato.CHAR:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1.charCodeAt(0)) * parseInt(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.charCodeAt(0)) * parseFloat(op2)   
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                 }
-            case tipoDato.CARACTER:
+            case tipoDato.CHAR:
                     switch (tipo2) {
-                        case tipoDato.ENTERO:
+                        case tipoDato.INTEGER:
                             return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.DECIMAL:
+                        case tipoDato.DOUBLE:
                             return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.BOOL:
+                        case tipoDato.BOOLEAN:
                             return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.CARACTER:
+                        case tipoDato.CHAR:
                             return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.CADENA:
+                        case tipoDato.STRING:
                             return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                         default:
                             return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     }
-            case tipoDato.CADENA:
+            case tipoDato.STRING:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
+                    case tipoDato.INTEGER:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.DECIMAL:
+                    case tipoDato.DOUBLE:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
@@ -432,100 +432,100 @@ export default class Aritmeticas extends Instruccion {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
         switch (tipo1) {
-            case tipoDato.ENTERO:
+            case tipoDato.INTEGER:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1) / parseInt(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseFloat(op2)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseInt(op2.charCodeAt(0))
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                 }
-            case tipoDato.DECIMAL:
+            case tipoDato.DOUBLE:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseFloat(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseFloat(op2)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseFloat(op2.charCodeAt(0))
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                 }
-            case tipoDato.BOOL:
+            case tipoDato.BOOLEAN:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
+                    case tipoDato.INTEGER:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)  
-                    case tipoDato.DECIMAL:
+                    case tipoDato.DOUBLE:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col) 
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                 }
-            case tipoDato.CARACTER:
+            case tipoDato.CHAR:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseInt(op1.charCodeAt(0)) / parseInt(op2)
-                    case tipoDato.DECIMAL:
-                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.charCodeAt(0)) / parseFloat(op2)   
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                 }
-            case tipoDato.CARACTER:
+            case tipoDato.CHAR:
                     switch (tipo2) {
-                        case tipoDato.ENTERO:
+                        case tipoDato.INTEGER:
                             return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.DECIMAL:
+                        case tipoDato.DOUBLE:
                             return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.BOOL:
+                        case tipoDato.BOOLEAN:
                             return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.CARACTER:
+                        case tipoDato.CHAR:
                             return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.CADENA:
+                        case tipoDato.STRING:
                             return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                         default:
                             return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     }
-            case tipoDato.CADENA:
+            case tipoDato.STRING:
                 switch (tipo2) {
-                    case tipoDato.ENTERO:
+                    case tipoDato.INTEGER:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.DECIMAL:
+                    case tipoDato.DOUBLE:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.BOOL:
+                    case tipoDato.BOOLEAN:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CARACTER:
+                    case tipoDato.CHAR:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CADENA:
+                    case tipoDato.STRING:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
@@ -539,11 +539,11 @@ export default class Aritmeticas extends Instruccion {
     negacion(op1: any) {
         let opU = this.operandoUnico?.tipoDato.getTipo()
         switch (opU) {
-            case tipoDato.ENTERO:
-                this.tipoDato = new Tipo(tipoDato.ENTERO)
+            case tipoDato.INTEGER:
+                this.tipoDato = new Tipo(tipoDato.INTEGER)
                 return parseInt(op1) * -1
-            case tipoDato.DECIMAL:
-                this.tipoDato = new Tipo(tipoDato.DECIMAL)
+            case tipoDato.DOUBLE:
+                this.tipoDato = new Tipo(tipoDato.DOUBLE)
                 return parseFloat(op1) * -1
             default:
                 return new Errores("Semantico", "Negacion Unaria invalida", this.linea, this.col)
