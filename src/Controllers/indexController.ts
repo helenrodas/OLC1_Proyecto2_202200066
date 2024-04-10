@@ -11,17 +11,18 @@ class controller {
     public interpretar(req: Request, res: Response) {
         try {
             let parser = require('./analisis/analizador')
-            let ast = new Arbol(parser.parse('int a = 0 ;'))
+            let ast = new Arbol(parser.parse(req.body.entrada))
             let tabla = new tablaSimbolo()
-            tabla.setNombre("Ejemplo1")
+            tabla.setNombre("TablaSimbolos")
             ast.setTablaGlobal(tabla)
             ast.setConsola("")
-            // for (let i of ast.getInstrucciones()) {
-            //     console.log(i)
-            //     var resultado = i.interpretar(ast, tabla)
-            //     console.log(resultado)
-            // }
-            res.send({ "Respuesta": "Si sale compi1" })
+            for (let i of ast.getInstrucciones()) {
+                //console.log(i)
+                var resultado = i.interpretar(ast, tabla)
+                //console.log(resultado)
+            }
+            console.log(tabla)
+            res.send({ "Respuesta": ast.getConsola() })
         } catch (err: any) {
             console.log(err)
             res.send({ "Error": "Ya no sale compi1" })

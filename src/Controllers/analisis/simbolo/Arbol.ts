@@ -15,6 +15,10 @@ export default class Arbol {
         this.errores = new Array<Errores>
     }
 
+    public Print(contenido: any) {
+        this.consola = `${this.consola}${contenido}\n`;
+    }
+
     public getConsola(): string {
         return this.consola
     }

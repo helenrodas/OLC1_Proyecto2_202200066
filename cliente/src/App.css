@@ -1,0 +1,109 @@
+.menuBarra {
+  background-color:    #cde1f2  ;
+  padding: 5px; /* Añade un poco de espacio alrededor del contenido */
+  font-size: 18px;
+  color:  #015092;
+}
+
+.menuBarra .nav-link {
+  color: #015092; /* Cambia el color del texto a #015092 */
+}
+
+/* Estilo para el contenedor de la entrada */
+.entrada {
+  display: flex;
+  align-items: flex-start; /* Alinea los elementos en la parte superior */
+  font-family: monospace;
+  width: 600px; /* Ancho de la mitad de la pantalla */
+  height: 400px;
+  margin-left: 20px; /* Centra el contenedor a la izquierda */
+  margin-right: auto;
+  margin-top: 14px;
+  overflow: hidden; /* Oculta el desbordamiento */
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Estilo para numerar las líneas */
+.line-number {
+  min-width: 3em; /* Ancho mínimo de la numeración */
+  padding-right: 10px; /* Espacio entre la numeración y el textarea */
+  color: #777;
+  counter-reset: line-number; /* Reinicia el contador de línea */
+}
+
+/* Estilo para el textarea */
+.entrada textarea {
+  border: none;
+  outline: none;
+  width: calc(100% - 3em); /* Ancho del textarea menos el ancho de la numeración */
+  background-color: transparent;
+  font-family: monospace;
+  resize: none;
+  overflow: auto;
+  counter-increment: line-number; /* Incrementa el contador de línea */
+  padding-left: 8px; /* Ajusta el padding izquierdo para que el texto no se superponga con el número de línea */
+  line-height: 1.5; /* Espacio entre líneas */
+  border-left: 1px solid #ccc; /* Línea vertical a la izquierda del textarea */
+  height: 400px;
+  box-sizing: border-box; /* Ajusta el tamaño del textarea para incluir el borde */
+}
+
+/* Estilo para numerar las líneas */
+.line-number::before {
+  content: counter(line-number); /* Muestra el número de línea */
+  display: inline-block; /* Cambia a inline-block para que se muestre en línea */
+  width: 2em; /* Ajusta el ancho para que cada número tenga un tamaño fijo */
+  text-align: right; /* Alinea los números a la derecha */
+  margin-right: 5px; /* Añade un pequeño margen derecho para separar el número del texto */
+  color: #777; /* Cambia el color de los números */
+  counter-increment: none; /* No incrementar el contador aquí, ya se ha hecho en el textarea */
+}
+
+.entrada-title {
+  margin-bottom: 8px; /* Añade un espacio entre el título y el contenedor .entrada */
+  margin-left: 20px;
+  margin-top: 9px;
+}
+
+.entrada-title {
+  margin-bottom: 8px; /* Añade un espacio entre el título y el contenedor .entrada */
+  margin-right: 8px;
+  margin-top: 9px;
+}
+
+.salida-title {
+  margin-bottom: 8px; /* Añade un espacio entre el título y el contenedor .entrada */
+  margin-left: 650px;
+  margin-top: -443px;
+}
+
+.salida {
+  display: flex;
+  align-items: flex-start; /* Alinea los elementos en la parte superior */
+  font-family: monospace;
+  width: 600px; /* Ancho de la mitad de la pantalla */
+  height: 400px;
+  margin-left: 650px; /* Centra el contenedor a la izquierda */
+  margin-right: auto;
+  margin-top: 14px;
+  overflow: hidden; /* Oculta el desbordamiento */
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.salida textarea {
+  border: none;
+  outline: none;
+  width: calc(100% - 3em); /* Ancho del textarea menos el ancho de la numeración */
+  background-color: transparent;
+  font-family: monospace;
+  resize: none;
+  overflow: auto;
+  counter-increment: line-number; /* Incrementa el contador de línea */
+  padding-left: 8px; /* Ajusta el padding izquierdo para que el texto no se superponga con el número de línea */
+  line-height: 1.5; /* Espacio entre líneas */
+  border-left: 1px solid #ccc; /* Línea vertical a la izquierda del textarea */
+  height: 400px;
+  box-sizing: border-box; /* Ajusta el tamaño del textarea para incluir el borde */
+}
