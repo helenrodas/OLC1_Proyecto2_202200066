@@ -102,6 +102,7 @@
 	const Tipo = require('./simbolo/Tipo')
 	const Nativo = require('./expresiones/Nativo')
 	const Aritmeticas = require('./expresiones/Aritmeticas')
+	const Relacionales = require('./expresiones/Relacionales')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
 	const Print = require('./instrucciones/Print')
@@ -263,12 +264,14 @@ ASIGNACION : IDENTIFICADOR IGUALACION EXPRESION             {$$ = new Asignacion
 
 EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION ARI_MENOS EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.RESTA, @1.first_line, @1.first_column, $1, $3);}
+			| EXPRESION IGUALACIONDOBLE EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.IGUALACIONDOBLE, @1.first_line, @1.first_column, $1, $3);}
+			| EXPRESION DIFERENCIACION EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.DIFERENCIACION, @1.first_line, @1.first_column, $1, $3);}
 			| PARENTESIS_IZQ EXPRESION PARENTESIS_DER              {$$ = $2;}
 			| ARI_MENOS EXPRESION %prec UMENOS     {$$ = new Aritmeticas.default(Aritmeticas.Operadores.NEG, @1.first_line, @1.first_column, $2);}
 			| NUM_ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.INTEGER), $1, @1.first_line, @1.first_column );}
 			| NUM_DECIMAL                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.DOUBLE), $1, @1.first_line, @1.first_column );}
-			| TRUE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), $1, @1.first_line, @1.first_column );}
-			| FALSE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), $1, @1.first_line, @1.first_column );}
+			| TRUE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), true, @1.first_line, @1.first_column );}
+			| FALSE                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOLEAN), false, @1.first_line, @1.first_column );}
 			| CARACTER_UNICO							{$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CHAR), $1, @1.first_line, @1.first_column );}
 			| CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.STRING), $1, @1.first_line, @1.first_column );}
 			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    

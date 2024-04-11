@@ -19,7 +19,7 @@ class controller {
             for (let i of ast.getInstrucciones()) {
                 //console.log(i)
                 var resultado = i.interpretar(ast, tabla)
-                //console.log(resultado)
+                console.log(resultado)
             }
             console.log(tabla)
             res.send({ "Respuesta": ast.getConsola() })
