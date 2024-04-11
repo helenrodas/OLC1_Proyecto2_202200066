@@ -40,10 +40,12 @@ export default class Relacionales extends Instruccion {
                 return this.diferenciacion(opIzq, opDer)
             case Operadores.MENOR:
                 return this.menor_que(opIzq, opDer)
-            // case Operadores.DIVI:
-            //     return this.div(opIzq, opDer)
-            // case Operadores.NEG:
-            //     return this.negacion(Unico)
+            case Operadores.MENORIGUAL:
+                return this.menor_igual(opIzq, opDer)
+            case Operadores.MAYOR:
+                return this.mayor_que(opIzq, opDer)
+            case Operadores.MAYORIGUAL:
+                return this.mayor_igual(opIzq,opDer)
             default:
                 return new Errores("Semantico", "Operador Aritmetico Invalido", this.linea, this.col)
         }
@@ -323,6 +325,270 @@ export default class Relacionales extends Instruccion {
                     case tipoDato.CHAR:    
                         this.tipoDato = new Tipo(tipoDato.BOOLEAN)
                         if(parseInt(op1.charCodeAt(1)) < parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
+                }
+            default:
+                return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
+        }
+    }
+    menor_igual(op1: any, op2: any) {
+        let tipo1 = this.operando1?.tipoDato.getTipo()
+        let tipo2 = this.operando2?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.INTEGER:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) <= parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) <= parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        //console.log(op2.charCodeAt(1))
+                        if(parseInt(op1) <= parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                        
+                    default:
+                        return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.DOUBLE:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) <= parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) <= parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) <= parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar doble con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.CHAR:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) <= parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) <= parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:    
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) <= parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
+                }
+            default:
+                return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
+        }
+    }
+    mayor_que(op1: any, op2: any) {
+        let tipo1 = this.operando1?.tipoDato.getTipo()
+        let tipo2 = this.operando2?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.INTEGER:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) > parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) > parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        //console.log(op2.charCodeAt(1))
+                        if(parseInt(op1) > parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                        
+                    default:
+                        return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.DOUBLE:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) > parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) > parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) > parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar doble con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.CHAR:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) > parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) > parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:    
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) > parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
+                }
+            default:
+                return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
+        }
+    }
+    mayor_igual(op1: any, op2: any) {
+        let tipo1 = this.operando1?.tipoDato.getTipo()
+        let tipo2 = this.operando2?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.INTEGER:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) >= parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) >= parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        //console.log(op2.charCodeAt(1))
+                        if(parseInt(op1) >= parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                        
+                    default:
+                        return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.DOUBLE:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) >= parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) >= parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseFloat(op1) >= parseInt(op2.charCodeAt(1))){
+                            return true
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar doble con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.CHAR:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) >= parseInt(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) >= parseFloat(op2)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.CHAR:    
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) >= parseInt(op2.charCodeAt(1))){
                             return true
                         }else{
                             return false
