@@ -9,6 +9,7 @@
 	const Logicos = require('./expresiones/Logicos')
 	const Casteo = require('./expresiones/Casteos')
 	const Funciones = require('./expresiones/Funciones')
+	const FuncionesNativas = require('./expresiones/FuncionesNativas')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
 	const Print = require('./instrucciones/Print')
@@ -31,6 +32,7 @@
 "bool"              	return 'BOOLEAN'
 "char"             		return 'CHAR'
 "std::String"		    return 'STRING'
+"std"					return 'STD'
 //----------Operadores Aritmeticos----------
 "+"                   	return 'ARI_SUMA'
 "-"                   	return 'ARI_MENOS'
@@ -58,6 +60,7 @@
 "]"						return 'COR_DER'
 //------------Otro operadores-------------
 ","                   	return 'COMA'
+"."                   	return 'PUNTO'
 ";"                   	return 'PUNTO_COMA'
 ":"						return 'DOSPUNTOS'
 "{"                   	return 'LLAVE_IZQ'
@@ -187,6 +190,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| NOT EXPRESION        					{$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
 			| CASTEO 									{$$ = $1;}
 			| FUNCION 									{$$ = $1;}
+			| FUN_NATIVA								{$$ = $1;}
 			| PARENTESIS_IZQ EXPRESION PARENTESIS_DER              {$$ = $2;}
 			| ARI_MENOS EXPRESION %prec UMENOS     {$$ = new Aritmeticas.default(Aritmeticas.Operadores.NEG, @1.first_line, @1.first_column, $2);}
 			| NUM_ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.INTEGER), $1, @1.first_line, @1.first_column );}
@@ -196,7 +200,6 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| CARACTER_UNICO							{$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CHAR), $1, @1.first_line, @1.first_column );}
 			| CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.STRING), $1, @1.first_line, @1.first_column );}
 			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    
-			
 ;
 
 TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}
@@ -212,4 +215,8 @@ CASTEO : PARENTESIS_IZQ TIPOS PARENTESIS_DER EXPRESION  {$$ = new Casteo.default
 FUNCION : SENT_TOLOWER PARENTESIS_IZQ EXPRESION PARENTESIS_DER {$$ = new Funciones.default(Funciones.Operadores.SENT_TOLOWER, @1.first_line, @1.first_column, $3);}
 		| SENT_TOUPPER PARENTESIS_IZQ EXPRESION PARENTESIS_DER {$$ = new Funciones.default(Funciones.Operadores.SENT_TOUPPER, @1.first_line, @1.first_column, $3);}
 		| SENT_ROUND PARENTESIS_IZQ EXPRESION PARENTESIS_DER {$$ = new Funciones.default(Funciones.Operadores.SENT_ROUND, @1.first_line, @1.first_column, $3);}
+;
+
+FUN_NATIVA  : SENT_TYPEOF PARENTESIS_IZQ EXPRESION PARENTESIS_DER		{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_TYPEOF, @1.first_line, @1.first_column, $3);}
+			| STD DOSPUNTOS DOSPUNTOS SENT_TOSTRING PARENTESIS_IZQ EXPRESION PARENTESIS_DER	{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_TOSTRING, @1.first_line, @1.first_column, $6);}
 ;

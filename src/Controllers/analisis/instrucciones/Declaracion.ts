@@ -20,14 +20,25 @@ export default class Declaracion extends Instruccion {
         if (valorFinal instanceof Errores) return valorFinal
 
         // Verificacion de que los tipos de las variables declarados sean del mismo tipo del valor asignado
-        // if (this.valor.tipoDato.getTipo() != this.tipoDato.getTipo()) {
-        //     return new Errores("SEMANTICO", "No se puede declarar variable", this.linea, this.col)
-        // }
-        this.identificador.forEach(elemento => {
-            if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
-                return new Errores("SEMANTICO", "variable ya existe!", this.linea, this.col)
-            }   
-        })
+        if(this.valor.tipoDato.getTipo() == tipoDato.INTEGER && this.tipoDato.getTipo() == tipoDato.DOUBLE){
+            this.identificador.forEach(id => {
+                valorFinal = parseFloat(valorFinal);
+                if (!tabla.setVariable(new Simbolo(this.tipoDato, id, valorFinal))){
+                    return new Errores("Semantico", "No se puede declarar variable que ya existe", this.linea, this.col)
+                }   
+            });
+        }
+        else{
+            if (this.valor.tipoDato.getTipo() != this.tipoDato.getTipo()) {
+                return new Errores("SEMANTICO", "No se puede declarar variable", this.linea, this.col)
+            }
+            this.identificador.forEach(elemento => {
+                if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
+                    return new Errores("SEMANTICO", "variable ya existe!", this.linea, this.col)
+                }   
+            })
+        }
+        
     }
 
 }

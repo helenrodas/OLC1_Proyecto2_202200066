@@ -5,7 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
 
-export default class Funciones extends Instruccion {
+export default class FuncionesNativas extends Instruccion {
     private operando1: Instruccion | undefined
     private operando2: Instruccion | undefined
     private operacion: Operadores
@@ -34,55 +34,74 @@ export default class Funciones extends Instruccion {
         }
 
         switch (this.operacion) {
-            case Operadores.SENT_TOLOWER:
-                return this.casteo_lower(Unico)
-            case Operadores.SENT_TOUPPER:
-                return this.casteo_upper(Unico)
-            case Operadores.SENT_ROUND:
-                return this.casteo_round(Unico)
-            // case tipoDato.CHAR:
-            //     return this.casteo_char(Unico)
+            case Operadores.SENT_LENGTH:
+                return this.length(Unico)
+            case Operadores.SENT_TYPEOF:
+                return this.type(Unico)
+            case Operadores.SENT_TOSTRING:
+                return this.setString(Unico)
             default:
                 return new Errores("Semantico", "Casteo Invalido", this.linea, this.col)
         }
     }
 
-    casteo_lower(op1: any) {
+    // modifcar pues puede venir un vector, una lista tambien
+    length(op1: any) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         switch (tipo1) {
             case tipoDato.STRING:
-                this.tipoDato = new Tipo(tipoDato.STRING)
-                return op1.toLowerCase()
-            default:
-                    return new Errores("Semantico", "No se puede castear ToLower: " + op1, this.linea, this.col)
-        }
-    }
-
-    casteo_upper(op1: any) {
-        let tipo1 = this.operandoUnico?.tipoDato.getTipo()
-        switch (tipo1) {
-            case tipoDato.STRING:
-                this.tipoDato = new Tipo(tipoDato.STRING)
-                return op1.toUpperCase()
-            default:
-                    return new Errores("Semantico", "No se puede castear ToUpper: " + op1, this.linea, this.col)
-        }
-    }
-
-    casteo_round(op1: any) {
-        let tipo1 = this.operandoUnico?.tipoDato.getTipo()
-        switch (tipo1) {
-            case tipoDato.DOUBLE:
                 this.tipoDato = new Tipo(tipoDato.INTEGER)
-                return  Math.round(op1)
+                return op1.length;
             default:
-                    return new Errores("Semantico", "No se puede castear a round: " + op1, this.linea, this.col)
+                    return new Errores("Semantico", "No se puede ejecutar funcion length: " + op1, this.linea, this.col)
+        }
+    }
+
+    //falta agregar caso que venga vector
+    type(op1: any) {
+        let tipo1 = this.operandoUnico?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.STRING:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return "cadena"
+            case tipoDato.DOUBLE:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return "double"
+            case tipoDato.BOOLEAN:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return "bool"
+            case tipoDato.CHAR:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return "char"
+            case tipoDato.INTEGER:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return "int"
+            default:
+                    return new Errores("Semantico", "No se puede conocer el tipo: " + op1, this.linea, this.col)
+        }
+    }
+
+    setString(op1: any) {
+        let tipo1 = this.operandoUnico?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.INTEGER:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return  op1.toString();
+            case tipoDato.DOUBLE:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return  op1.toString();
+            case tipoDato.BOOLEAN:
+                this.tipoDato = new Tipo(tipoDato.STRING)
+                return  op1.toString();
+            default:
+                    return new Errores("Semantico", "No se puede convertir a string: " + op1, this.linea, this.col)
         }
     }
 }
 
 export enum Operadores {
-    SENT_TOLOWER,
-    SENT_TOUPPER,
-    SENT_ROUND
+    SENT_LENGTH,
+    SENT_TYPEOF,
+    SENT_TOSTRING
+
 }
