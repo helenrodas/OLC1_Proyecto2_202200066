@@ -33,6 +33,8 @@ export default class Casteos extends Instruccion {
             if (opDer instanceof Errores) return opDer
         }
 
+        //(int) 12.4
+        //(string) 20
         switch (this.operacion.getTipo()) {
             case tipoDato.INTEGER:
                 return this.casteo_int(Unico)

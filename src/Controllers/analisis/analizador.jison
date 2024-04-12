@@ -8,6 +8,7 @@
 	const Relacionales = require('./expresiones/Relacionales')
 	const Logicos = require('./expresiones/Logicos')
 	const Casteo = require('./expresiones/Casteos')
+	const Funciones = require('./expresiones/Funciones')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
 	const Print = require('./instrucciones/Print')
@@ -180,6 +181,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| EXPRESION AND EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
 			| NOT EXPRESION        					{$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
 			| CASTEO 									{$$ = $1;}
+			| FUNCION 									{$$ = $1;}
 			| PARENTESIS_IZQ EXPRESION PARENTESIS_DER              {$$ = $2;}
 			| ARI_MENOS EXPRESION %prec UMENOS     {$$ = new Aritmeticas.default(Aritmeticas.Operadores.NEG, @1.first_line, @1.first_column, $2);}
 			| NUM_ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.INTEGER), $1, @1.first_line, @1.first_column );}
@@ -200,4 +202,9 @@ TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}
 	;
 
 CASTEO : PARENTESIS_IZQ TIPOS PARENTESIS_DER EXPRESION  {$$ = new Casteo.default($2, @1.first_line, @1.first_column, $4);}
+;
+
+FUNCION : SENT_TOLOWER PARENTESIS_IZQ EXPRESION PARENTESIS_DER {$$ = new Funciones.default(Funciones.Operadores.SENT_TOLOWER, @1.first_line, @1.first_column, $3);}
+		| SENT_TOUPPER PARENTESIS_IZQ EXPRESION PARENTESIS_DER {$$ = new Funciones.default(Funciones.Operadores.SENT_TOUPPER, @1.first_line, @1.first_column, $3);}
+		| SENT_ROUND PARENTESIS_IZQ EXPRESION PARENTESIS_DER {$$ = new Funciones.default(Funciones.Operadores.SENT_ROUND, @1.first_line, @1.first_column, $3);}
 ;
