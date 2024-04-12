@@ -103,6 +103,7 @@
 	const Nativo = require('./expresiones/Nativo')
 	const Aritmeticas = require('./expresiones/Aritmeticas')
 	const Relacionales = require('./expresiones/Relacionales')
+	const Logicos = require('./expresiones/Logicos')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
 	const Print = require('./instrucciones/Print')
@@ -227,14 +228,13 @@
 
 
 // Precedencias
-
-%left 'ARI_MULTIPLICACION' 'ARI_DIVISION'
-%left 'ARI_SUMA' 'ARI_MENOS'
-%left 'IGUALACIONDOBLE' 'DIFERENCIACION' 'MENOR' 'MENORIGUAL' 'MAYOR' 'MAYORIGUAL'
-%left 'OP_TERNARIO'
-%left 'OR'
 %left 'AND'
+%left 'OR'
 %right 'NOT'
+%left 'IGUALACIONDOBLE' 'DIFERENCIACION' 'MENOR' 'MENORIGUAL' 'MAYOR' 'MAYORIGUAL'
+%left 'ARI_SUMA' 'ARI_MENOS'
+%left 'ARI_MULTIPLICACION' 'ARI_DIVISION'
+%left 'OP_TERNARIO'
 %left signoMenos
 
 %start INICIO
@@ -270,6 +270,9 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| EXPRESION MENORIGUAL EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.MENORIGUAL, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION MAYOR EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.MAYOR, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION MAYORIGUAL EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.MAYORIGUAL, @1.first_line, @1.first_column, $1, $3);}
+			| EXPRESION OR EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.OR, @1.first_line, @1.first_column, $1, $3);}
+			| EXPRESION AND EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
+			| NOT EXPRESION        					{$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
 			| PARENTESIS_IZQ EXPRESION PARENTESIS_DER              {$$ = $2;}
 			| ARI_MENOS EXPRESION %prec UMENOS     {$$ = new Aritmeticas.default(Aritmeticas.Operadores.NEG, @1.first_line, @1.first_column, $2);}
 			| NUM_ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.INTEGER), $1, @1.first_line, @1.first_column );}
@@ -280,9 +283,6 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.STRING), $1, @1.first_line, @1.first_column );}
 			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    
 			
-;
-
-VARCHAR : COMILLA_SIMPLE CARACTER_UNICO COMILLA_SIMPLE    {$$ = $2;}
 ;
 
 TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}
