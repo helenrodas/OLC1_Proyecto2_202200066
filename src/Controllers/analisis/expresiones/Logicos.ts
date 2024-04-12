@@ -80,18 +80,14 @@ export default class Logicos extends Instruccion {
     }
 
     comparacion_not(op1: any) {
-        let tipo1 = this.operando1?.tipoDato.getTipo()
-       // switch (tipo1) {
-            
+        let tipo1 = this.operando1?.tipoDato.getTipo()      
             if (typeof op1 === 'boolean') {
                 return !op1;
             } else {
                 return new Errores("Semantico", "comparacion not Invalida", this.linea, this.col)
             }
     }
-
 }
-
 
 export enum Operadores {
     OR,
