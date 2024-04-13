@@ -11,9 +11,12 @@
 	const Funciones = require('./expresiones/Funciones')
 	const FuncionesNativas = require('./expresiones/FuncionesNativas')
 	const IncDec = require('./expresiones/IncDec')
+	const Ternaria = require('./expresiones/ternario')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
 	const If = require('./instrucciones/If')
+	const While = require('./instrucciones/While')
+	const Break = require('./instrucciones/Break')
 	const Print = require('./instrucciones/Print')
 	const Declaracion = require('./instrucciones/Declaracion')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
@@ -166,6 +169,8 @@ INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
             | DECLARACION PUNTO_COMA          {$$=$1;}
             | ASIGNACION PUNTO_COMA           {$$=$1;}
 			| INS_IF						  {$$=$1;}
+			| INS_WHILE						  {$$=$1;}
+			| INS_BREAK						  {$$=$1;}
 ;
 
 IMPRESION : IMPRIMIR PARENTESIS_IZQ EXPRESION PARENTESIS_DER    {$$= new Print.default($3, @1.first_line, @1.first_column);}
@@ -207,6 +212,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| CARACTER_UNICO							{$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CHAR), $1, @1.first_line, @1.first_column );}
 			| CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.STRING), $1, @1.first_line, @1.first_column );}
 			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    
+			| INS_TERNARIO								{$$=$1;}
 ;
 
 TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}
@@ -232,5 +238,14 @@ INC_DEC : INCREMENTO {$$ = new Tipo.default(Tipo.tipoDato.INCREMENTO);}
 		| DECREMENTO {$$ = new Tipo.default(Tipo.tipoDato.DECREMENTO);}
 ;
 
-INS_IF: SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER	{$$ = new If.default($3, $6, @1.first_line, @1.first_column );}
+INS_IF: SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new If.default($3, $6, @1.first_line, @1.first_column );}
+;
+
+INS_WHILE: SENT_WHILE PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new While.default($3, $6, @1.first_line, @1.first_column );}
+;
+
+INS_BREAK : SENT_BREAK PUNTO_COMA		{$$ = new Break.default(@1.first_line, @1.first_column);}
+;
+
+INS_TERNARIO : EXPRESION OP_TERNARIO EXPRESION DOSPUNTOS EXPRESION {$$ = new Ternaria.default($1,$3,$5,@1.first_line,@1.first_column)}
 ;
