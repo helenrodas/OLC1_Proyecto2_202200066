@@ -10,6 +10,7 @@
 	const Casteo = require('./expresiones/Casteos')
 	const Funciones = require('./expresiones/Funciones')
 	const FuncionesNativas = require('./expresiones/FuncionesNativas')
+	const IncDec = require('./expresiones/IncDec')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
 	const Print = require('./instrucciones/Print')
@@ -33,6 +34,9 @@
 "char"             		return 'CHAR'
 "std::String"		    return 'STRING'
 "std"					return 'STD'
+//----------Incremento y Decremento----------
+"++"					return 'INCREMENTO'
+"--"					return 'DECREMENTO'
 //----------Operadores Aritmeticos----------
 "+"                   	return 'ARI_SUMA'
 "-"                   	return 'ARI_MENOS'
@@ -69,9 +73,7 @@
 //-------------Operadores Booleanos--------
 "true"                	return 'TRUE'
 "false"               	return 'FALSE'
-//----------Incremento y Decremento----------
-"++"					return 'INCREMENTO'
-"--"					return 'DECREMENTO'
+
 //----------Sentencias----------------
 "new"					return 'NEW'
 //----------Sentencias de Control------------
@@ -143,6 +145,7 @@
 %left 'IGUALACIONDOBLE' 'DIFERENCIACION' 'MENOR' 'MENORIGUAL' 'MAYOR' 'MAYORIGUAL'
 %left 'ARI_SUMA' 'ARI_MENOS'
 %left 'ARI_MULTIPLICACION' 'ARI_DIVISION'
+%left 'INCREMENTO','DECREMENTO'
 %left signoMenos
 %left PARENTESIS_IZQ
 
@@ -170,6 +173,7 @@ DECLARACION : TIPOS LISTA_VAR IGUALACION EXPRESION      {$$ = new Declaracion.de
 ;
 
 ASIGNACION : IDENTIFICADOR IGUALACION EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
+			|  EXPRESION             {$$ = $1;}
 ;
 
 LISTA_VAR : LISTA_VAR COMA IDENTIFICADOR	{$1.push($3); $$=$1;}
@@ -188,6 +192,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| EXPRESION OR EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.OR, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION AND EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
 			| NOT EXPRESION        					{$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
+			| EXPRESION INC_DEC						{$$ = new IncDec.default($2, @1.first_line, @1.first_column, $1);}
 			| CASTEO 									{$$ = $1;}
 			| FUNCION 									{$$ = $1;}
 			| FUN_NATIVA								{$$ = $1;}
@@ -219,4 +224,8 @@ FUNCION : SENT_TOLOWER PARENTESIS_IZQ EXPRESION PARENTESIS_DER {$$ = new Funcion
 
 FUN_NATIVA  : SENT_TYPEOF PARENTESIS_IZQ EXPRESION PARENTESIS_DER		{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_TYPEOF, @1.first_line, @1.first_column, $3);}
 			| STD DOSPUNTOS DOSPUNTOS SENT_TOSTRING PARENTESIS_IZQ EXPRESION PARENTESIS_DER	{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_TOSTRING, @1.first_line, @1.first_column, $6);}
+;
+
+INC_DEC : INCREMENTO {$$ = new Tipo.default(Tipo.tipoDato.INCREMENTO);}
+		| DECREMENTO {$$ = new Tipo.default(Tipo.tipoDato.DECREMENTO);}
 ;

@@ -22,5 +22,7 @@ export enum tipoDato {
     BOOLEAN,
     CHAR,
     STRING,
-    VOID
+    VOID,
+    INCREMENTO,
+    DECREMENTO
 }
