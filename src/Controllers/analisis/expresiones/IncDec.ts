@@ -33,17 +33,11 @@ export default class IncDec extends Instruccion {
             if (opDer instanceof Errores) return opDer
         }
 
-        //(int) 12.4
-        //(string) 20
         switch (this.operacion.getTipo()) {
             case tipoDato.INCREMENTO:
                 return this.incremento(Unico)
             case tipoDato.DECREMENTO:
                 return this.decremento(Unico)
-            // case tipoDato.STRING:
-            //     return this.casteo_string(Unico)
-            // case tipoDato.CHAR:
-            //     return this.casteo_char(Unico)
             default:
                 return new Errores("Semantico", "Casteo Invalido", this.linea, this.col)
         }
@@ -51,11 +45,9 @@ export default class IncDec extends Instruccion {
     incremento(op1: any) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         let opresult = 0
-        // console.log(op1)
         switch (tipo1) {
             case tipoDato.INTEGER:
                 this.tipoDato = new Tipo(tipoDato.INTEGER)
-                // console.log(op1)
                 opresult = op1++;
                 console.log(opresult)
                 console.log(op1)
@@ -68,11 +60,9 @@ export default class IncDec extends Instruccion {
     decremento(op1: any) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         let opresult = 0
-        // console.log(op1)
         switch (tipo1) {
             case tipoDato.INTEGER:
                 this.tipoDato = new Tipo(tipoDato.INTEGER)
-                // console.log(op1)
                 opresult = op1--;
                 console.log(opresult)
                 console.log(op1)

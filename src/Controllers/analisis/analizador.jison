@@ -13,6 +13,7 @@
 	const IncDec = require('./expresiones/IncDec')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
+	const If = require('./instrucciones/If')
 	const Print = require('./instrucciones/Print')
 	const Declaracion = require('./instrucciones/Declaracion')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
@@ -164,6 +165,7 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
 INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
             | DECLARACION PUNTO_COMA          {$$=$1;}
             | ASIGNACION PUNTO_COMA           {$$=$1;}
+			| INS_IF						  {$$=$1;}
 ;
 
 IMPRESION : IMPRIMIR PARENTESIS_IZQ EXPRESION PARENTESIS_DER    {$$= new Print.default($3, @1.first_line, @1.first_column);}
@@ -228,4 +230,7 @@ FUN_NATIVA  : SENT_TYPEOF PARENTESIS_IZQ EXPRESION PARENTESIS_DER		{$$ = new Fun
 
 INC_DEC : INCREMENTO {$$ = new Tipo.default(Tipo.tipoDato.INCREMENTO);}
 		| DECREMENTO {$$ = new Tipo.default(Tipo.tipoDato.DECREMENTO);}
+;
+
+INS_IF: SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER	{$$ = new If.default($3, $6, @1.first_line, @1.first_column );}
 ;

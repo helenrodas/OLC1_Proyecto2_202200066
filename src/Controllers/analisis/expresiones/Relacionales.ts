@@ -12,7 +12,7 @@ export default class Relacionales extends Instruccion {
     private operandoUnico: Instruccion | undefined
 
     constructor(operador: Operadores, fila: number, col: number, op1: Instruccion, op2?: Instruccion) {
-        super(new Tipo(tipoDato.VOID), fila, col)
+        super(new Tipo(tipoDato.BOOLEAN), fila, col)
         this.operacion = operador
         if (!op2) this.operandoUnico = op1
         else {
