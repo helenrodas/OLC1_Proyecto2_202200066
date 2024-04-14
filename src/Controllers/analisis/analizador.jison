@@ -152,6 +152,7 @@
 %left 'INCREMENTO','DECREMENTO'
 %left signoMenos
 %left PARENTESIS_IZQ
+%left PUNTO
 
 
 %start INICIO
@@ -200,6 +201,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| EXPRESION AND EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
 			| NOT EXPRESION        					{$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
 			| EXPRESION INC_DEC						{$$ = new IncDec.default($2, @1.first_line, @1.first_column, $1);}
+			| EXPRESION PUNTO SENT_LENGTH PARENTESIS_IZQ PARENTESIS_DER 	{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_LENGTH, @1.first_line, @1.first_column, $1);}
 			| CASTEO 									{$$ = $1;}
 			| FUNCION 									{$$ = $1;}
 			| FUN_NATIVA								{$$ = $1;}
