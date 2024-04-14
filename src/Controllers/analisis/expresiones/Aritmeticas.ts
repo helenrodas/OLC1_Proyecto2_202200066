@@ -44,6 +44,8 @@ export default class Aritmeticas extends Instruccion {
                 return this.div(opIzq, opDer)
             case Operadores.NEG:
                 return this.negacion(Unico)
+            case Operadores.ARI_POTENCIA:
+                return this.potencia(opIzq, opDer)
             default:
                 return new Errores("Semantico", "Operador Aritmetico Invalido", this.linea, this.col)
         }
@@ -536,6 +538,38 @@ export default class Aritmeticas extends Instruccion {
 
     }
 
+    potencia(op1: any, op2: any) {
+        let tipo1 = this.operando1?.tipoDato.getTipo()
+        let tipo2 = this.operando2?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.INTEGER:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.INTEGER)
+                        return Math.pow(parseInt(op1),parseInt(op2))
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
+                        return Math.pow(parseFloat(op1),parseFloat(op2))
+                    default:
+                        return new Errores("Semantico", "Operacion potencia invalida", this.linea, this.col)
+                }
+            case tipoDato.DOUBLE:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
+                        return Math.pow(parseFloat(op1),parseFloat(op2))
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
+                        return Math.pow(parseFloat(op1),parseFloat(op2))
+                    default:
+                        return new Errores("Semantico", "Operacion potencia invalida", this.linea, this.col)
+                }
+            default:
+                return new Errores("Semantico", "Operacion potencia invalida", this.linea, this.col)
+        }
+
+    }
+
     negacion(op1: any) {
         let opU = this.operandoUnico?.tipoDato.getTipo()
         switch (opU) {
@@ -557,5 +591,6 @@ export enum Operadores {
     RESTA,
     MULT,
     DIVI,
-    NEG
+    NEG,
+    ARI_POTENCIA
 }
