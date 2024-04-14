@@ -148,7 +148,7 @@
 %right 'NOT'
 %left 'IGUALACIONDOBLE' 'DIFERENCIACION' 'MENOR' 'MENORIGUAL' 'MAYOR' 'MAYORIGUAL'
 %left 'ARI_SUMA' 'ARI_MENOS'
-%left 'ARI_MULTIPLICACION' 'ARI_DIVISION'
+%left 'ARI_MULTIPLICACION' 'ARI_DIVISION' 'ARI_MODULO'
 %left 'INCREMENTO','DECREMENTO'
 %left signoMenos
 %left PARENTESIS_IZQ
@@ -192,6 +192,7 @@ LISTA_VAR : LISTA_VAR COMA IDENTIFICADOR	{$1.push($3); $$=$1;}
 EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION ARI_MENOS EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.RESTA, @1.first_line, @1.first_column, $1, $3);}
 			| ARI_POTENCIA PARENTESIS_IZQ EXPRESION COMA EXPRESION PARENTESIS_DER       {$$ = new Aritmeticas.default(Aritmeticas.Operadores.ARI_POTENCIA, @1.first_line, @1.first_column, $3, $5);}
+			| EXPRESION ARI_MODULO EXPRESION    {$$ = new Aritmeticas.default(Aritmeticas.Operadores.ARI_MODULO, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION IGUALACIONDOBLE EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.IGUALACIONDOBLE, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION DIFERENCIACION EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.DIFERENCIACION, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION MENOR EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.MENOR, @1.first_line, @1.first_column, $1, $3);}

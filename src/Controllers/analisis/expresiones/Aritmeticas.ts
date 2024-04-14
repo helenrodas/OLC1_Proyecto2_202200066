@@ -46,6 +46,8 @@ export default class Aritmeticas extends Instruccion {
                 return this.negacion(Unico)
             case Operadores.ARI_POTENCIA:
                 return this.potencia(opIzq, opDer)
+            case Operadores.ARI_MODULO:
+                return this.modulo(opIzq, opDer)
             default:
                 return new Errores("Semantico", "Operador Aritmetico Invalido", this.linea, this.col)
         }
@@ -570,6 +572,38 @@ export default class Aritmeticas extends Instruccion {
 
     }
 
+    modulo(op1: any, op2: any) {
+        let tipo1 = this.operando1?.tipoDato.getTipo()
+        let tipo2 = this.operando2?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.INTEGER:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
+                        return parseFloat(op1) % parseFloat(op2)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
+                        return parseFloat(op1) % parseFloat(op2)
+                    default:
+                        return new Errores("Semantico", "Operacion modulo invalida", this.linea, this.col)
+                }
+            case tipoDato.DOUBLE:
+                switch (tipo2) {
+                    case tipoDato.INTEGER:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
+                        return parseFloat(op1) % parseFloat(op2)
+                    case tipoDato.DOUBLE:
+                        this.tipoDato = new Tipo(tipoDato.DOUBLE)
+                        return parseFloat(op1) % parseFloat(op2)
+                    default:
+                        return new Errores("Semantico", "Operacion modulo invalida", this.linea, this.col)
+                }
+            default:
+                return new Errores("Semantico", "Operacion modulo invalida", this.linea, this.col)
+        }
+
+    }
+
     negacion(op1: any) {
         let opU = this.operandoUnico?.tipoDato.getTipo()
         switch (opU) {
@@ -592,5 +626,6 @@ export enum Operadores {
     MULT,
     DIVI,
     NEG,
-    ARI_POTENCIA
+    ARI_POTENCIA,
+    ARI_MODULO
 }
