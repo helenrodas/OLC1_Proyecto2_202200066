@@ -16,6 +16,7 @@
 
 	const If = require('./instrucciones/If')
 	const While = require('./instrucciones/While')
+	const DoWhile = require('./instrucciones/doWhile')
 	const For = require('./instrucciones/For')
 	const Break = require('./instrucciones/Break')
 	const Print = require('./instrucciones/Print')
@@ -172,10 +173,11 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
 INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
             | DECLARACION PUNTO_COMA          {$$=$1;}
             | ASIGNACION PUNTO_COMA           {$$=$1;}
-			|OPC_IF							  {$$=$1;}
+			| OPC_IF							  {$$=$1;}
 			| INS_WHILE						  {$$=$1;}
 			| INS_BREAK						  {$$=$1;}
 			|INS_FOR						  {$$=$1;}
+			|INS_DOWHILE					  {$$=$1;}
 ;
 
 IMPRESION : IMPRIMIR PARENTESIS_IZQ EXPRESION PARENTESIS_DER    {$$= new Print.default($3, @1.first_line, @1.first_column);}
@@ -185,7 +187,7 @@ DECLARACION : TIPOS LISTA_VAR IGUALACION EXPRESION      {$$ = new Declaracion.de
 ;
 
 ASIGNACION : IDENTIFICADOR IGUALACION EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
-			|  EXPRESION             {$$ = $1;}
+			| EXPRESION				{$$=$1;}
 			| INC_DEC				{$$=$1;}
 ;
 
@@ -261,6 +263,8 @@ INS_IF: SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES 
 INS_WHILE: SENT_WHILE PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new While.default($3, $6, @1.first_line, @1.first_column );}
 ;
 
+INS_DOWHILE: SENT_DO LLAVE_IZQ INSTRUCCIONES LLAVE_DER SENT_WHILE PARENTESIS_IZQ EXPRESION PARENTESIS_DER PUNTO_COMA	{$$ = new DoWhile.default($7, $3, @1.first_line, @1.first_column );}
+;
 INS_FOR: SENT_FOR PARENTESIS_IZQ DECLARACION PUNTO_COMA EXPRESION PUNTO_COMA ASIGNACION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new For.default($3, $5, $7, $10, @1.first_line, @1.first_column );}
 ;
 

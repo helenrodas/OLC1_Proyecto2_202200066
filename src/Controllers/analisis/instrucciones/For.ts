@@ -21,9 +21,6 @@ export default class For extends Instruccion{
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let tablaTemp  = new tablaSimbolo(tabla);
-        //tablaTemp.setNombre("tabla temporal for");
-
-
 
         this.variable.interpretar(arbol, tablaTemp);
         
