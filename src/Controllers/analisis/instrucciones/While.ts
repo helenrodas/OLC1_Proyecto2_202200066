@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
+import Continue from "./continue";
 
 /*
 while(exp){
@@ -34,8 +35,10 @@ export default class While extends Instruccion {
             newTabla.setNombre("Sentencia While")
             for (let i of this.instrucciones) {
                 if (i instanceof Break) return;
+                if (i instanceof Continue) break;
                 let resultado = i.interpretar(arbol, newTabla)
                 if (resultado instanceof Break) return;
+                if (i instanceof Continue) break;
                 // falta validacion de errors
             }
         }

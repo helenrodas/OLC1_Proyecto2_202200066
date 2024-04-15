@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
+import Continue from "./continue";
 
 
 export default class If extends Instruccion {
@@ -56,6 +57,7 @@ export default class If extends Instruccion {
         if (condicional1) {
             for (let i of this.instrucciones1) {
                 if (i instanceof Break) return i;
+                if (i instanceof Continue) return i;
                 let resultado = i.interpretar(arbol, newTabla)
                 // falta validar errores para cuando vengan errores en i
             }
@@ -74,6 +76,7 @@ export default class If extends Instruccion {
         if (condicional1) {
             for (let i of this.instrucciones1) {
                 if (i instanceof Break) return i;
+                if (i instanceof Continue) return i;
                 let resultado = i.interpretar(arbol, newTabla)
                 // falta validar errores para cuando vengan errores en i
             }
@@ -83,6 +86,7 @@ export default class If extends Instruccion {
                 newTablaElse.setNombre("Instruccion ELSE")
                 for (let i of this.instrucciones2) {
                     if (i instanceof Break) return i;
+                    if (i instanceof Continue) return i;
                     let resultado = i.interpretar(arbol, newTablaElse)
                     // falta validar errores para cuando vengan errores en i
                 }
@@ -106,6 +110,7 @@ export default class If extends Instruccion {
             newTabla.setNombre("Instruccion IF")
             for (let i of this.instrucciones1) {
                 if (i instanceof Break) return i;
+                if (i instanceof Continue) return i;
                 let resultado = i.interpretar(arbol, newTabla)
                 // falta validar errores para cuando vengan errores en i
             }
@@ -125,6 +130,7 @@ export default class If extends Instruccion {
                             newTabla.setNombre("Instruccion con2 ins1");
                             for (let i of currentElseIf.instrucciones1) {
                                 if (i instanceof Break) return i;
+                                if (i instanceof Continue) return i;
                                 let resultado = i.interpretar(arbol, newTabla);
                                 // falta validar errores para cuando vengan errores en i
                             }
@@ -150,6 +156,7 @@ export default class If extends Instruccion {
                 newTablaElse.setNombre("Instruccion ELSE");
                 for (let i of this.instrucciones2) {
                     if (i instanceof Break) return i;
+                    if (i instanceof Continue) return i;
                     let resultado = i.interpretar(arbol, newTablaElse);
                     // falta validar errores para cuando vengan errores en i
                 }

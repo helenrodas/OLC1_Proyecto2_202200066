@@ -19,6 +19,7 @@
 	const DoWhile = require('./instrucciones/doWhile')
 	const For = require('./instrucciones/For')
 	const Break = require('./instrucciones/Break')
+	const Continue = require('./instrucciones/Continue')
 	const Print = require('./instrucciones/Print')
 	const Declaracion = require('./instrucciones/Declaracion')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
@@ -87,7 +88,7 @@
 "else"					return 'SENT_ELSE'
 "switch"				return 'SENT_SWITCH'
 "case"					return 'SENT_CASE'
-"break"					return 'SENT_BREAK'
+//"break"					return 'SENT_BREAK'
 "default"			    return 'SENT_DEFAULT'
 //----------Sentencias Ciclicas--------------
 "while"               	return 'SENT_WHILE'
@@ -176,6 +177,7 @@ INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
 			| OPC_IF							  {$$=$1;}
 			| INS_WHILE						  {$$=$1;}
 			| INS_BREAK						  {$$=$1;}
+			|INS_CONTINUE					{$$=$1;}
 			|INS_FOR						  {$$=$1;}
 			|INS_DOWHILE					  {$$=$1;}
 ;
@@ -269,6 +271,9 @@ INS_FOR: SENT_FOR PARENTESIS_IZQ DECLARACION PUNTO_COMA EXPRESION PUNTO_COMA ASI
 ;
 
 INS_BREAK : SENT_BREAK PUNTO_COMA		{$$ = new Break.default(@1.first_line, @1.first_column);}
+;
+
+INS_CONTINUE : SENT_CONTINUE PUNTO_COMA		{$$ = new Continue.default(@1.first_line, @1.first_column);}
 ;
 
 INS_TERNARIO : EXPRESION OP_TERNARIO EXPRESION DOSPUNTOS EXPRESION {$$ = new Ternaria.default($1,$3,$5,@1.first_line,@1.first_column)}

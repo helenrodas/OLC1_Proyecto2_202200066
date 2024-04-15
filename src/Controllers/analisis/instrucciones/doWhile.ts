@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
+import Continue from "./continue";
 
 export default class doWhile extends Instruccion{
     private condicion:Instruccion
@@ -32,8 +33,10 @@ export default class doWhile extends Instruccion{
             newTabla.setNombre("Funcion do while")
             for (let i of this.instruccion) {
                 if (i instanceof Break) return;
+                if (i instanceof Continue) break;
                 let resultado = i.interpretar(arbol, newTabla)
                 if (resultado instanceof Break) return;
+                if (resultado instanceof Continue) break;
                 // errores pendientes
             }
 
