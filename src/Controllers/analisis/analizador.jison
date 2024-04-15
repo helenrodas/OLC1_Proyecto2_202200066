@@ -16,6 +16,7 @@
 
 	const If = require('./instrucciones/If')
 	const While = require('./instrucciones/While')
+	const For = require('./instrucciones/For')
 	const Break = require('./instrucciones/Break')
 	const Print = require('./instrucciones/Print')
 	const Declaracion = require('./instrucciones/Declaracion')
@@ -143,6 +144,7 @@
 
 // Precedencias
 %left 'OP_TERNARIO'
+
 %left 'AND'
 %left 'OR'
 %right 'NOT'
@@ -151,8 +153,9 @@
 %left 'ARI_MULTIPLICACION' 'ARI_DIVISION' 'ARI_MODULO'
 %left 'INCREMENTO','DECREMENTO'
 %left signoMenos
-%left PARENTESIS_IZQ
+
 %left PUNTO
+%left PARENTESIS_IZQ
 
 
 %start INICIO
@@ -169,9 +172,10 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
 INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
             | DECLARACION PUNTO_COMA          {$$=$1;}
             | ASIGNACION PUNTO_COMA           {$$=$1;}
-			| INS_IF						  {$$=$1;}
+			|OPC_IF							  {$$=$1;}
 			| INS_WHILE						  {$$=$1;}
 			| INS_BREAK						  {$$=$1;}
+			|INS_FOR						  {$$=$1;}
 ;
 
 IMPRESION : IMPRIMIR PARENTESIS_IZQ EXPRESION PARENTESIS_DER    {$$= new Print.default($3, @1.first_line, @1.first_column);}
@@ -182,6 +186,7 @@ DECLARACION : TIPOS LISTA_VAR IGUALACION EXPRESION      {$$ = new Declaracion.de
 
 ASIGNACION : IDENTIFICADOR IGUALACION EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
 			|  EXPRESION             {$$ = $1;}
+			| INC_DEC				{$$=$1;}
 ;
 
 LISTA_VAR : LISTA_VAR COMA IDENTIFICADOR	{$1.push($3); $$=$1;}
@@ -202,7 +207,6 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| EXPRESION OR EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.OR, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION AND EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
 			| NOT EXPRESION        					{$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
-			| EXPRESION INC_DEC						{$$ = new IncDec.default($2, @1.first_line, @1.first_column, $1);}
 			| EXPRESION PUNTO SENT_LENGTH PARENTESIS_IZQ PARENTESIS_DER 	{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_LENGTH, @1.first_line, @1.first_column, $1);}
 			| CASTEO 									{$$ = $1;}
 			| FUNCION 									{$$ = $1;}
@@ -238,14 +242,26 @@ FUN_NATIVA  : SENT_TYPEOF PARENTESIS_IZQ EXPRESION PARENTESIS_DER		{$$ = new Fun
 			| STD DOSPUNTOS DOSPUNTOS SENT_TOSTRING PARENTESIS_IZQ EXPRESION PARENTESIS_DER	{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_TOSTRING, @1.first_line, @1.first_column, $6);}
 ;
 
-INC_DEC : INCREMENTO {$$ = new Tipo.default(Tipo.tipoDato.INCREMENTO);}
-		| DECREMENTO {$$ = new Tipo.default(Tipo.tipoDato.DECREMENTO);}
+INC_DEC : IDENTIFICADOR SIG_INCDEC		{$$ = new IncDec.default($1, @1.first_line, @1.first_column, $2);}
 ;
 
-INS_IF: SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new If.default($3, $6, @1.first_line, @1.first_column );}
+SIG_INCDEC :  INCREMENTO {$$ = true;}
+			| DECREMENTO {$$ = false;}
+;
+
+OPC_IF : INS_IF {$$=$1;}
+;
+
+
+INS_IF: SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new If.default(If.Operadores.SENT_IF,$3, $6, @1.first_line, @1.first_column );}
+		| SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER SENT_ELSE LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new If.default(If.Operadores.SENT_ELSE,$3, $6, @1.first_line, @1.first_column,$10 );}
+		| SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER SENT_ELSE INS_IF	{$$ = new If.default(If.Operadores.SENT_ELSEIF,$3, $6, @1.first_line, @1.first_column,[],$9);}
 ;
 
 INS_WHILE: SENT_WHILE PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new While.default($3, $6, @1.first_line, @1.first_column );}
+;
+
+INS_FOR: SENT_FOR PARENTESIS_IZQ DECLARACION PUNTO_COMA EXPRESION PUNTO_COMA ASIGNACION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new For.default($3, $5, $7, $10, @1.first_line, @1.first_column );}
 ;
 
 INS_BREAK : SENT_BREAK PUNTO_COMA		{$$ = new Break.default(@1.first_line, @1.first_column);}

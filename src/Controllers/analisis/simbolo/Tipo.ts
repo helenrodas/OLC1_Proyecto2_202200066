@@ -26,3 +26,8 @@ export enum tipoDato {
     INCREMENTO,
     DECREMENTO
 }
+
+
+
+
+
