@@ -44,6 +44,28 @@ function App() {
     reader.readAsText(file);
   }
 
+  const handleOpenFile = (event) => {
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      const contents = event.target.result;
+      editorRef.current.setValue(contents);
+    };
+
+    if (file.name.endsWith('.sc')) {
+      reader.readAsText(file);
+    } else {
+      alert('Por favor, seleccione un archivo con extensión .sc');
+    }
+  };
+
+
+
 
   return (
     <div className="App">
@@ -54,7 +76,8 @@ function App() {
                 <a class="nav-link " aria-current="page" href="#">Crear Archivos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Abrir Archivos</a>
+            <label className="nav-link" htmlFor="fileInput">Abrir Archivos</label>
+            <input id="fileInput" type="file" accept=".sc" style={{ display: 'none' }} onChange={handleOpenFile} />
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Guardar Archivos</a>
