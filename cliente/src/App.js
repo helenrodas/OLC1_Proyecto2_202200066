@@ -14,7 +14,6 @@ function App() {
     }
   }
 
-
   function interpretar() {
     var entrada = editorRef.current.getValue();
     fetch('http://localhost:4000/interpretar', {
@@ -34,15 +33,6 @@ function App() {
       });
   }
 
-  const CargarArchivo = (event) => {
-    var file = event.target.files[0];
-    var reader = new FileReader();
-    reader.onload = function (event) {
-      var contents = event.target.result;
-      editorRef.current.setValue(contents);
-    };
-    reader.readAsText(file);
-  }
 
   const handleOpenFile = (event) => {
     const fileInput = event.target;
@@ -64,7 +54,20 @@ function App() {
     }
   };
 
-
+  var contadorArchivos = 0
+  const guardarArchivo = () => {
+    contadorArchivos = contadorArchivos + 1
+    const contenido = editorRef.current.getValue();
+    const nombreArchivo = `prueba_${contadorArchivos}.sc`;
+    const blob = new Blob([contenido], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = nombreArchivo;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
 
   return (
@@ -80,7 +83,7 @@ function App() {
             <input id="fileInput" type="file" accept=".sc" style={{ display: 'none' }} onChange={handleOpenFile} />
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Guardar Archivos</a>
+              <a className="nav-link" href="#" onClick={guardarArchivo}>Guardar Archivos</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="#" onClick={interpretar}>Ejecutar</a>
