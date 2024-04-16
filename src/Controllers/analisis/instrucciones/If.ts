@@ -41,9 +41,12 @@ export default class If extends Instruccion {
             if(this.instruccioneselse){
                 for (let i of this.instruccioneselse) {
                         if (i instanceof Break) return i;
+                        if (i instanceof Continue) return i;
                         let resultado = i.interpretar(arbol, newTabla)
                         if (resultado instanceof Break) return; }
-            }else{console.log("Falta instrucciones")}
+            }else{
+                console.log("Falta instrucciones")
+            }
             
         }
     }

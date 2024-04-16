@@ -18,6 +18,9 @@
 	const While = require('./instrucciones/While')
 	const DoWhile = require('./instrucciones/doWhile')
 	const For = require('./instrucciones/For')
+	const Switch = require('./instrucciones/Switch')
+	const Case = require('./instrucciones/Case')
+	const Default = require('./instrucciones/Default')
 	const Break = require('./instrucciones/Break')
 	const Continue = require('./instrucciones/Continue')
 	const Print = require('./instrucciones/Print')
@@ -112,10 +115,7 @@
 "c_str"			        return 'SENT_TOCHARARRAY'
 "execute"				return 'SENT_RUN'
 //-----------ER----------------
-//^[a-zA-Z0-9_]$      return 'CARACTER_UNICO'
 ([a-zA-Z])([a-zA-Z0-9_])* return 'IDENTIFICADOR'
-
-
 [']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER_UNICO'
 '[a-zA-Z0-9_]'					return 'CARACTER'
 [0-9]+"."[0-9]+         return "NUM_DECIMAL"
@@ -179,6 +179,7 @@ INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
 			|INS_CONTINUE					{$$=$1;}
 			|INS_FOR						  {$$=$1;}
 			|INS_DOWHILE					  {$$=$1;}
+			| INS_SWITCH					{$$=$1;}
 ;
 
 IMPRESION : IMPRIMIR PARENTESIS_IZQ EXPRESION PARENTESIS_DER    {$$= new Print.default($3, @1.first_line, @1.first_column);}
@@ -252,8 +253,7 @@ SIG_INCDEC :  INCREMENTO {$$ = true;}
 			| DECREMENTO {$$ = false;}
 ;
 
-
-OPC_IF      :   SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER
+OPC_IF  :   SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER
         {$$ = new If.default($3, $6,null, @1.first_line, @1.first_column);}
         |   SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER OPC_ELSE
         {$$ = new If.default($3, $6,$8, @1.first_line, @1.first_column);}
@@ -264,8 +264,6 @@ OPC_ELSE    :   SENT_ELSE OPC_IF
         | SENT_ELSE LLAVE_IZQ INSTRUCCIONES LLAVE_DER
             { $$ = $3;}
 ;
-
-
 
 
 INS_WHILE: SENT_WHILE PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new While.default($3, $6, @1.first_line, @1.first_column );}
@@ -283,4 +281,20 @@ INS_CONTINUE : SENT_CONTINUE PUNTO_COMA		{$$ = new Continue.default(@1.first_lin
 ;
 
 INS_TERNARIO : EXPRESION OP_TERNARIO EXPRESION DOSPUNTOS EXPRESION {$$ = new Ternaria.default($1,$3,$5,@1.first_line,@1.first_column)}
+;
+
+INS_SWITCH: SENT_SWITCH PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ LISTA_CASE OPC_DEFAULT LLAVE_DER {$$ = new Switch.default($3,$6,@1.first_line,@1.first_column,$7)}
+			| SENT_SWITCH PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ LISTA_CASE LLAVE_DER {$$ = new Switch.default($3,$6,@1.first_line,@1.first_column,undefined)}
+			| SENT_SWITCH PARENTESIS_IZQ EXPRESION PARENTESIS_DER OPC_DEFAULT LLAVE_DER {$$ = new Switch.default($3,[],@1.first_line,@1.first_column,$5)}
+;
+
+OPC_CASE : SENT_CASE EXPRESION DOSPUNTOS INSTRUCCIONES  {$$ = new Case.default($2,$4, @1.first_line,@1.first_column)}
+;
+
+LISTA_CASE : LISTA_CASE OPC_CASE {$1.push($2); $$=$1;}
+			| OPC_CASE			{$$ = [$1];}
+
+;
+
+OPC_DEFAULT : SENT_DEFAULT DOSPUNTOS INSTRUCCIONES {$$ = new Default.default($3, @1.first_line,@1.first_column)}
 ;
