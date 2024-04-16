@@ -155,7 +155,6 @@
 %left 'ARI_MULTIPLICACION' 'ARI_DIVISION' 'ARI_MODULO'
 %left 'INCREMENTO','DECREMENTO'
 %left signoMenos
-
 %left PUNTO
 %left PARENTESIS_IZQ
 
@@ -253,14 +252,21 @@ SIG_INCDEC :  INCREMENTO {$$ = true;}
 			| DECREMENTO {$$ = false;}
 ;
 
-OPC_IF : INS_IF {$$=$1;}
+
+OPC_IF      :   SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER
+        {$$ = new If.default($3, $6,null, @1.first_line, @1.first_column);}
+        |   SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER OPC_ELSE
+        {$$ = new If.default($3, $6,$8, @1.first_line, @1.first_column);}
+;
+
+OPC_ELSE    :   SENT_ELSE OPC_IF
+            { let inst_else = [];inst_else.push($2);$$ = inst_else;}
+        | SENT_ELSE LLAVE_IZQ INSTRUCCIONES LLAVE_DER
+            { $$ = $3;}
 ;
 
 
-INS_IF: SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new If.default(If.Operadores.SENT_IF,$3, $6, @1.first_line, @1.first_column );}
-		| SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER SENT_ELSE LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new If.default(If.Operadores.SENT_ELSE,$3, $6, @1.first_line, @1.first_column,$10 );}
-		| SENT_IF PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER SENT_ELSE INS_IF	{$$ = new If.default(If.Operadores.SENT_ELSEIF,$3, $6, @1.first_line, @1.first_column,[],$9);}
-;
+
 
 INS_WHILE: SENT_WHILE PARENTESIS_IZQ EXPRESION PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER {$$ = new While.default($3, $6, @1.first_line, @1.first_column );}
 ;
