@@ -6,6 +6,10 @@ function App() {
   const editorRef = useRef(null);
   const consolaRef = useRef(null);
 
+  const [archivos, setArchivos] = useState([]); // Estado para mantener los archivos
+  const [archivoActual, setArchivoActual] = useState(null);
+
+
   function handleEditorDidMount(editor, id) {
     if (id === "editor") {
       editorRef.current = editor;
@@ -67,8 +71,27 @@ function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
   };
 
+
+  function crearArchivoEnBlanco() {
+    contadorArchivos = contadorArchivos + 1
+    const nombreArchivo = `prueba_${contadorArchivos}.sc`;
+    const nuevoArchivo = { nombre: nombreArchivo, contenido: "" };
+    setArchivos([...archivos, nuevoArchivo]);
+    setArchivoActual(nuevoArchivo);
+    editorRef.current.setValue("");
+}
+
+
+function abrirArchivo(nombre) {
+  const archivo = archivos.find(a => a.nombre === nombre);
+  if (archivo) {
+      setArchivoActual(archivo);
+      editorRef.current.setValue(archivo.contenido);
+  }
+}
 
   return (
     <div className="App">
@@ -108,7 +131,13 @@ function App() {
           </div>
         </div>
       </div>
-
+      <div style={{ backgroundColor: '#cde1f2', height: '28px', borderTop: '1px solid #015092', position: 'fixed', bottom: '0', left: '0', right: '0' }}>
+      <li><a href="#" onClick={crearArchivoEnBlanco}>Crear archivo en blanco</a></li>
+      
+                    {archivos.map(archivo => (
+                        <li key={archivo.nombre}><a href="#" onClick={() => abrirArchivo(archivo.nombre)}>{archivo.nombre}</a></li>
+                    ))}
+      </div>
     </div>
   );
 }

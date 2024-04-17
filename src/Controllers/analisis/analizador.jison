@@ -25,6 +25,7 @@
 	const Continue = require('./instrucciones/Continue')
 	const Print = require('./instrucciones/Print')
 	const Declaracion = require('./instrucciones/Declaracion')
+	const DeclaracionInit = require('./instrucciones/DeclaracionInit')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
 %}
 %lex
@@ -185,8 +186,20 @@ INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
 IMPRESION : IMPRIMIR PARENTESIS_IZQ EXPRESION PARENTESIS_DER    {$$= new Print.default($3, @1.first_line, @1.first_column);}
 ;
 
-DECLARACION : TIPOS LISTA_VAR IGUALACION EXPRESION      {$$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $4);}
+DECLARACION : TIPOS LISTA_VAR  ASIGNACION_DECLARACION  
+{
+			if($3 == true){
+				$$ = new DeclaracionInit.default($1, @1.first_line, @1.first_column, $2);
+			}else{
+				$$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $3);
+			}
+}
 ;
+
+ASIGNACION_DECLARACION : IGUALACION EXPRESION {$$= $2;}
+					|  {$$=true;}
+;
+
 
 ASIGNACION : IDENTIFICADOR IGUALACION EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
 			| EXPRESION				{$$=$1;}
