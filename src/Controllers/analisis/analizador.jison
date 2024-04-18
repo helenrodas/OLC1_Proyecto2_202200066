@@ -30,6 +30,7 @@
 	const Declaracion = require('./instrucciones/Declaracion')
 	const DeclaracionInit = require('./instrucciones/DeclaracionInit')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
+	const ArrayU = require('./instrucciones/ArrayU')
 %}
 %lex
 
@@ -185,6 +186,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 			|INS_FOR						  {$$=$1;}
 			|INS_DOWHILE					  {$$=$1;}
 			| INS_SWITCH					{$$=$1;}
+			| DECLARACION_ARREGLO PUNTO_COMA  {$$=$1;}
 ;
 
 IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT    
@@ -195,8 +197,6 @@ IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT
 				}
 				
 				}
-
-
 ;
 
 FINALPRINT : PRINTMENOR SENT_ENDL PUNTO_COMA	{$$=true;}
@@ -302,6 +302,14 @@ OPC_ELSE    :   SENT_ELSE OPC_IF
             { let inst_else = [];inst_else.push($2);$$ = inst_else;}
         | SENT_ELSE LLAVE_IZQ INSTRUCCIONES LLAVE_DER
             { $$ = $3;}
+;
+
+DECLARACION_ARREGLO : TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION NEW TIPOS COR_IZQ EXPRESION COR_DER	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,$7, $9,[]);}
+					| TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION COR_IZQ LISTAVALORES COR_DER	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,undefined, undefined,$7);}
+;
+
+LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
+				| EXPRESION {$$=[$1];}
 ;
 
 
