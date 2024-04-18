@@ -192,6 +192,8 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 			|INS_DOWHILE					  {$$=$1;}
 			| INS_SWITCH					{$$=$1;}
 			| DECLARACION_ARREGLO PUNTO_COMA  {$$=$1;}
+			| FUN_METODO						{$$=$1;}
+			| FUN_EXE PUNTO_COMA				{$$=$1;}
 ;
 
 IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT    
@@ -232,11 +234,19 @@ LISTA_VAR : LISTA_VAR COMA IDENTIFICADOR	{$1.push($3); $$=$1;}
 			| IDENTIFICADOR					{$$=[$1];}	
 ;
 
-FUN_METODO : IDENTIFICADOR PARENTESIS_IZQ PARAMETROS PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCION LLAVE_DER		{$$ = new Metodo.default($1, $6, $8, @1.first_line, @1.first_column, $3);}
-			| IDENTIFICADOR PARENTESIS_IZQ  PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCION LLAVE_DER		{$$ = new Metodo.default($1, $5, $7, @1.first_line, @1.first_column, []);}
+FUN_METODO : IDENTIFICADOR PARENTESIS_IZQ PARAMETROS PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCIONES LLAVE_DER		{$$ = new Metodo.default($1, $6, $8, @1.first_line, @1.first_column, $3);}
+			| IDENTIFICADOR PARENTESIS_IZQ  PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCIONES LLAVE_DER		{$$ = new Metodo.default($1, $5, $7, @1.first_line, @1.first_column, []);}
 ;
 PARAMETROS : PARAMETROS COMA TIPOS IDENTIFICADOR	{ $1.push({tipo:$3, id:$4}); $$=$1;} 
 			| TIPOS IDENTIFICADOR					{$$ = [{tipo:$1, id:$2}];}
+;
+
+FUN_EXE : SENT_EXECUTE IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER	{$$ = new Execute.default($2,@1.first_line, @1.first_column, $4 );}
+			| SENT_EXECUTE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER					{$$ = new Execute.default($2, @1.first_line, @1.first_column, [])}
+;
+
+PARAMETROSLLAMADA : PARAMETROSLLAMADA COMA EXPRESION		 {$1.push($3); $$=$1;}
+					| EXPRESION									{$$=[$1];}
 ;
 
 
