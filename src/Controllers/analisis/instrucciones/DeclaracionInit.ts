@@ -37,12 +37,13 @@ export default class DeclaracionInit extends Instruccion{
                     valorFinal = 0.0;
                     break;
                 default:
+                    arbol.Print("\n Error Semantico:"+"No es posible declarar variable " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
                     return new Errores("Error semántico", "No es posible declarar variable.", this.linea, this.col);
                 
             }
     
-             
             if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
+                arbol.Print("\n Error Semantico:"+"La variable ya esta declarada " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
                 return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
             }   
         });

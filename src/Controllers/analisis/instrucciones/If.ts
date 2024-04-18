@@ -25,7 +25,8 @@ export default class If extends Instruccion {
         if (condicion instanceof Errores) return condicion
 
         if (this.condicion.tipoDato.getTipo() != tipoDato.BOOLEAN) {
-            return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
+            arbol.Print("\n Error Semantico:"+"La condicion debe ser de tipo bool " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
+            return new Errores("SEMANTICO", "La condicion debe ser de tipo bool", this.linea, this.col)
         }
 
         let newTabla = new tablaSimbolo(tabla)
@@ -44,10 +45,7 @@ export default class If extends Instruccion {
                         if (i instanceof Continue) return i;
                         let resultado = i.interpretar(arbol, newTabla)
                         if (resultado instanceof Break) return; }
-            }else{
-                //console.log("Falta instrucciones")
             }
-            
         }
     }
 }

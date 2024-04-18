@@ -20,13 +20,18 @@ export default class AsignacionVar extends Instruccion {
         if (NewValor instanceof Errores) return NewValor
 
         let valor = tabla.getVariable(this.id.toLocaleLowerCase())
-        if (valor == null) return new Errores("SEMANTICO", "Variable no existente", this.linea, this.col)
+        if (valor == null){
+            arbol.Print("\n Error Semantico:"+"Variable no existente " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
+            return new Errores("SEMANTICO", "Variable no existente", this.linea, this.col)
+            
+        } 
 
-        if (this.exp.tipoDato.getTipo() != valor.getTipo().getTipo()) return new Errores("SEMANTICO", "Asignacion incorrecta", this.linea, this.col)
+        if (this.exp.tipoDato.getTipo() != valor.getTipo().getTipo()){
+            arbol.Print("\n Error Semantico:"+"Asignacion de tipo de variable incorrecta " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
+            return new Errores("SEMANTICO", "Asignacion incorrecta", this.linea, this.col)
+        } 
 
         this.tipoDato = valor.getTipo()
         valor.setValor(NewValor)
-
-
     }
 }
