@@ -14,6 +14,9 @@
 	const Ternaria = require('./expresiones/ternario')
 	const AccesoVar = require('./expresiones/AccesoVar')
 
+
+	const Execute = require('./instrucciones/Execute')
+	const Metodo = require('./instrucciones/Metodo')
 	const If = require('./instrucciones/If')
 	const While = require('./instrucciones/While')
 	const DoWhile = require('./instrucciones/doWhile')
@@ -62,6 +65,7 @@
 "<="                   	return 'MENORIGUAL'
 ">="					return 'MAYORIGUAL'
 ">"                   	return 'MAYOR'
+"<<"                   	return 'PRINTMENOR'
 "<"                   	return 'MENOR'
 //----------Operadores Logicos----------
 "||"                   	return 'OR'
@@ -92,7 +96,7 @@
 "else"					return 'SENT_ELSE'
 "switch"				return 'SENT_SWITCH'
 "case"					return 'SENT_CASE'
-//"break"					return 'SENT_BREAK'
+"endl"					return 'SENT_ENDL'
 "default"			    return 'SENT_DEFAULT'
 //----------Sentencias Ciclicas--------------
 "while"               	return 'SENT_WHILE'
@@ -102,7 +106,7 @@
 "break"					return 'SENT_BREAK'
 "continue"				return 'SENT_CONTINUE'
 "return"				return 'SENT_RETURN'
-"void"					return 'SENT_VOID'
+"void"					return 'VOID'
 "imprimir"              return 'IMPRIMIR'
 //-------Funciones----------
 "cout"                  return 'SENT_COUT'
@@ -114,7 +118,7 @@
 "typeof"				return 'SENT_TYPEOF'
 "toString"				return 'SENT_TOSTRING'
 "c_str"			        return 'SENT_TOCHARARRAY'
-"execute"				return 'SENT_RUN'
+"execute"				return 'SENT_EXECUTE'
 //-----------ER----------------
 ([a-zA-Z])([a-zA-Z0-9_])* return 'IDENTIFICADOR'
 [']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER_UNICO'
@@ -171,7 +175,7 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
             | INSTRUCCION                 {$$=[$1];}
 ;
 
-INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
+INSTRUCCION : IMPRESION             {$$=$1;}
             | DECLARACION PUNTO_COMA          {$$=$1;}
             | ASIGNACION PUNTO_COMA           {$$=$1;}
 			| OPC_IF							  {$$=$1;}
@@ -183,7 +187,20 @@ INSTRUCCION : IMPRESION PUNTO_COMA            {$$=$1;}
 			| INS_SWITCH					{$$=$1;}
 ;
 
-IMPRESION : IMPRIMIR PARENTESIS_IZQ EXPRESION PARENTESIS_DER    {$$= new Print.default($3, @1.first_line, @1.first_column);}
+IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT    
+				{if ($4 == true){
+					$$= new Print.default($3,true,@1.first_line, @1.first_column);
+				}else{
+					$$= new Print.default($3,false, @1.first_line, @1.first_column);
+				}
+				
+				}
+
+
+;
+
+FINALPRINT : PRINTMENOR SENT_ENDL PUNTO_COMA	{$$=true;}
+			| PUNTO_COMA						{$$=false;}
 ;
 
 DECLARACION : TIPOS LISTA_VAR  ASIGNACION_DECLARACION  
@@ -210,9 +227,17 @@ LISTA_VAR : LISTA_VAR COMA IDENTIFICADOR	{$1.push($3); $$=$1;}
 			| IDENTIFICADOR					{$$=[$1];}	
 ;
 
+FUN_METODO : IDENTIFICADOR PARENTESIS_IZQ PARAMETROS PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCION LLAVE_DER		{$$ = new Metodo.default($1, $6, $8, @1.first_line, @1.first_column, $3);}
+			| IDENTIFICADOR PARENTESIS_IZQ  PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCION LLAVE_DER		{$$ = new Metodo.default($1, $5, $7, @1.first_line, @1.first_column, []);}
+;
+PARAMETROS : PARAMETROS COMA TIPOS IDENTIFICADOR	{ $1.push({tipo:$3, id:$4}); $$=$1;} 
+			| TIPOS IDENTIFICADOR					{$$ = [{tipo:$1, id:$2}];}
+;
+
 
 EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION ARI_MENOS EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.RESTA, @1.first_line, @1.first_column, $1, $3);}
+			| EXPRESION ARI_MULTIPLICACION EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.MULT, @1.first_line, @1.first_column, $1, $3);}
 			| ARI_POTENCIA PARENTESIS_IZQ EXPRESION COMA EXPRESION PARENTESIS_DER       {$$ = new Aritmeticas.default(Aritmeticas.Operadores.ARI_POTENCIA, @1.first_line, @1.first_column, $3, $5);}
 			| EXPRESION ARI_MODULO EXPRESION    {$$ = new Aritmeticas.default(Aritmeticas.Operadores.ARI_MODULO, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION IGUALACIONDOBLE EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.IGUALACIONDOBLE, @1.first_line, @1.first_column, $1, $3);}
@@ -245,6 +270,7 @@ TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}
 		| STRING          {$$ = new Tipo.default(Tipo.tipoDato.STRING);}
 		| BOOLEAN          {$$ = new Tipo.default(Tipo.tipoDato.BOOLEAN);}
 		|CHAR			{$$ = new Tipo.default(Tipo.tipoDato.CHAR);}
+		|VOID			{$$ = new Tipo.default(Tipo.tipoDato.VOID);}
 	;
 
 CASTEO : PARENTESIS_IZQ TIPOS PARENTESIS_DER EXPRESION  {$$ = new Casteo.default($2, @1.first_line, @1.first_column, $4);}
