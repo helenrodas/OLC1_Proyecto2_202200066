@@ -23,27 +23,9 @@ export default class ArrayU extends Instruccion{
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
 
-        if(this.listaDatos){
-            let arry: any= []
-
-            for(let i =0; i < this.listaDatos.length;i++){
-                let dato = this.listaDatos[i].interpretar(arbol,tabla)
-
-                if(dato instanceof Errores) return dato
-                if(this.tipoPrincipal.getTipo() != this.listaDatos[i].tipoDato.getTipo()){
-                    arbol.Print("\n Error Semantico:"+"Tipo de dato en declaracion invalido" + "linea: " + this.linea + "columna:" + (this.col+1))
-                    return new Errores("SEMANTICA", "Tipo de dato en declaracion invalido", this.linea, this.col);
-                }
-                arry[i] = dato
-            }
-            if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arry))){
-                return new Errores("SEMANTICO", "Variable ya existe", this.linea, this.col)
-            }
-
-
-        }else if(this.size){
+        if(this.size){
             if(this.tipoPrincipal.getTipo() != this.tipoNew?.getTipo()){
-                arbol.Print("\n Error Semantico:"+"Tipos de datos son diferentes" + "linea: " + this.linea + "columna:" + (this.col+1))
+                arbol.Print("\n Error Semantico:"+"Tipos de datos en declaracion de arreglo son diferentes " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
                 return new Errores("SEMANTICA", "Tipos de datos son diferentes ", this.linea, this.col);
             }
             
@@ -54,10 +36,30 @@ export default class ArrayU extends Instruccion{
                 arry[i] = []
             }
             if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arry))){
-                arbol.Print("\n Error Semantico:"+"Variable ya existe" + "linea: " + this.linea + "columna:" + (this.col+1))
+                arbol.Print("\n Error Semantico:"+"Variable ya existe " + " linea: " + this.linea + "columna: " + (this.col+1) + "\n")
                 return new Errores("SEMANTICO", "Variable ya existe", this.linea, this.col)
             }
 
         }
+        else if(this.listaDatos){
+            let arry: any= []
+
+            for(let i =0; i < this.listaDatos.length;i++){
+                let dato = this.listaDatos[i].interpretar(arbol,tabla)
+
+                if(dato instanceof Errores) return dato
+                if(this.tipoPrincipal.getTipo() != this.listaDatos[i].tipoDato.getTipo()){
+                    arbol.Print("\n Error Semantico:"+"Tipo de dato en arreglo es invalido " + " linea: " + this.linea + " columna: " + (this.col+1)+ "\n")
+                    return new Errores("SEMANTICA", "Tipo de dato en declaracion invalido", this.linea, this.col);
+                }
+                arry[i] = dato
+            }
+            if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arry))){
+                arbol.Print("\n Error Semantico:"+"Variable ya existe " + " linea: " + this.linea + "columna: " + (this.col+1) + "\n")
+                return new Errores("SEMANTICO", "Variable ya existe", this.linea, this.col)
+            }
+
+
+        } 
     }
 }

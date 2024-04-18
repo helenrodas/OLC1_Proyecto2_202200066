@@ -45,7 +45,7 @@ export default class If extends Instruccion {
                         let resultado = i.interpretar(arbol, newTabla)
                         if (resultado instanceof Break) return; }
             }else{
-                console.log("Falta instrucciones")
+                //console.log("Falta instrucciones")
             }
             
         }

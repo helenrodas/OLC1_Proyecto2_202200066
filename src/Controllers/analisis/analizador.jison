@@ -31,6 +31,9 @@
 	const DeclaracionInit = require('./instrucciones/DeclaracionInit')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
 	const ArrayU = require('./instrucciones/ArrayU')
+
+	const Errores = require('./excepciones/Errores')
+	const indexController = require('../indexController')
 %}
 %lex
 
@@ -139,7 +142,9 @@
 //-----------Fin de Cadena----------------
 <<EOF>>               	return 'EOF'
 //------Errores(cualquier cosa menos lo declarado)-----
-.                     	{ errors.push({ tipo: "Lexico", error: yytext, linea: yylloc.first_line, columna: yylloc.first_column+1 }); return 'ERROR_LEX'; } 
+.                   	{let error = new Errores.default("LEXICO",("token invalido: "+yytext),yylloc.first_line,yylloc.first_column); 
+						indexController.listaErrores.push(error);}
+						
 
 //IMPORTACIONES
 %{
