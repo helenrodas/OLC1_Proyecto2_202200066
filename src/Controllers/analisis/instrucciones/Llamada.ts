@@ -2,11 +2,12 @@ import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
-import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Tipo, { tipoDato } from '../simbolo/Tipo'
+import Metodo from './Metodo';
 import Declaracion from "./Declaracion";
-import Metodo from "./Metodo";
 
-export default class Execute extends Instruccion {
+export default class Llamada extends Instruccion {
+
     private id: string
     private parametros: Instruccion[]
 
@@ -18,40 +19,35 @@ export default class Execute extends Instruccion {
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let busqueda = arbol.getFuncion(this.id)
-        if (busqueda == null) return new Errores("SEMANTICO", "Funcion no existente", this.linea, this.col)
+        if (busqueda == null) {
+            return new Errores("SEMANTICO", "Funcion no existente", this.linea, this.col)
+        }
+
 
         if (busqueda instanceof Metodo) {
             let newTabla = new tablaSimbolo(arbol.getTablaGlobal())
-            newTabla.setNombre("Metodo Execute")
+            newTabla.setNombre("LLAMADA METODO " + this.id)
 
-            /*
-                cantidad de parametros sea igual 
-                entre la llamada (run) y la definicion
-                de la funcion 
-            */
+            //validacion parametros
             if (busqueda.parametros.length != this.parametros.length) {
                 return new Errores("SEMANTICO", "Parametros invalidos", this.linea, this.col)
             }
-            /*
-                Usaremos el ciclo con un index para que sea el mismo orden 
-                tanto en la definicion como en el run (llamada)
+            
 
-                Declaramos los parametros uno a uno pasando el tipo que deberia
-                tener segun la definicion de la funcion y el valor que le
-                vamos a asignar al llamarla con run
-            */
-
-            // declaramos los parametros
+            // es igual al run en su mayoria :D
             for (let i = 0; i < busqueda.parametros.length; i++) {
+                console.log(busqueda.parametros[i].tipo)
+                console.log(busqueda.parametros[i].id)
                 let declaracionParametro = new Declaracion(
                     busqueda.parametros[i].tipo, this.linea, this.col,
-                    [busqueda.parametros[i].id], this.parametros[i])
+                    [busqueda.parametros[i].id], this.parametros[i]
+                )
 
-                // declarando parametro de metodo
                 let resultado = declaracionParametro.interpretar(arbol, newTabla)
+                console.log(resultado)
                 if (resultado instanceof Errores) return resultado
             }
-            // una vez declarados los parametros, interpretamos la funcion
+            // interpretar la funcion a llamar
             let resultadoFuncion: any = busqueda.interpretar(arbol, newTabla)
             if (resultadoFuncion instanceof Errores) return resultadoFuncion
 
@@ -59,14 +55,6 @@ export default class Execute extends Instruccion {
     }
 }
 
-/*
- run id(parametros);
-
- miFuncion(int param1, double param2, bool param3):void{
-    cout << param1 << endl;
-
- }
-
- miFuncion(1, 2.9, true)
-
+/* tomar en cuenta que la llamda puede estar como instruccion y como expresion
+actualmente solo funciona como instruccion pero no como expresion
 */

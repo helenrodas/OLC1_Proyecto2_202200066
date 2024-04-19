@@ -7,7 +7,7 @@ import Tipo, { tipoDato } from '../simbolo/Tipo'
 
 export default class Declaracion extends Instruccion {
     private identificador: string[]
-    private valor: Instruccion
+    private valor: Instruccion 
 
     constructor(tipo: Tipo, linea: number, col: number, id: string[], valor: Instruccion) {
         super(tipo, linea, col)
@@ -16,11 +16,13 @@ export default class Declaracion extends Instruccion {
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
+        
         let valorFinal = this.valor.interpretar(arbol, tabla)
         if (valorFinal instanceof Errores) return valorFinal
 
         // Verificacion de que los tipos de las variables declarados sean del mismo tipo del valor asignado
         if(this.valor.tipoDato.getTipo() == tipoDato.INTEGER && this.tipoDato.getTipo() == tipoDato.DOUBLE){
+            console.log("entro al if")
             this.identificador.forEach(id => {
                 valorFinal = parseFloat(valorFinal);
                 if (!tabla.setVariable(new Simbolo(this.tipoDato, id, valorFinal))){
@@ -32,12 +34,22 @@ export default class Declaracion extends Instruccion {
             if (this.valor.tipoDato.getTipo() != this.tipoDato.getTipo()) {
                 return new Errores("SEMANTICO", "No se puede declarar variable", this.linea, this.col)
             }
-            this.identificador.forEach(elemento => {
+            console.log(this.identificador)
+            // this.identificador.forEach(elemento => {
+            //     if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
+            //         return new Errores("SEMANTICO", "variable ya existe!", this.linea, this.col)
+            //     }   
+            // })
+
+            for(let elemento of this.identificador){
                 if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
                     return new Errores("SEMANTICO", "variable ya existe!", this.linea, this.col)
-                }   
-            })
+                }  
+            }
+            
         }
+        
+        
         
     }
 

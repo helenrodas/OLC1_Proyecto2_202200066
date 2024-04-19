@@ -17,6 +17,7 @@ export default class Print extends Instruccion {
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let valor = this.expresion.interpretar(arbol, tabla)
+        console.log(valor)
         if (valor instanceof Errores) return valor
         if(this.bandera == true){
             arbol.Print(valor + "\n")

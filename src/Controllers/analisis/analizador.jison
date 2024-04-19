@@ -15,6 +15,7 @@
 	const AccesoVar = require('./expresiones/AccesoVar')
 
 
+	const Llamada = require('./instrucciones/Llamada')
 	const Execute = require('./instrucciones/Execute')
 	const Metodo = require('./instrucciones/Metodo')
 	const If = require('./instrucciones/If')
@@ -194,6 +195,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 			| DECLARACION_ARREGLO PUNTO_COMA  {$$=$1;}
 			| FUN_METODO						{$$=$1;}
 			| FUN_EXE PUNTO_COMA				{$$=$1;}
+			| FUN_LLAMADA PUNTO_COMA			{$$=$1;}
 ;
 
 IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT    
@@ -234,9 +236,12 @@ LISTA_VAR : LISTA_VAR COMA IDENTIFICADOR	{$1.push($3); $$=$1;}
 			| IDENTIFICADOR					{$$=[$1];}	
 ;
 
-FUN_METODO : IDENTIFICADOR PARENTESIS_IZQ PARAMETROS PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCIONES LLAVE_DER		{$$ = new Metodo.default($1, $6, $8, @1.first_line, @1.first_column, $3);}
-			| IDENTIFICADOR PARENTESIS_IZQ  PARENTESIS_DER DOSPUNTOS TIPOS LLAVE_IZQ INSTRUCCIONES LLAVE_DER		{$$ = new Metodo.default($1, $5, $7, @1.first_line, @1.first_column, []);}
+
+FUN_METODO : TIPOS IDENTIFICADOR PARENTESIS_IZQ PARAMETROS PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER		{$$ = new Metodo.default($2,$1,$7, @1.first_line, @1.first_column,$4);}
+			| TIPOS IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER				{$$ = new Metodo.default($2,$1,$6, @1.first_line, @1.first_column,[]);}
 ;
+
+
 PARAMETROS : PARAMETROS COMA TIPOS IDENTIFICADOR	{ $1.push({tipo:$3, id:$4}); $$=$1;} 
 			| TIPOS IDENTIFICADOR					{$$ = [{tipo:$1, id:$2}];}
 ;
@@ -249,6 +254,9 @@ PARAMETROSLLAMADA : PARAMETROSLLAMADA COMA EXPRESION		 {$1.push($3); $$=$1;}
 					| EXPRESION									{$$=[$1];}
 ;
 
+FUN_LLAMADA : IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER		{$$ = new Llamada.default($1, @1.first_line, @1.first_column, $3);}
+			| IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER						{$$ = new Llamada.default($1, @1.first_line, @1.first_column, []);}
+;
 
 EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION ARI_MENOS EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.RESTA, @1.first_line, @1.first_column, $1, $3);}
