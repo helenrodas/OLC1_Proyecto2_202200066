@@ -27,7 +27,7 @@ class controller {
             //primer recorrido del arbol
 
             for (let i of listaErrores){
-                ast.Print(i.getTipoError()+ ":" + i.getDesc() + "Fila: " + i.getFila() + "Columna: " + i.getCol() )
+                ast.Print("Error Lexico" + i.getTipoError()+ ":" + i.getDesc() + "Fila: " + i.getFila() + "Columna: " + i.getCol() )
             }
             for (let i of ast.getInstrucciones()) {
                 if(i instanceof Errores){

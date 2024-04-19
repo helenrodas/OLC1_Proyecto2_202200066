@@ -35,6 +35,9 @@ export default class FuncionesNativas extends Instruccion {
 
         switch (this.operacion) {
             case Operadores.SENT_LENGTH:
+                if(Array.isArray(Unico)){
+                    return this.arreglo(Unico);
+                }
                 return this.length(Unico)
             case Operadores.SENT_TYPEOF:
                 return this.type(Unico)
@@ -54,6 +57,29 @@ export default class FuncionesNativas extends Instruccion {
                 return op1.length;
             default:
                     return new Errores("Semantico", "No se puede ejecutar funcion length: " + op1, this.linea, this.col)
+        }
+    }
+
+    arreglo(op1: any) {
+        let tipo1 = this.operandoUnico?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.INTEGER:
+                this.tipoDato = new Tipo(tipoDato.INTEGER)
+                return op1.length;
+            case tipoDato.DOUBLE:
+                this.tipoDato = new Tipo(tipoDato.INTEGER)
+                return op1.length;
+            case tipoDato.STRING:
+                this.tipoDato = new Tipo(tipoDato.INTEGER)
+                return op1.length;
+            case tipoDato.BOOLEAN:
+                this.tipoDato = new Tipo(tipoDato.INTEGER)
+                return op1.length;
+            case tipoDato.CHAR:
+                this.tipoDato = new Tipo(tipoDato.INTEGER)
+                return op1.length;
+            default:
+                    return new Errores("Semantico", "No se puede ejecutar funcion arreglo : " + op1, this.linea, this.col)
         }
     }
 

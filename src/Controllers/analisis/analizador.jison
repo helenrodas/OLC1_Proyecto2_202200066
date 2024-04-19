@@ -16,6 +16,8 @@
 
 
 	const Llamada = require('./instrucciones/Llamada')
+	const ModArrayU = require('./instrucciones/ModArrayU')
+	const AccesoArrayU = require('./instrucciones/AccesoArrayU')
 	const Execute = require('./instrucciones/Execute')
 	const Metodo = require('./instrucciones/Metodo')
 	const If = require('./instrucciones/If')
@@ -196,6 +198,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 			| FUN_METODO						{$$=$1;}
 			| FUN_EXE PUNTO_COMA				{$$=$1;}
 			| FUN_LLAMADA PUNTO_COMA			{$$=$1;}
+			| MOD_VECTOR PUNTO_COMA						{$$=$1;}
 ;
 
 IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT    
@@ -286,6 +289,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.STRING), $1, @1.first_line, @1.first_column );}
 			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    
 			| INS_TERNARIO								{$$=$1;}
+			| ACCESO_VECTOR								{$$=$1;}
 ;
 
 TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}
@@ -333,6 +337,12 @@ DECLARACION_ARREGLO : TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION NEW TIPOS C
 
 LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
 				| EXPRESION {$$=[$1];}
+;
+
+ACCESO_VECTOR : IDENTIFICADOR COR_IZQ EXPRESION COR_DER  {$$= new AccesoArrayU.default($1,$3,@1.first_line, @1.first_column);}
+;
+
+MOD_VECTOR : IDENTIFICADOR COR_IZQ EXPRESION COR_DER IGUALACION EXPRESION 			{$$= new ModArrayU.default($1,$3,$6,@1.first_line, @1.first_column);}
 ;
 
 
