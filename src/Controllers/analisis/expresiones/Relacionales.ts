@@ -79,6 +79,14 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        //console.log(op2.charCodeAt(1))
+                        if(parseInt(op1) == 1 && op2 == true){
+                            return true
+                        }else{
+                            return false
+                        }
                         
                     default:
                         return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
@@ -103,6 +111,14 @@ export default class Relacionales extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.BOOLEAN)
                         //console.log(op2.charCodeAt(1))
                         if(op1 == op2.charCodeAt(1)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        //console.log(op2.charCodeAt(1))
+                        if(parseInt(op1) == 1 && op2 == true){
                             return true
                         }else{
                             return false
@@ -138,6 +154,13 @@ export default class Relacionales extends Instruccion {
                     case tipoDato.CHAR:    
                         this.tipoDato = new Tipo(tipoDato.BOOLEAN)
                         if(op1.charCodeAt(1) == op2.charCodeAt(1)){
+                            return true
+                        }else{
+                            return false
+                        }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt(1)) == 1 && op2 == true){
                             return true
                         }else{
                             return false
@@ -179,6 +202,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return true
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) == 1 && op2 == true){
+                            return false
+                        }else{
+                            return true
+                        }
                         
                     default:
                         return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
@@ -202,6 +232,13 @@ export default class Relacionales extends Instruccion {
                     case tipoDato.CHAR:
                         this.tipoDato = new Tipo(tipoDato.BOOLEAN)
                         if(op1 == op2.charCodeAt(1)){
+                            return false
+                        }else{
+                            return true
+                        }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1) == 1 && op2 == 'true'){
                             return false
                         }else{
                             return true
@@ -241,6 +278,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return true
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(parseInt(op1.charCodeAt) == 1 && op2 == true){
+                            return false
+                        }else{
+                            return true
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
                 }
@@ -276,6 +320,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 === true){
+                            return parseInt(op1) < 1;
+                        }else{
+                            return parseInt(op1) < 0;
+                        }
                         
                     default:
                         return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
@@ -303,6 +354,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseInt(op1) < 1;
+                        }else{
+                            return parseInt(op1) < 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar doble con: " + op2, this.linea, this.col)
                 }
@@ -329,9 +387,30 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseInt(op1.charCodeAt(1)) < 1;
+                        }else{
+                            return parseInt(op1) < 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
                 }
+                case tipoDato.BOOLEAN:
+                    switch (tipo2) {
+                        case tipoDato.BOOLEAN:
+                            this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                            if(op1 == false && op2 == true ){
+                                return 0 < 1;
+                            }else  if(op1 == true && op2 == false ){
+                                return 1 < 0;
+                            }else{
+                                return false
+                            }
+                        default:
+                            return new Errores("Semantico", "No se puede operar boolean con: " + op2, this.linea, this.col)
+                    }
             default:
                 return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
         }
@@ -364,6 +443,14 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        //console.log(op2.charCodeAt(1))
+                        if(op2 == true){
+                            return parseFloat(op1) <= 1;
+                        }else{
+                            return parseFloat(op1) <= 0;
+                        }
                         
                     default:
                         return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
@@ -391,6 +478,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseFloat(op1) <= 1;
+                        }else{
+                            return parseFloat(op1) <= 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar doble con: " + op2, this.linea, this.col)
                 }
@@ -417,8 +511,29 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseInt(op1.charCodeAt(1)) <= 1;
+                        }else{
+                            return parseInt(op1.charCodeAt(1)) <= 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.BOOLEAN:
+                switch (tipo2) {
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op1 == false && op2 == true ){
+                            return 0 <= 1;
+                        }else  if(op1 == true && op2 == false ){
+                            return 1 <= 0;
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar boolean con: " + op2, this.linea, this.col)
                 }
             default:
                 return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
@@ -452,6 +567,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseInt(op1) > 1;
+                        }else{
+                            return parseInt(op1) > 0;
+                        }
                         
                     default:
                         return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
@@ -479,6 +601,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseFloat(op1) > 1;
+                        }else{
+                            return parseFloat(op1) > 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar doble con: " + op2, this.linea, this.col)
                 }
@@ -505,8 +634,29 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseInt(op1.charCodeAt(1)) > 1;
+                        }else{
+                            return parseInt(op1.charCodeAt(1)) > 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.BOOLEAN:
+                switch (tipo2) {
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op1 == false && op2 == true ){
+                            return 0 > 1;
+                        }else  if(op1 == true && op2 == false ){
+                            return 1 > 0;
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar boolean con: " + op2, this.linea, this.col)
                 }
             default:
                 return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
@@ -540,7 +690,13 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
-                        
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseInt(op1) >= 1;
+                        }else{
+                            return parseInt(op1) >= 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar entero con: " + op2, this.linea, this.col)
                 }
@@ -566,6 +722,13 @@ export default class Relacionales extends Instruccion {
                             return true
                         }else{
                             return false
+                        }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseFloat(op1) >= 1;
+                        }else{
+                            return parseFloat(op1) >= 0;
                         }
                     default:
                         return new Errores("Semantico", "No se puede operar doble con: " + op2, this.linea, this.col)
@@ -593,8 +756,29 @@ export default class Relacionales extends Instruccion {
                         }else{
                             return false
                         }
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op2 == true){
+                            return parseInt(op1.charCodeAt(1)) >= 1;
+                        }else{
+                            return parseInt(op1.charCodeAt(1)) >= 0;
+                        }
                     default:
                         return new Errores("Semantico", "No se puede operar char con: " + op2, this.linea, this.col)
+                }
+            case tipoDato.BOOLEAN:
+                switch (tipo2) {
+                    case tipoDato.BOOLEAN:
+                        this.tipoDato = new Tipo(tipoDato.BOOLEAN)
+                        if(op1 == false && op2 == true ){
+                            return 0 >= 1;
+                        }else  if(op1 == true && op2 == false ){
+                            return 1 >= 0;
+                        }else{
+                            return false
+                        }
+                    default:
+                        return new Errores("Semantico", "No se puede operar boolean con: " + op2, this.linea, this.col)
                 }
             default:
                 return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
