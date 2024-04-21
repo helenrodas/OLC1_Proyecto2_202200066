@@ -26,6 +26,7 @@ export default class Llamada extends Instruccion {
             return new Errores('Semantico', `Funcion ${this.id} no existe `, this.linea, this.col);
         }
 
+        console.log("si entro al interpretar de llamada")
         this.tipoDato.setTipo(BuscarFuncion.tipoDato.getTipo());
 
         if (BuscarFuncion instanceof Metodo) {
@@ -33,15 +34,18 @@ export default class Llamada extends Instruccion {
             if (BuscarFuncion.tipoDato.getTipo() == tipoDato.VOID) {
                 let tablaTemp = new tablaSimbolo(tabla);
                 tablaTemp.setNombre("Tabla metodo " + this.id);
-
+                
+                console.log("si entro al metodo void")
                 if (BuscarFuncion.parametros.length != this.parametros.length) {
                     arbol.Print(`Error Semantico: Numero de parametros no es el esperado para la funcion ${this.id}. Linea: ${this.linea} Columna: ${(this.col + 1)}`);
                     return new Errores('Semantico', `Numero de parametros no es el esperado para la funcion ${this.id}`, this.linea, this.col);
                 }
 
+                console.log(BuscarFuncion.parametros.length)
                 for (let i = 0; i < BuscarFuncion.parametros.length; i++) {
                     //revisar por indice puede dar posible error en id [0]
-                    let nuevaDeclaracion = new Declaracion(BuscarFuncion.parametros[i].tipo, this.linea, this.col, [BuscarFuncion.parametros[i].id], this.parametros[i]);
+                    console.log("estoy en for")
+                    let nuevaDeclaracion = new Declaracion(BuscarFuncion.parametros[i].tipo, this.linea, this.col, BuscarFuncion.parametros[i].id, this.parametros[i]);
 
                     //interpreta la declaracion
                     let interpretacionDecla = nuevaDeclaracion.interpretar(arbol, tablaTemp);

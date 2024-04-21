@@ -34,6 +34,7 @@
 	const DeclaracionInit = require('./instrucciones/DeclaracionInit')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
 	const ArrayU = require('./instrucciones/ArrayU')
+	const ArrayD = require('./instrucciones/ArrayD')
 	const Return = require('./instrucciones/Return')
 
 	const Errores = require('./excepciones/Errores')
@@ -204,6 +205,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 			| FUN_LLAMADA PUNTO_COMA		        {$$=$1;}
 			| MOD_VECTOR 						{$$=$1;}
 			| INS_RETURN 				{$$=$1;}
+			| DECLARACION_ARREGLO_D   {$$=$1;}
 ;
 
 IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT    
@@ -391,4 +393,18 @@ OPC_DEFAULT : SENT_DEFAULT DOSPUNTOS INSTRUCCIONES {$$ = new Default.default($3,
 
 INS_RETURN : SENT_RETURN PUNTO_COMA				{$$ = new Return.default(@1.first_line,@1.first_column)}
 			| SENT_RETURN EXPRESION PUNTO_COMA 	{$$ = new Return.default(@1.first_line,@1.first_column,$2)}
+;
+
+
+
+DECLARACION_ARREGLO_D: TIPOS IDENTIFICADOR COR_IZQ COR_DER COR_IZQ COR_DER IGUALACION NEW TIPOS COR_IZQ EXPRESION COR_DER COR_IZQ EXPRESION COR_DER PUNTO_COMA {$$ = new ArrayD.default($1,$2,@1.first_line,@1.first_column,$9,$11,$14,undefined);}
+					| TIPOS IDENTIFICADOR COR_IZQ COR_DER COR_IZQ COR_DER IGUALACION COR_IZQ LISTA_PARA_ARREGLO COR_DER PUNTO_COMA			{$$ = new ArrayD.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,undefined,$9);}
+;
+LISTA_PARA_ARREGLO: LISTA_PARA_ARREGLO COMA DIMENSIONES {$1.push($3); $$=$1;}
+					| DIMENSIONES					{$$=[$1];}
+;
+DIMENSIONES : COR_IZQ INDEX COR_DER			{$$=$2}
+;
+INDEX: INDEX COMA EXPRESION			{$1.push($3); $$=$1;}
+		| EXPRESION				{$$=[$1];}
 ;
