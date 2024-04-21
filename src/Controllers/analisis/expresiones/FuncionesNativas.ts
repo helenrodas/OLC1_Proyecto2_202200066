@@ -127,99 +127,99 @@ export default class FuncionesNativas extends Instruccion {
 
     ArbolGraph(anterior: string): string {
 
-        let contador = Contador.getInstancia();
-        let result = "";
+        let indice = Contador.getInstancia();
+        let resultado = "";
 
         if(this.operacion == Operadores.SENT_LENGTH){
 
-            let nativa = `n${contador.get()}`;
-            let expr = `n${contador.get()}`;
-            let punto = `n${contador.get()}`;
-            let operUnico = `n${contador.get()}`;
-            let par1 = `n${contador.get()}`;
-            let par2 = `n${contador.get()}`;
-            let puntocoma = `n${contador.get()}`;
+            let nativa = `n${indice.get()}`;
+            let expr = `n${indice.get()}`;
+            let punto = `n${indice.get()}`;
+            let operUnico = `n${indice.get()}`;
+            let par1 = `n${indice.get()}`;
+            let par2 = `n${indice.get()}`;
+            let puntocoma = `n${indice.get()}`;
     
-            result += `${nativa}[label="Nativas"];\n`;
-            result += `${expr}[label="Expresion"];\n`;
-            result += `${punto}[label="."];\n`;
-            result += `${operUnico}[label="length"];\n`;
-            result += `${par1}[label="("];\n`;
-            result += `${par2}[label=")"];\n`;
-            result += `${puntocoma}[label=";"];\n`;
+            resultado += `${nativa}[label="Nativas"];\n`;
+            resultado += `${expr}[label="Expresion"];\n`;
+            resultado += `${punto}[label="."];\n`;
+            resultado += `${operUnico}[label="length"];\n`;
+            resultado += `${par1}[label="("];\n`;
+            resultado += `${par2}[label=")"];\n`;
+            resultado += `${puntocoma}[label=";"];\n`;
 
-            result += `${anterior} -> ${nativa};\n`;
-            result += `${nativa} -> ${expr}\n;`;
-            result += `${nativa} -> ${punto}\n;`;
-            result += `${nativa} -> ${operUnico};\n`;
-            result += `${nativa} -> ${par1}\n;`;
-            result += `${nativa} -> ${par2}\n;`;
-            result += `${nativa} -> ${puntocoma};\n`;
+            resultado += `${anterior} -> ${nativa};\n`;
+            resultado += `${nativa} -> ${expr}\n;`;
+            resultado += `${nativa} -> ${punto}\n;`;
+            resultado += `${nativa} -> ${operUnico};\n`;
+            resultado += `${nativa} -> ${par1}\n;`;
+            resultado += `${nativa} -> ${par2}\n;`;
+            resultado += `${nativa} -> ${puntocoma};\n`;
 
-            result += this.operandoUnico?.ArbolGraph(expr);
+            resultado += this.operandoUnico?.ArbolGraph(expr);
 
         }else if(this.operacion == Operadores.SENT_TYPEOF){
 
-            let nativa = `n${contador.get()}`;
-            let operUnico = `n${contador.get()}`;
-            let par1 = `n${contador.get()}`;
-            let expr = `n${contador.get()}`;
-            let par2 = `n${contador.get()}`;
-            let puntocoma = `n${contador.get()}`;
+            let nativa = `n${indice.get()}`;
+            let operUnico = `n${indice.get()}`;
+            let par1 = `n${indice.get()}`;
+            let expr = `n${indice.get()}`;
+            let par2 = `n${indice.get()}`;
+            let puntocoma = `n${indice.get()}`;
 
-            result += `${nativa}[label="Nativas"];\n`;
-            result += `${operUnico}[label="typeof"];\n`;
-            result += `${par1}[label="("];\n`;
-            result += `${expr}[label="Expresion"];\n`;
-            result += `${par2}[label=")"];\n`;
-            result += `${puntocoma}[label=";"];\n`;
+            resultado += `${nativa}[label="Nativas"];\n`;
+            resultado += `${operUnico}[label="typeof"];\n`;
+            resultado += `${par1}[label="("];\n`;
+            resultado += `${expr}[label="Expresion"];\n`;
+            resultado += `${par2}[label=")"];\n`;
+            resultado += `${puntocoma}[label=";"];\n`;
 
-            result += `${anterior} -> ${nativa};\n`;
-            result += `${nativa} -> ${operUnico};\n`;
-            result += `${nativa} -> ${par1};\n`;
-            result += `${nativa} -> ${expr};\n`;
-            result += `${nativa} -> ${par2};\n`;
-            result += `${nativa} -> ${puntocoma};\n`;
+            resultado += `${anterior} -> ${nativa};\n`;
+            resultado += `${nativa} -> ${operUnico};\n`;
+            resultado += `${nativa} -> ${par1};\n`;
+            resultado += `${nativa} -> ${expr};\n`;
+            resultado += `${nativa} -> ${par2};\n`;
+            resultado += `${nativa} -> ${puntocoma};\n`;
 
-            result += this.operandoUnico?.ArbolGraph(expr);
+            resultado += this.operandoUnico?.ArbolGraph(expr);
 
         }else if(this.operacion == Operadores.SENT_TOSTRING){
 
-            let nativa = `n${contador.get()}`;
-            let std = `n${contador.get()}`;
-            let dosp1 = `n${contador.get()}`;
-            let dosp2 = `n${contador.get()}`;
-            let operUnico = `n${contador.get()}`;
-            let par1 = `n${contador.get()}`;
-            let expr = `n${contador.get()}`;
-            let par2 = `n${contador.get()}`;
-            let puntocoma = `n${contador.get()}`;
+            let nativa = `n${indice.get()}`;
+            let std = `n${indice.get()}`;
+            let dosp1 = `n${indice.get()}`;
+            let dosp2 = `n${indice.get()}`;
+            let operUnico = `n${indice.get()}`;
+            let par1 = `n${indice.get()}`;
+            let expr = `n${indice.get()}`;
+            let par2 = `n${indice.get()}`;
+            let puntocoma = `n${indice.get()}`;
 
-            result += `${nativa}[label="Nativas"];\n`;
-            result += `${std}[label="std"];\n`;
-            result += `${dosp1}[label=":"];\n`;
-            result += `${dosp2}[label=":"];\n`;
-            result += `${operUnico}[label="toString"];\n`;
-            result += `${par1}[label="("];\n`;
-            result += `${expr}[label="Expresion"];\n`;
-            result += `${par2}[label=")"];\n`;
-            result += `${puntocoma}[label=";"];\n`;
+            resultado += `${nativa}[label="Nativas"];\n`;
+            resultado += `${std}[label="std"];\n`;
+            resultado += `${dosp1}[label=":"];\n`;
+            resultado += `${dosp2}[label=":"];\n`;
+            resultado += `${operUnico}[label="toString"];\n`;
+            resultado += `${par1}[label="("];\n`;
+            resultado += `${expr}[label="Expresion"];\n`;
+            resultado += `${par2}[label=")"];\n`;
+            resultado += `${puntocoma}[label=";"];\n`;
 
-            result += `${anterior} -> ${nativa};\n`;
-            result += `${nativa} -> ${std};\n`;
-            result += `${nativa} -> ${dosp1};\n`;
-            result += `${nativa} -> ${dosp2};\n`;
-            result += `${nativa} -> ${operUnico};\n`;
-            result += `${nativa} -> ${par1};\n`;
-            result += `${nativa} -> ${expr};\n`;
-            result += `${nativa} -> ${par2};\n`;
-            result += `${nativa} -> ${puntocoma};\n`;
+            resultado += `${anterior} -> ${nativa};\n`;
+            resultado += `${nativa} -> ${std};\n`;
+            resultado += `${nativa} -> ${dosp1};\n`;
+            resultado += `${nativa} -> ${dosp2};\n`;
+            resultado += `${nativa} -> ${operUnico};\n`;
+            resultado += `${nativa} -> ${par1};\n`;
+            resultado += `${nativa} -> ${expr};\n`;
+            resultado += `${nativa} -> ${par2};\n`;
+            resultado += `${nativa} -> ${puntocoma};\n`;
 
-            result += this.operandoUnico?.ArbolGraph(expr);
+            resultado += this.operandoUnico?.ArbolGraph(expr);
 
         }
 
-        return result;
+        return resultado;
     }
 }
 

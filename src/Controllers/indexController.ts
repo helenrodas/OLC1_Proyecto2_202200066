@@ -101,6 +101,7 @@ ahora ya depende que exista la funcion execute para ejecutar el codigo
     }
 
     public getListaErrores(req: Request, res: Response) {
+        
         res.json({ listaErrores : listaErrores })
     }
     

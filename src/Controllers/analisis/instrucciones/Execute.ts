@@ -27,10 +27,11 @@ export default class Execute extends Instruccion {
 
 
             if (busqueda.parametros.length != this.parametros.length) {
+                arbol.Print("Error Semantico: Parametros invalidos"+ this.linea+" columna: " +(this.col+1));
                 return new Errores("SEMANTICO", "Parametros invalidos", this.linea, this.col)
             }
 
-            // declaramos los parametros
+            
             for (let i = 0; i < busqueda.parametros.length; i++) {
                 // console.log(busqueda.parametros[i].tipo)
                 // console.log(busqueda)
@@ -42,7 +43,7 @@ export default class Execute extends Instruccion {
                 let resultado = declaracionParametro.interpretar(arbol, newTabla)
                 if (resultado instanceof Errores) return resultado
             }
-            // una vez declarados los parametros, interpretamos la funcion
+            
             let resultadoFuncion: any = busqueda.interpretar(arbol, newTabla)
             if (resultadoFuncion instanceof Errores) return resultadoFuncion
 

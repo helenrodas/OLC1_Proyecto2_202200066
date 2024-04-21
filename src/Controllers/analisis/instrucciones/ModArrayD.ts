@@ -27,9 +27,11 @@ export default class  ModArrayU extends Instruccion{
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
-
         let valorVariable= tabla.getVariable(this.id);
+        
         let ubicacion1 = this.primeraPos.interpretar(arbol,tabla)
+        
+        
         let ubicacion2 = this.SgundaPos.interpretar(arbol,tabla)
 
         if (valorVariable === null) {

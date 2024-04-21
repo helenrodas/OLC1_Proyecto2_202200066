@@ -6,6 +6,7 @@ import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
 import Continue from "./continue";
 import Contador from "../simbolo/Contador";
+import Return from "./Return";
 
 export default class doWhile extends Instruccion{
     private condicion:Instruccion
@@ -24,6 +25,7 @@ export default class doWhile extends Instruccion{
 
         // validaciones
         if (this.condicion.tipoDato.getTipo() != tipoDato.BOOLEAN) {
+            arbol.Print("Error Semantico: La condicion debe ser bool. linea:"+ this.linea+" columna: " +(this.col+1));
             return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
         }
 
@@ -35,10 +37,12 @@ export default class doWhile extends Instruccion{
             for (let i of this.instruccion) {
                 if (i instanceof Break) return;
                 if (i instanceof Continue) break;
+                if (i instanceof Return) return i;
                 let resultado = i.interpretar(arbol, newTabla)
+                if (resultado instanceof Return) return resultado;
                 if (resultado instanceof Break) return;
                 if (resultado instanceof Continue) break;
-                // errores pendientes
+                
             }
 
         }while(this.condicion.interpretar(arbol, tabla))

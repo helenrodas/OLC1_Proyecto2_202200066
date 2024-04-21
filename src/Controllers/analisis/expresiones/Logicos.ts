@@ -91,57 +91,58 @@ export default class Logicos extends Instruccion {
 
     ArbolGraph(anterior: string): string {
 
-        let result = "";
+        let indice = Contador.getInstancia();
+        let resultado = "";
 
-        let contador = Contador.getInstancia();
+        
 
         if (this.operacion == Operadores.AND) {
 
-            let exp1 = `n${contador.get()}`;
-            let exp2 = `n${contador.get()}`;
-            let operador = `n${contador.get()}`;
-            result += `${exp1}[label=\"Expresion\"];\n`;
-            result += `${exp2}[label=\"Expresion\"];\n`;
-            result += `${operador}[label=\"&&\"];\n`;
+            let exp1 = `n${indice.get()}`;
+            let exp2 = `n${indice.get()}`;
+            let operador = `n${indice.get()}`;
+            resultado += `${exp1}[label=\"Expresion\"];\n`;
+            resultado += `${exp2}[label=\"Expresion\"];\n`;
+            resultado += `${operador}[label=\"&&\"];\n`;
 
-            result += `${anterior} -> ${exp1};\n`;
-            result += `${anterior} -> ${operador};\n`;
-            result += `${anterior} -> ${exp2};\n`;
+            resultado += `${anterior} -> ${exp1};\n`;
+            resultado += `${anterior} -> ${operador};\n`;
+            resultado += `${anterior} -> ${exp2};\n`;
 
-            result += this.operando1?.ArbolGraph(exp1);
-            result += this.operando2?.ArbolGraph(exp2);
+            resultado += this.operando1?.ArbolGraph(exp1);
+            resultado += this.operando2?.ArbolGraph(exp2);
 
         }else if(this.operacion == Operadores.OR){
 
-            let exp1 = `n${contador.get()}`;
-            let exp2 = `n${contador.get()}`;
-            let operador = `n${contador.get()}`;
-            result += `${exp1}[label=\"Expresion\"];\n`;
-            result += `${exp2}[label=\"Expresion\"];\n`;
-            result += `${operador}[label=\"||\"];\n`;
+            let exp1 = `n${indice.get()}`;
+            let exp2 = `n${indice.get()}`;
+            let operador = `n${indice.get()}`;
+            resultado += `${exp1}[label=\"Expresion\"];\n`;
+            resultado += `${exp2}[label=\"Expresion\"];\n`;
+            resultado += `${operador}[label=\"||\"];\n`;
 
-            result += `${anterior} -> ${exp1};\n`;
-            result += `${anterior} -> ${operador};\n`;
-            result += `${anterior} -> ${exp2};\n`;
+            resultado += `${anterior} -> ${exp1};\n`;
+            resultado += `${anterior} -> ${operador};\n`;
+            resultado += `${anterior} -> ${exp2};\n`;
 
-            result += this.operando1?.ArbolGraph(exp1);
-            result += this.operando2?.ArbolGraph(exp2);
+            resultado += this.operando1?.ArbolGraph(exp1);
+            resultado += this.operando2?.ArbolGraph(exp2);
 
         }else if(this.operacion == Operadores.NOT){
 
-            let nodoNot = `n${contador.get()}`;
-            let nodoExp = `n${contador.get()}`;
-            result += `${nodoNot}[label="!"];\n`;
-            result += `${nodoExp}[label="Expresion"];\n`;
+            let nodoNot = `n${indice.get()}`;
+            let nodoExp = `n${indice.get()}`;
+            resultado += `${nodoNot}[label="!"];\n`;
+            resultado += `${nodoExp}[label="Expresion"];\n`;
 
-            result += `${anterior} -> ${nodoNot};\n`;
-            result += `${anterior} -> ${nodoExp};\n`;
+            resultado += `${anterior} -> ${nodoNot};\n`;
+            resultado += `${anterior} -> ${nodoExp};\n`;
 
-            result += this.operandoUnico?.ArbolGraph(nodoExp);
+            resultado += this.operandoUnico?.ArbolGraph(nodoExp);
 
         }
 
-        return result;
+        return resultado;
     }
 }
 

@@ -16,19 +16,19 @@ export default class Break extends Instruccion {
 
     ArbolGraph(anterior: string): string {
 
-        let contador = Contador.getInstancia();
-        let result = "";
+        let indice = Contador.getInstancia();
+        let resultado = "";
 
-        let breakk = `n${contador.get()}`;
-        let puntocoma = `n${contador.get()}`;
+        let breakk = `n${indice.get()}`;
+        let puntocoma = `n${indice.get()}`;
 
 
-        result += `${breakk}[label="Break"];\n`;
-        result += `${puntocoma}[label=";"];\n`;
+        resultado += `${breakk}[label="Break"];\n`;
+        resultado += `${puntocoma}[label=";"];\n`;
 
-        result += `${anterior} -> ${breakk};\n`;
-        result += `${anterior} -> ${puntocoma};\n`;
+        resultado += `${anterior} -> ${breakk};\n`;
+        resultado += `${anterior} -> ${puntocoma};\n`;
 
-        return result;
+        return resultado;
     }
 }

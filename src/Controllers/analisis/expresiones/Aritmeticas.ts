@@ -82,7 +82,7 @@ export default class Aritmeticas extends Instruccion {
                         }
                         
                     default:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
                 }
             case tipoDato.DOUBLE:
                 switch (tipo2) {
@@ -109,7 +109,7 @@ export default class Aritmeticas extends Instruccion {
                             return op1 + op2;
                             
                     default:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
                 }
             case tipoDato.BOOLEAN:
                 switch (tipo2) {
@@ -129,9 +129,9 @@ export default class Aritmeticas extends Instruccion {
                             return 0 + parseFloat(op2)
                         } 
                     case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)   
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)   
                     case tipoDato.CHAR:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
                     case tipoDato.STRING:
                             this.tipoDato = new Tipo(tipoDato.STRING)
                             if(op1 == 'true'){
@@ -141,7 +141,7 @@ export default class Aritmeticas extends Instruccion {
                             }
                             
                     default:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
                 }
             case tipoDato.CHAR:
                 switch (tipo2) {
@@ -153,7 +153,7 @@ export default class Aritmeticas extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.charCodeAt(1)) + parseFloat(op2)
                     case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
                     case tipoDato.CHAR:    
                         this.tipoDato = new Tipo(tipoDato.STRING)
                         return op1 + op2
@@ -162,7 +162,7 @@ export default class Aritmeticas extends Instruccion {
                             return op1 + op2
                             
                     default:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
                 }
             case tipoDato.STRING:
                 switch (tipo2) {
@@ -184,10 +184,10 @@ export default class Aritmeticas extends Instruccion {
                             return op1 + op2
                             
                     default:
-                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
                 }
             default:
-                return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                return new Errores("Semantico", "No se puede ejecutar la suma", this.linea, this.col)
         }
 
     }
@@ -214,11 +214,8 @@ export default class Aritmeticas extends Instruccion {
                     case tipoDato.CHAR:
                         this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseFloat(op1) - parseInt(op2.charCodeAt(1))
-                    case tipoDato.STRING:
-                        console.log("ERROR SEMANTICO")
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la resta", this.linea, this.col)
                 }
             case tipoDato.DOUBLE:
                 switch (tipo2) {
@@ -238,10 +235,8 @@ export default class Aritmeticas extends Instruccion {
                     case tipoDato.CHAR:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) - parseFloat(op2.charCodeAt(1))
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la resta", this.linea, this.col)
                 }
             case tipoDato.BOOLEAN:
                 switch (tipo2) {
@@ -259,14 +254,8 @@ export default class Aritmeticas extends Instruccion {
                         }else{
                             return 0 - parseFloat(op2)
                         }   
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la resta", this.linea, this.col)
                 }
             case tipoDato.CHAR:
                 switch (tipo2) {
@@ -276,14 +265,8 @@ export default class Aritmeticas extends Instruccion {
                     case tipoDato.DOUBLE:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.charCodeAt(1)) - parseFloat(op2)   
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la resta", this.linea, this.col)
                 }
             case tipoDato.CHAR:
                     switch (tipo2) {
@@ -293,32 +276,11 @@ export default class Aritmeticas extends Instruccion {
                         case tipoDato.DOUBLE:
                             this.tipoDato = new Tipo(tipoDato.DOUBLE)
                             return parseFloat(op1.charCodeAt(1)) - parseFloat(op2)   
-                        case tipoDato.BOOLEAN:
-                            return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                        case tipoDato.CHAR:
-                            return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                        case tipoDato.STRING:
-                            return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                         default:
-                            return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
+                            return new Errores("Semantico", "No se puede ejecutar la resta", this.linea, this.col)
                     }
-            case tipoDato.STRING:
-                switch (tipo2) {
-                    case tipoDato.INTEGER:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.DOUBLE:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                    default:
-                        return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
-                }
             default:
-                return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
+                return new Errores("Semantico", "No se puede ejecutar la resta", this.linea, this.col)
         }
 
     }
@@ -337,14 +299,12 @@ export default class Aritmeticas extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) * parseFloat(op2)
                     case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la multiplicacion", this.linea, this.col)
                     case tipoDato.CHAR:
                         this.tipoDato = new Tipo(tipoDato.INTEGER)
                         return parseFloat(op1) * parseInt(op2.charCodeAt(1))
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la multiplicacion", this.linea, this.col)
                 }
             case tipoDato.DOUBLE:
                 switch (tipo2) {
@@ -355,29 +315,12 @@ export default class Aritmeticas extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) * parseFloat(op2)
                     case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la multiplicacion", this.linea, this.col)
                     case tipoDato.CHAR:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) * parseFloat(op2.charCodeAt(1))
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                }
-            case tipoDato.BOOLEAN:
-                switch (tipo2) {
-                    case tipoDato.INTEGER:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)  
-                    case tipoDato.DOUBLE:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col) 
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    default:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la multiplicacion", this.linea, this.col)
                 }
             case tipoDato.CHAR:
                 switch (tipo2) {
@@ -387,47 +330,11 @@ export default class Aritmeticas extends Instruccion {
                     case tipoDato.DOUBLE:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.charCodeAt(1)) * parseFloat(op2)   
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                }
-            case tipoDato.CHAR:
-                    switch (tipo2) {
-                        case tipoDato.INTEGER:
-                            return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.DOUBLE:
-                            return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.BOOLEAN:
-                            return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.CHAR:
-                            return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        case tipoDato.STRING:
-                            return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                        default:
-                            return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    }
-            case tipoDato.STRING:
-                switch (tipo2) {
-                    case tipoDato.INTEGER:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.DOUBLE:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
-                    default:
-                        return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la multiplicacion", this.linea, this.col)
                 }
             default:
-                return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
+                return new Errores("Semantico", "No se puede ejecutar la multiplicacion", this.linea, this.col)
         }
 
     }
@@ -445,15 +352,11 @@ export default class Aritmeticas extends Instruccion {
                     case tipoDato.DOUBLE:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseFloat(op2)
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     case tipoDato.CHAR:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseInt(op2.charCodeAt(1))
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la division", this.linea, this.col)
                 }
             case tipoDato.DOUBLE:
                 switch (tipo2) {
@@ -464,30 +367,14 @@ export default class Aritmeticas extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseFloat(op2)
                     case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la division", this.linea, this.col)
                     case tipoDato.CHAR:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1) / parseFloat(op2.charCodeAt(1))
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la division", this.linea, this.col)
                 }
-            case tipoDato.BOOLEAN:
-                switch (tipo2) {
-                    case tipoDato.INTEGER:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)  
-                    case tipoDato.DOUBLE:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col) 
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    default:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                }
+        
             case tipoDato.CHAR:
                 switch (tipo2) {
                     case tipoDato.INTEGER:
@@ -496,47 +383,12 @@ export default class Aritmeticas extends Instruccion {
                     case tipoDato.DOUBLE:
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return parseFloat(op1.charCodeAt(1)) / parseFloat(op2)   
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
+        
                     default:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                }
-            case tipoDato.CHAR:
-                    switch (tipo2) {
-                        case tipoDato.INTEGER:
-                            return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.DOUBLE:
-                            return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.BOOLEAN:
-                            return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.CHAR:
-                            return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        case tipoDato.STRING:
-                            return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                        default:
-                            return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    }
-            case tipoDato.STRING:
-                switch (tipo2) {
-                    case tipoDato.INTEGER:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.DOUBLE:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.BOOLEAN:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.CHAR:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    case tipoDato.STRING:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
-                    default:
-                        return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la division", this.linea, this.col)
                 }
             default:
-                return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
+                return new Errores("Semantico", "No se puede ejecutar la division", this.linea, this.col)
         }
 
     }
@@ -554,7 +406,7 @@ export default class Aritmeticas extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return Math.pow(parseFloat(op1),parseFloat(op2))
                     default:
-                        return new Errores("Semantico", "Operacion potencia invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la potencia", this.linea, this.col)
                 }
             case tipoDato.DOUBLE:
                 switch (tipo2) {
@@ -565,10 +417,10 @@ export default class Aritmeticas extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.DOUBLE)
                         return Math.pow(parseFloat(op1),parseFloat(op2))
                     default:
-                        return new Errores("Semantico", "Operacion potencia invalida", this.linea, this.col)
+                        return new Errores("Semantico", "No se puede ejecutar la potencia", this.linea, this.col)
                 }
             default:
-                return new Errores("Semantico", "Operacion potencia invalida", this.linea, this.col)
+                return new Errores("Semantico", "No se puede ejecutar la potencia", this.linea, this.col)
         }
 
     }
@@ -621,118 +473,118 @@ export default class Aritmeticas extends Instruccion {
 
     ArbolGraph(anterior: string): string {
 
-        let contador = Contador.getInstancia();
-        let result = ""
+        let indice = Contador.getInstancia();
+        let resultado = ""
         if (this.operacion == Operadores.NEG) {
 
-            let nodoNeg = `n${contador.get()}`
-            let nodoExp = `n${contador.get()}`
-            result += `${nodoNeg}[label=\"Negacion Unaria\"];\n`
-            result += `${nodoExp}[label=\"Expresion\"];\n`
-            result += `${anterior}->${nodoNeg};\n`
-            result += `${anterior}-> ${nodoExp};\n`
-            result += this.operandoUnico?.ArbolGraph(nodoExp)
-            //return result;
+            let nodoNeg = `n${indice.get()}`
+            let nodoExp = `n${indice.get()}`
+            resultado += `${nodoNeg}[label=\"Negacion Unaria\"];\n`
+            resultado += `${nodoExp}[label=\"Expresion\"];\n`
+            resultado += `${anterior}->${nodoNeg};\n`
+            resultado += `${anterior}-> ${nodoExp};\n`
+            resultado += this.operandoUnico?.ArbolGraph(nodoExp)
+            //return resultado;
         } else if (this.operacion == Operadores.SUMA) {
 
-            let exp1 = `n${contador.get()}`
-            let nodoOp = `n${contador.get()}`
-            let exp2 = `n${contador.get()}`
+            let exp1 = `n${indice.get()}`
+            let nodoOp = `n${indice.get()}`
+            let exp2 = `n${indice.get()}`
 
-            result += `${exp1}[label= \"Expresion\"];\n`
-            result += `${nodoOp}[label=\"+\"];\n`
-            result += `${exp2}[label=\"Expresion\"];\n`
-            result += `${anterior} -> ${exp1};\n`
-            result += `${anterior} -> ${nodoOp};\n`
-            result += `${anterior} -> ${exp2};\n`
-            result += this.operando1?.ArbolGraph(exp1)
-            result += this.operando2?.ArbolGraph(exp2)
+            resultado += `${exp1}[label= \"Expresion\"];\n`
+            resultado += `${nodoOp}[label=\"+\"];\n`
+            resultado += `${exp2}[label=\"Expresion\"];\n`
+            resultado += `${anterior} -> ${exp1};\n`
+            resultado += `${anterior} -> ${nodoOp};\n`
+            resultado += `${anterior} -> ${exp2};\n`
+            resultado += this.operando1?.ArbolGraph(exp1)
+            resultado += this.operando2?.ArbolGraph(exp2)
 
         }else if(this.operacion == Operadores.RESTA){
 
-            let exp1 = `n${contador.get()}`
-            let nodoOp = `n${contador.get()}`
-            let exp2 = `n${contador.get()}`
+            let exp1 = `n${indice.get()}`
+            let nodoOp = `n${indice.get()}`
+            let exp2 = `n${indice.get()}`
 
-            result += `${exp1}[label= \"Expresion\"];\n`
-            result += `${nodoOp}[label=\"-\"];\n`
-            result += `${exp2}[label=\"Expresion\"];\n`
-            result += `${anterior} -> ${exp1};\n`
-            result += `${anterior} -> ${nodoOp};\n`
-            result += `${anterior} -> ${exp2};\n`
-            result += this.operando1?.ArbolGraph(exp1)
-            result += this.operando2?.ArbolGraph(exp2)
+            resultado += `${exp1}[label= \"Expresion\"];\n`
+            resultado += `${nodoOp}[label=\"-\"];\n`
+            resultado += `${exp2}[label=\"Expresion\"];\n`
+            resultado += `${anterior} -> ${exp1};\n`
+            resultado += `${anterior} -> ${nodoOp};\n`
+            resultado += `${anterior} -> ${exp2};\n`
+            resultado += this.operando1?.ArbolGraph(exp1)
+            resultado += this.operando2?.ArbolGraph(exp2)
 
         }else if(this.operacion == Operadores.MULT){
 
-            let exp1 = `n${contador.get()}`
-            let nodoOp = `n${contador.get()}`
-            let exp2 = `n${contador.get()}`
+            let exp1 = `n${indice.get()}`
+            let nodoOp = `n${indice.get()}`
+            let exp2 = `n${indice.get()}`
 
-            result += `${exp1}[label= \"Expresion\"];\n`
-            result += `${nodoOp}[label=\"*\"];\n`
-            result += `${exp2}[label=\"Expresion\"];\n`
-            result += `${anterior} -> ${exp1};\n`
-            result += `${anterior} -> ${nodoOp};\n`
-            result += `${anterior} -> ${exp2};\n`
-            result += this.operando1?.ArbolGraph(exp1)
-            result += this.operando2?.ArbolGraph(exp2)
+            resultado += `${exp1}[label= \"Expresion\"];\n`
+            resultado += `${nodoOp}[label=\"*\"];\n`
+            resultado += `${exp2}[label=\"Expresion\"];\n`
+            resultado += `${anterior} -> ${exp1};\n`
+            resultado += `${anterior} -> ${nodoOp};\n`
+            resultado += `${anterior} -> ${exp2};\n`
+            resultado += this.operando1?.ArbolGraph(exp1)
+            resultado += this.operando2?.ArbolGraph(exp2)
         }else if(this.operacion == Operadores.DIVI){
 
-            let exp1 = `n${contador.get()}`
-            let nodoOp = `n${contador.get()}`
-            let exp2 = `n${contador.get()}`
+            let exp1 = `n${indice.get()}`
+            let nodoOp = `n${indice.get()}`
+            let exp2 = `n${indice.get()}`
 
-            result += `${exp1}[label= \"Expresion\"];\n`
-            result += `${nodoOp}[label=\"/\"];\n`
-            result += `${exp2}[label=\"Expresion\"];\n`
-            result += `${anterior} -> ${exp1};\n`
-            result += `${anterior} -> ${nodoOp};\n`
-            result += `${anterior} -> ${exp2};\n`
-            result += this.operando1?.ArbolGraph(exp1)
-            result += this.operando2?.ArbolGraph(exp2)
+            resultado += `${exp1}[label= \"Expresion\"];\n`
+            resultado += `${nodoOp}[label=\"/\"];\n`
+            resultado += `${exp2}[label=\"Expresion\"];\n`
+            resultado += `${anterior} -> ${exp1};\n`
+            resultado += `${anterior} -> ${nodoOp};\n`
+            resultado += `${anterior} -> ${exp2};\n`
+            resultado += this.operando1?.ArbolGraph(exp1)
+            resultado += this.operando2?.ArbolGraph(exp2)
 
         }else if(this.operacion == Operadores.ARI_MODULO){
 
-            let exp1 = `n${contador.get()}`
-            let nodoOp = `n${contador.get()}`
-            let exp2 = `n${contador.get()}`
+            let exp1 = `n${indice.get()}`
+            let nodoOp = `n${indice.get()}`
+            let exp2 = `n${indice.get()}`
 
-            result += `${exp1}[label= \"Expresion\"];\n`
-            result += `${nodoOp}[label=\"%\"];\n`
-            result += `${exp2}[label=\"Expresion\"];\n`
-            result += `${anterior} -> ${exp1};\n`
-            result += `${anterior} -> ${nodoOp};\n`
-            result += `${anterior} -> ${exp2};\n`
-            result += this.operando1?.ArbolGraph(exp1)
-            result += this.operando2?.ArbolGraph(exp2)
+            resultado += `${exp1}[label= \"Expresion\"];\n`
+            resultado += `${nodoOp}[label=\"%\"];\n`
+            resultado += `${exp2}[label=\"Expresion\"];\n`
+            resultado += `${anterior} -> ${exp1};\n`
+            resultado += `${anterior} -> ${nodoOp};\n`
+            resultado += `${anterior} -> ${exp2};\n`
+            resultado += this.operando1?.ArbolGraph(exp1)
+            resultado += this.operando2?.ArbolGraph(exp2)
         }else if(this.operacion == Operadores.ARI_POTENCIA){
 
-            let exp1 = `n${contador.get()}`
-            let exp2 = `n${contador.get()}`
-            let par1 = `n${contador.get()}`
-            let par2 = `n${contador.get()}`
-            let nodoPow = `n${contador.get()}`
-            let nodoComa = `n${contador.get()}`
-            result += `${nodoPow}[label="pow"];\n`
-            result += `${par1}[label="("];\n`
-            result += `${exp1}[label="Expresion"];\n`
-            result += `${nodoComa}[label=","];\n`
-            result += `${exp2}[label="Expresion"];\n`
-            result += `${par2}[label=")"];\n`
-            result += `${anterior} -> ${nodoPow};\n`
-            result += `${anterior} -> ${par1};\n`
-            result += `${anterior} -> ${exp1};\n`
-            result += `${anterior} -> ${nodoComa};\n`
-            result += `${anterior} -> ${exp2};\n`
-            result += `${anterior} -> ${par2};\n`
+            let exp1 = `n${indice.get()}`
+            let exp2 = `n${indice.get()}`
+            let par1 = `n${indice.get()}`
+            let par2 = `n${indice.get()}`
+            let nodoPow = `n${indice.get()}`
+            let nodoComa = `n${indice.get()}`
+            resultado += `${nodoPow}[label="pow"];\n`
+            resultado += `${par1}[label="("];\n`
+            resultado += `${exp1}[label="Expresion"];\n`
+            resultado += `${nodoComa}[label=","];\n`
+            resultado += `${exp2}[label="Expresion"];\n`
+            resultado += `${par2}[label=")"];\n`
+            resultado += `${anterior} -> ${nodoPow};\n`
+            resultado += `${anterior} -> ${par1};\n`
+            resultado += `${anterior} -> ${exp1};\n`
+            resultado += `${anterior} -> ${nodoComa};\n`
+            resultado += `${anterior} -> ${exp2};\n`
+            resultado += `${anterior} -> ${par2};\n`
 
-            result += this.operando1?.ArbolGraph(exp1)
-            result += this.operando2?.ArbolGraph(exp2)
+            resultado += this.operando1?.ArbolGraph(exp1)
+            resultado += this.operando2?.ArbolGraph(exp2)
 
         }
 
-        return result;
+        return resultado;
 
 
     }

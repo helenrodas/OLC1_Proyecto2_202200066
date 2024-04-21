@@ -6,6 +6,7 @@ import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
 import Continue from "./continue";
 import Contador from "../simbolo/Contador";
+import Return from "./Return";
 
 export default class For extends Instruccion{
     private condicion: Instruccion;
@@ -30,6 +31,7 @@ export default class For extends Instruccion{
         if(cond instanceof Errores) return cond;
 
         if(this.condicion.tipoDato.getTipo()!= tipoDato.BOOLEAN){
+            arbol.Print("Error Semantico: La condicion debe ser bool. linea:"+ this.linea+" columna: " +(this.col+1));
             return new Errores("Semantico", "La condicion debe ser bool", this.linea, this.col);
         }
 
@@ -40,6 +42,7 @@ export default class For extends Instruccion{
                 if(i instanceof Break) return;
                 if (i instanceof Continue) break;
                 let resultado = i.interpretar(arbol, nuevaTabla);
+                if (resultado instanceof Return) return resultado;
                 if(resultado instanceof Break) return;
                 if (i instanceof Continue) break;
             }
@@ -50,25 +53,25 @@ export default class For extends Instruccion{
 
     ArbolGraph(anterior: string): string {
 
-        let contador = Contador.getInstancia();
+        let indice = Contador.getInstancia();
         let result = "";
-        let contInstruc = [];
+        let contenedorIns = [];
 
-        let padre = `n${contador.get()}`;
-        let nFor = `n${contador.get()}`;
-        let par1 = `n${contador.get()}`;
-        let decl = `n${contador.get()}`;
-        let cond = `n${contador.get()}`;
-        let inc = `n${contador.get()}`;
-        let par2 = `n${contador.get()}`;
-        let llav1 = `n${contador.get()}`;
-        let padreIns = `n${contador.get()}`;
+        let padre = `n${indice.get()}`;
+        let nFor = `n${indice.get()}`;
+        let par1 = `n${indice.get()}`;
+        let decl = `n${indice.get()}`;
+        let cond = `n${indice.get()}`;
+        let inc = `n${indice.get()}`;
+        let par2 = `n${indice.get()}`;
+        let llav1 = `n${indice.get()}`;
+        let padreIns = `n${indice.get()}`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            contInstruc.push(`n${contador.get()}`);
+            contenedorIns.push(`n${indice.get()}`);
         }
 
-        let llav2 = `n${contador.get()}`;
+        let llav2 = `n${indice.get()}`;
 
         result += `${padre}[label="ciclo"];\n`;
         result += `${nFor}[label="for"];\n`;
@@ -80,8 +83,8 @@ export default class For extends Instruccion{
         result += `${llav1}[label="{"];\n`;
         result += `${padreIns}[label="Instrucciones"];\n`;
 
-        for(let i = 0; i < contInstruc.length; i++){
-            result += ` ${contInstruc[i]}[label="Instruccion"];\n`;
+        for(let i = 0; i < contenedorIns.length; i++){
+            result += ` ${contenedorIns[i]}[label="Instruccion"];\n`;
         }
 
         result += `${llav2}[label="}"];\n`;
@@ -96,8 +99,8 @@ export default class For extends Instruccion{
         result += `${padre} -> ${llav1};\n`;
         result += `${padre} -> ${padreIns};\n`;
 
-        for(let i = 0; i < contInstruc.length; i++){
-            result += `${padreIns} -> ${contInstruc[i]};\n`;
+        for(let i = 0; i < contenedorIns.length; i++){
+            result += `${padreIns} -> ${contenedorIns[i]};\n`;
         }
 
         result += `${padre} -> ${llav2};\n`;
@@ -106,8 +109,8 @@ export default class For extends Instruccion{
         result += this.condicion.ArbolGraph(cond);
         result += this.inc_dec.ArbolGraph(inc);
 
-        for(let i = 0; i < contInstruc.length; i++){
-            result += this.instrucciones[i].ArbolGraph(contInstruc[i]);
+        for(let i = 0; i < contenedorIns.length; i++){
+            result += this.instrucciones[i].ArbolGraph(contenedorIns[i]);
         }
 
         return result;

@@ -31,6 +31,7 @@ export default class Declaracion extends Instruccion {
                 console.log(id)
                 valorFinal = parseFloat(valorFinal);
                 if (!tabla.setVariable(new Simbolo(this.tipoDato, id, valorFinal))){
+                    arbol.Print("Error Semantico: No se puede declarar variable que ya existe:"+ this.linea+" columna: " +(this.col+1));
                     return new Errores("Semantico", "No se puede declarar variable que ya existe", this.linea, this.col)
                 }   
             });
@@ -38,13 +39,14 @@ export default class Declaracion extends Instruccion {
         else{
            // console.log("entro al else")
             if (this.valor.tipoDato.getTipo() != this.tipoDato.getTipo()) {
+                arbol.Print("Error Semantico: No se puede declarar variable que ya existe:"+ this.linea+" columna: " +(this.col+1));
                 return new Errores("SEMANTICO", "No se puede declarar variable", this.linea, this.col)
             }
             
             this.identificador.forEach(elemento => {
-                // console.log("despues del else")
-                // console.log(elemento)
+
                 if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
+                    arbol.Print("Error Semantico: No se puede declarar variable que ya existe:"+ this.linea+" columna: " +(this.col+1));
                     return new Errores("SEMANTICO", "variable ya existe!", this.linea, this.col)
                 }   
             })
@@ -55,23 +57,23 @@ export default class Declaracion extends Instruccion {
 
     ArbolGraph(anterior: string): string {
         let result = "";
-        let contador = Contador.getInstancia();
+        let indice = Contador.getInstancia();
 
-        let declar = `n${contador.get()}`;
+        let declaracion = `n${indice.get()}`;
 
-        let tipoD = `n${contador.get()}`;
-        let ids = `n${contador.get()}`;
+        let tipoD = `n${indice.get()}`;
+        let identificadores = `n${indice.get()}`;
 
-        let conjuntoID = [];
+        let arregloIdentificadores = [];
         for(let i= 0; i < this.identificador.length; i++){
-            conjuntoID.push(`n${contador.get()}`);
+            arregloIdentificadores.push(`n${indice.get()}`);
 
         }
-        let igual = `n${contador.get()}`;
-        let valor = `n${contador.get()}`;
-        let puntocoma = `n${contador.get()}`;
+        let igual = `n${indice.get()}`;
+        let valor = `n${indice.get()}`;
+        let puntocoma = `n${indice.get()}`;
 
-        result += `${declar}[label="Declaracion"];\n`
+        result += `${declaracion}[label="Declaracion"];\n`
         if(this.tipoDato.getTipo() == tipoDato.INTEGER){
             result += `${tipoD}[label="int"];\n`
         }else if(this.tipoDato.getTipo() == tipoDato.DOUBLE){
@@ -84,27 +86,27 @@ export default class Declaracion extends Instruccion {
             result += `${tipoD}[label="char"];\n`
         }
 
-        result += `${ids}[label="IDS"];\n`
+        result += `${identificadores}[label="IDS"];\n`
 
         for(let i= 0; i < this.identificador.length; i++){
-            result += `${conjuntoID[i]} [label = "${this.identificador[i]}"];\n`
+            result += `${arregloIdentificadores[i]} [label = "${this.identificador[i]}"];\n`
         }
 
         result += `${igual}[label="="];\n`
         result += `${valor}[label="Expresion"];\n`
         result += `${puntocoma}[label=";"];\n`
 
-        result += `${anterior} -> ${declar};\n`
-        result += `${declar} -> ${ids};\n`
-        result += `${declar} -> ${tipoD};\n`
+        result += `${anterior} -> ${declaracion};\n`
+        result += `${declaracion} -> ${identificadores};\n`
+        result += `${declaracion} -> ${tipoD};\n`
         
         for(let i= 0; i < this.identificador.length; i++){
-            result += `${ids} -> ${conjuntoID[i]};\n`
+            result += `${identificadores} -> ${arregloIdentificadores[i]};\n`
         }
 
-        result += `${declar} -> ${igual};\n`
-        result += `${declar} -> ${valor};\n`
-        result += `${declar} -> ${puntocoma};\n`
+        result += `${declaracion} -> ${igual};\n`
+        result += `${declaracion} -> ${valor};\n`
+        result += `${declaracion} -> ${puntocoma};\n`
 
         this.valor.ArbolGraph(valor);
 

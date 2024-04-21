@@ -8,6 +8,7 @@ import Continue from "./continue";
 import Case from "../instrucciones/Case";
 import Default from "../instrucciones/Default";
 import Contador from "../simbolo/Contador";
+import Return from "./Return";
 
 export default class Switch extends Instruccion {
     private condicion: Instruccion
@@ -34,7 +35,9 @@ export default class Switch extends Instruccion {
             if (casoTemp instanceof Errores) return casoTemp
             if (casoTemp == condicion) {
                 let resultado = caso.interpretar(arbol, tabla)
+                if (resultado instanceof Return) return resultado;
                 if (resultado instanceof Break) return;
+                
                 //casoCumplido = true;
             
             }
@@ -42,8 +45,10 @@ export default class Switch extends Instruccion {
 
         // Si ningun caso se cumplio y hay un caso default, ejecutarlo
         if (this.casoDefault) {
-           let resultado = this.casoDefault.interpretar(arbol, tabla);
-           if (resultado instanceof Break) return;
+            let resultado = this.casoDefault.interpretar(arbol, tabla);
+            if (resultado instanceof Return) return resultado;
+            if (resultado instanceof Break) return;
+           
         }
     }
 
