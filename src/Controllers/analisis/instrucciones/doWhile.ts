@@ -5,6 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
 import Continue from "./continue";
+import Contador from "../simbolo/Contador";
 
 export default class doWhile extends Instruccion{
     private condicion:Instruccion
@@ -42,6 +43,9 @@ export default class doWhile extends Instruccion{
 
         }while(this.condicion.interpretar(arbol, tabla))
 
-        
+    }
+
+    ArbolGraph(anterior: string): string {
+        return "";
     }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 import './App.css';
 import Editor from '@monaco-editor/react';
+import { Graphviz } from 'graphviz-react';
 
 function App() {
   const editorRef = useRef(null);
@@ -8,6 +9,7 @@ function App() {
 
   const [archivos, setArchivos] = useState([]); // Estado para mantener los archivos
   const [archivoActual, setArchivoActual] = useState(null);
+  const [AST, obtenerAst] = useState("")
 
 
   function handleEditorDidMount(editor, id) {
@@ -33,6 +35,25 @@ function App() {
       })
       .catch((error) => {
         alert("Ya no sale comp1")
+        console.error('Error:', error);
+      });
+  }
+
+  function reporteAST(){
+    fetch('http://localhost:4000/getAST', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        obtenerAst(data.AST);
+        console.log(data.AST);
+        //consolaRef.current.setValue(data.message);
+      })
+      .catch((error) => {
+        alert("Error al interpretar el archivo.")
         console.error('Error:', error);
       });
   }
@@ -112,7 +133,8 @@ function abrirArchivo(nombre) {
             <a class="nav-link" href="#" onClick={interpretar}>Ejecutar</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Reportes</a>
+                <a class="nav-link" href="#" onClick={reporteAST} >Reportes</a>
+                {AST && <Graphviz dot={AST} options={{zoom:true}} />}
             </li>
         </ul>
     </div>

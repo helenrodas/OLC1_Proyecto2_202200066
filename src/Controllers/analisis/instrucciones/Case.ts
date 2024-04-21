@@ -5,6 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
 import Continue from "./continue";
+import Contador from "../simbolo/Contador";
 
 export default class Case extends Instruccion {
     public condicion: Instruccion
@@ -31,4 +32,46 @@ export default class Case extends Instruccion {
            }
     }
     
+    ArbolGraph(anterior: string): string {
+        
+        let contador = Contador.getInstancia();
+        let result = "";
+
+        let caseN = `n${contador.get()}`;
+        let cond = `n${contador.get()}`;
+        let dospuntos = `n${contador.get()}`;
+        let padreInstrucciones = `n${contador.get()}`;
+        let contInstrucciones = [];
+
+        for (let i = 0; i < this.instrucciones.length; i++) {
+            contInstrucciones.push(`n${contador.get()}`);
+        }
+
+        result += `${caseN}[label="case"];\n`;
+        result += `${cond}[label="Expresion"];\n`;
+        result += `${dospuntos}[label=":"];\n`;
+        result += `${padreInstrucciones}[label="Instrucciones"];\n`;
+
+        for (let i = 0; i < this.instrucciones.length; i++) {
+            result += `${contInstrucciones[i]}[label="Instruccion"];\n`;
+        }
+
+        result += `${anterior} -> ${caseN};\n`;
+        result += `${anterior} -> ${cond};\n`;
+        result += `${anterior} -> ${dospuntos};\n`;
+        result += `${anterior} -> ${padreInstrucciones};\n`;
+
+        for (let i = 0; i < this.instrucciones.length; i++) {
+            result += `${padreInstrucciones} -> ${contInstrucciones[i]};\n`;
+        }
+
+        result += this.condicion.ArbolGraph(cond);
+
+        for (let i = 0; i < this.instrucciones.length; i++) {
+            result += this.instrucciones[i].ArbolGraph(contInstrucciones[i]);
+        }
+
+        return result;
+
+    }
 }

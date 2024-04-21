@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 
 export default class Funciones extends Instruccion {
@@ -78,7 +79,88 @@ export default class Funciones extends Instruccion {
         }
     }
 
-    
+
+    ArbolGraph(anterior: string): string {
+
+        let contador = Contador.getInstancia();
+        let result = "";
+
+        if(this.operacion == Operadores.SENT_TOUPPER){
+
+            let nativa = `n${contador.get()}`;
+            let operUnico = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let expr = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntocoma = `n${contador.get()}`;
+
+            result += `${nativa}[label="Nativas"];\n`;
+            result += `${operUnico}[label="toUpper"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${expr}[label="Expresion"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntocoma}[label=";"];\n`;
+
+            result += `${anterior} -> ${nativa};\n`;
+            result += `${nativa} -> ${operUnico};\n`;
+            result += `${nativa} -> ${par1};\n`;
+            result += `${nativa} -> ${expr};\n`;
+            result += `${nativa} -> ${par2};\n`;
+            result += `${nativa} -> ${puntocoma};\n`;
+
+            result += this.operandoUnico?.ArbolGraph(expr);
+
+        }else if(this.operacion == Operadores.SENT_TOLOWER){
+
+            let nativa = `n${contador.get()}`;
+            let operUnico = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let expr = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntocoma = `n${contador.get()}`;
+
+            result += `${nativa}[label="Nativas"];\n`;
+            result += `${operUnico}[label="toLower"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${expr}[label="Expresion"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntocoma}[label=";"];\n`;
+
+            result += `${anterior} -> ${nativa};\n`;
+            result += `${nativa} -> ${operUnico};\n`;
+            result += `${nativa} -> ${par1};\n`;
+            result += `${nativa} -> ${expr};\n`;
+            result += `${nativa} -> ${par2};\n`;
+            result += `${nativa} -> ${puntocoma};\n`;
+
+            result += this.operandoUnico?.ArbolGraph(expr);
+			}else if(this.operacion == Operadores.SENT_ROUND){
+
+            let nativa = `n${contador.get()}`;
+            let operUnico = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let expr = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntocoma = `n${contador.get()}`;
+
+            result += `${nativa}[label="Nativas"];\n`;
+            result += `${operUnico}[label="round"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${expr}[label="Expresion"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntocoma}[label=";"];\n`;
+
+            result += `${anterior} -> ${nativa};\n`;
+            result += `${nativa} -> ${operUnico};\n`;
+            result += `${nativa} -> ${par1};\n`;
+            result += `${nativa} -> ${expr};\n`;
+            result += `${nativa} -> ${par2};\n`;
+            result += `${nativa} -> ${puntocoma};\n`;
+
+            result += this.operandoUnico?.ArbolGraph(expr);
+        }
+        return result
+    }
 }
 
 export enum Operadores {

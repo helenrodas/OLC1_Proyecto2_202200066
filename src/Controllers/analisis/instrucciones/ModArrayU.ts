@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
+import Contador from "../simbolo/Contador";
 
 export default class  ModArrayU extends Instruccion{
     private id: string;
@@ -40,5 +41,9 @@ export default class  ModArrayU extends Instruccion{
             return new Errores("SEMANTICO", "La posicion esta fuera de rango ", this.linea, this.col);
         }
         varVector[posicionVector] = nuevoValor;
+    }
+
+    ArbolGraph(anterior: string): string {
+        return "";
     }
 }

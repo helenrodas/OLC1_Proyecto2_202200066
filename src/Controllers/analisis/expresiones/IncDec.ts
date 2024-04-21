@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 
 export default class IncreDecre extends Instruccion {
@@ -26,5 +27,34 @@ export default class IncreDecre extends Instruccion {
         } else {
             valor.setValor(parseInt(valor.getValor()) - 1);
         }
+    }
+
+    ArbolGraph(anterior: string): string {
+
+        let contador = Contador.getInstancia();
+        let result = "";
+
+        let ident = `n${contador.get()}`;
+        let nombre = `n${contador.get()}`;
+        let mas1 = `n${contador.get()}`;
+        let mas2 = `n${contador.get()}`;
+
+        result += ` ${ident}[label="ID"];\n`;
+        result += ` ${nombre}[label="${this.id}"];\n`;
+
+        if(this.instruc == true){
+            result += ` ${mas1}[label="+"];\n`;
+            result += ` ${mas2}[label="+"];\n`;
+        }else{
+            result += ` ${mas1}[label="-"];\n`;
+            result += ` ${mas2}[label="-"];\n`;
+        }
+
+        result += ` ${anterior} -> ${ident};\n`;
+        result += ` ${ident} -> ${nombre};\n`;
+        result += `${anterior} -> ${mas1};\n`;
+        result += `${anterior} -> ${mas2};\n`;
+
+        return result;
     }
 }

@@ -5,10 +5,11 @@ import Errores from './analisis/excepciones/Errores';
 import Metodo from './analisis/instrucciones/Metodo';
 import Declaracion from './analisis/instrucciones/Declaracion';
 import Execute from './analisis/instrucciones/Execute';
+import Contador from './analisis/simbolo/Contador';
 
 export let listaErrores: Array<Errores> = []
 
-
+var AstDot: string
 class controller {
     public prueba(req: Request, res: Response) {
         res.json({ "funciona": "la api" });
@@ -17,6 +18,7 @@ class controller {
     public interpretar(req: Request, res: Response) {
         listaErrores = new Array<Errores>
         try {
+            AstDot = ""
             let parser = require('./analisis/analizador')
             let ast = new Arbol(parser.parse(req.body.entrada))
             let tabla = new tablaSimbolo()
@@ -66,6 +68,21 @@ ahora ya depende que exista la funcion execute para ejecutar el codigo
                 }
             }
             console.log(tabla)
+            let contador = Contador.getInstancia()
+            let cadena = "digraph ast{\n"
+            cadena += "nINICIO[label=\"INICIO\"];\n"
+            cadena += "nINSTRUCCIONES[label=\"INSTRUCCIONES\"];\n"
+            cadena += "nINICIO->nINSTRUCCIONES;\n"
+
+            for (let i of ast.getInstrucciones()) {
+                if (i instanceof Errores) continue
+                let nodo = `n${contador.get()}`
+                cadena += `${nodo}[label=\"INSTRUCCION\"];\n`
+                cadena += `nINSTRUCCIONES->${nodo};\n`
+                cadena += i.ArbolGraph(nodo)
+            }
+            cadena += "\n}"
+            AstDot = cadena
             res.send({ "Respuesta": ast.getConsola() })
             
             console.log("Errores: ",listaErrores.length)
@@ -78,7 +95,11 @@ ahora ya depende que exista la funcion execute para ejecutar el codigo
             res.send({ "Error": "Error en el analisis" })
         }
     }
-
+    public arbolAST(req: Request, res: Response) {
+        res.json({ AST: AstDot })
+    }
+    
+        
 }
 
 

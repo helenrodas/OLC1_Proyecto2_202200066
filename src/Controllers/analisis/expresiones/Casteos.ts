@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 
 export default class Casteos extends Instruccion {
@@ -105,6 +106,50 @@ export default class Casteos extends Instruccion {
             default:
                     return new Errores("Semantico", "No se puede castear a char: " + op1, this.linea, this.col)
         }
+    }
+
+    ArbolGraph(anterior: string): string {
+
+
+        let contador = Contador.getInstancia();
+        let result = "";
+
+        let padre = `n${contador.get()}`;
+        let par1 = `n${contador.get()}`;
+        let tipo = `n${contador.get()}`;
+        let par2 = `n${contador.get()}`;
+        let valor = `n${contador.get()}`;
+        let puntocoma = `n${contador.get()}`;
+
+        result += `${padre}[label="casteo"];\n`;
+        result += `${par1}[label="("];\n`;
+        if(this.tipoDato.getTipo() == tipoDato.INTEGER){
+            result += `${tipo}[label="int"];\n`;
+        }else if(this.tipoDato.getTipo() == tipoDato.DOUBLE){
+            result += `${tipo}[label="double"];\n`;
+        }else if(this.tipoDato.getTipo() == tipoDato.CHAR){
+            result += `${tipo}[label="char"];\n`;
+        }else if(this.tipoDato.getTipo() == tipoDato.STRING){
+            result += `${tipo}[label="std::string"];\n`;
+        }else if(this.tipoDato.getTipo() == tipoDato.BOOLEAN){
+            result += `${tipo}[label="bool"];\n`;
+        }
+
+        result += `${par2}[label="("];\n`;
+        result += `${valor}[label="Expresion"];\n`;
+        result += `${puntocoma}[label=";"];\n`;
+
+
+        result += `${anterior} -> ${padre};\n`;
+        result += `${padre} -> ${par1};\n`;
+        result += `${padre} -> ${tipo};\n`;
+        result += `${padre} -> ${par2};\n`;
+        result += `${padre} -> ${valor};\n`;
+        result += `${padre} -> ${puntocoma};\n`;
+
+        result += this.operandoUnico?.ArbolGraph(valor);
+
+        return result;
     }
 }
 

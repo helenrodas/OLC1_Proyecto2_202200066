@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
 import Return from "./Return";
+import Contador from "../simbolo/Contador";
 
 export default class Metodo extends Instruccion {
 
@@ -88,110 +89,110 @@ export default class Metodo extends Instruccion {
         }
     }
 
-    // obtenerAST(anterior: string): string {
+    ArbolGraph(anterior: string): string {
 
-    //     let result = "";
-    //     let contador = ContadorSingleton.getInstance();
+        let result = "";
+        let contador = Contador.getInstancia();
 
-    //     let contTipoParametro = [];
-    //     let contParametros = [];
-    //     let contInstrucciones = [];
+        let contTipoParametro = [];
+        let contParametros = [];
+        let contInstrucciones = [];
 
-    //     let padre = `n${contador.getContador()}`;
-    //     let tipoFuncion = `n${contador.getContador()}`;
-    //     let padreId = `n${contador.getContador()}`;
-    //     let ident = `n${contador.getContador()}`;
-    //     let par1 = `n${contador.getContador()}`;
-    //     let parm = `n${contador.getContador()}`;
+        let padre = `n${contador.get()}`;
+        let tipoFuncion = `n${contador.get()}`;
+        let padreId = `n${contador.get()}`;
+        let ident = `n${contador.get()}`;
+        let par1 = `n${contador.get()}`;
+        let parm = `n${contador.get()}`;
 
-    //     for(let i = 0; i < this.parametros.length; i++){
-    //         contTipoParametro.push(`n${contador.getContador()}`);
-    //         contParametros.push(`n${contador.getContador()}`);
-    //     }
+        for(let i = 0; i < this.parametros.length; i++){
+            contTipoParametro.push(`n${contador.get()}`);
+            contParametros.push(`n${contador.get()}`);
+        }
 
-    //     let par2 = `n${contador.getContador()}`;
-    //     let llav1 = `n${contador.getContador()}`;
-    //     let padreInstr = `n${contador.getContador()}`;
+        let par2 = `n${contador.get()}`;
+        let llav1 = `n${contador.get()}`;
+        let padreInstr = `n${contador.get()}`;
 
-    //     for(let i= 0; i< this.instrucciones.length; i++){
-    //         contInstrucciones.push(`n${contador.getContador()}`);
-    //     }
+        for(let i= 0; i< this.instrucciones.length; i++){
+            contInstrucciones.push(`n${contador.get()}`);
+        }
 
-    //     let llav2 = `n${contador.getContador()}`;
+        let llav2 = `n${contador.get()}`;
 
-    //     result += `${padre}[label="metodo/funcion"];\n`
-    //     if(this.tipo.getTipo() == tipoDato.VOID){
-    //         result += `${tipoFuncion}[label="void"];\n`
-    //     }else if(this.tipo.getTipo() == tipoDato.ENTERO){
-    //         result += `${tipoFuncion}[label="int"];\n`
-    //     }else if(this.tipo.getTipo() == tipoDato.DECIMAL){
-    //         result += `${tipoFuncion}[label="double"];\n`
-    //     }else if(this.tipo.getTipo() == tipoDato.CADENA){
-    //         result += `${tipoFuncion}[label="std::string"];\n`
-    //     }else if(this.tipo.getTipo() == tipoDato.BOOL){
-    //         result += `${tipoFuncion}[label="bool"];\n`
-    //     }
+        result += `${padre}[label="metodo/funcion"];\n`
+        if(this.tipo.getTipo() == tipoDato.VOID){
+            result += `${tipoFuncion}[label="void"];\n`
+        }else if(this.tipo.getTipo() == tipoDato.INTEGER){
+            result += `${tipoFuncion}[label="int"];\n`
+        }else if(this.tipo.getTipo() == tipoDato.DOUBLE){
+            result += `${tipoFuncion}[label="double"];\n`
+        }else if(this.tipo.getTipo() == tipoDato.STRING){
+            result += `${tipoFuncion}[label="std::string"];\n`
+        }else if(this.tipo.getTipo() == tipoDato.BOOLEAN){
+            result += `${tipoFuncion}[label="bool"];\n`
+        }
 
-    //     result += `${padreId}[label="ID"];\n`
-    //     result += `${ident}[label="${this.id}"];\n`
-    //     result += `${par1}[label="("];\n`
-    //     result += `${parm}[label="parametros"];\n`
-    //     for(let i = 0; i < this.parametros.length; i++){
-    //         if(this.parametros[i].tipo.getTipo() == tipoDato.ENTERO){
-    //             result += `${contTipoParametro[i]}[label="int"];\n`
-    //         }else if(this.parametros[i].tipo.getTipo() == tipoDato.DECIMAL){
-    //             result += `${contTipoParametro[i]}[label="double"];\n`
-    //         }else if(this.parametros[i].tipo.getTipo() == tipoDato.CADENA){
-    //             result += `${contTipoParametro[i]}[label="std::string"];\n`
-    //         }else if(this.parametros[i].tipo.getTipo() == tipoDato.BOOL){
-    //             result += `${contTipoParametro[i]}[label="bool"];\n`
-    //         }else if(this.parametros[i].tipo.getTipo() == tipoDato.VOID){
-    //             result += `${contTipoParametro[i]}[label="void"];\n`
-    //         }else if(this.parametros[i].tipo.getTipo() == tipoDato.CARACTER){
-    //             result += `${contTipoParametro[i]}[label="char"];\n`
-    //         }
+        result += `${padreId}[label="ID"];\n`
+        result += `${ident}[label="${this.id}"];\n`
+        result += `${par1}[label="("];\n`
+        result += `${parm}[label="parametros"];\n`
+        for(let i = 0; i < this.parametros.length; i++){
+            if(this.parametros[i].tipo.getTipo() == tipoDato.INTEGER){
+                result += `${contTipoParametro[i]}[label="int"];\n`
+            }else if(this.parametros[i].tipo.getTipo() == tipoDato.DOUBLE){
+                result += `${contTipoParametro[i]}[label="double"];\n`
+            }else if(this.parametros[i].tipo.getTipo() == tipoDato.STRING){
+                result += `${contTipoParametro[i]}[label="std::string"];\n`
+            }else if(this.parametros[i].tipo.getTipo() == tipoDato.BOOLEAN){
+                result += `${contTipoParametro[i]}[label="bool"];\n`
+            }else if(this.parametros[i].tipo.getTipo() == tipoDato.VOID){
+                result += `${contTipoParametro[i]}[label="void"];\n`
+            }else if(this.parametros[i].tipo.getTipo() == tipoDato.CHAR){
+                result += `${contTipoParametro[i]}[label="char"];\n`
+            }
             
-    //         result += `${contParametros[i]}[label="${this.parametros[i].id}"];\n`
-    //     }
-    //     result += `${par2}[label=")"];\n`
-    //     result += `${llav1}[label="{"];\n`
-    //     result += `${padreInstr}[label="instrucciones"];\n`
-    //     for(let i = 0; i < this.instrucciones.length; i++){
-    //         result += `${contInstrucciones[i]}[label="instruccion"];\n`
-    //     }
-    //     result += `${llav2}[label="}"];\n`
+            result += `${contParametros[i]}[label="${this.parametros[i].id}"];\n`
+        }
+        result += `${par2}[label=")"];\n`
+        result += `${llav1}[label="{"];\n`
+        result += `${padreInstr}[label="instrucciones"];\n`
+        for(let i = 0; i < this.instrucciones.length; i++){
+            result += `${contInstrucciones[i]}[label="instruccion"];\n`
+        }
+        result += `${llav2}[label="}"];\n`
 
-    //     result += `${padre} -> ${tipoFuncion};\n`
-    //     result += `${padre} -> ${padreId};\n`
-    //     result += `${padreId} -> ${ident};\n`
-    //     result += `${padre} -> ${par1};\n`
-    //     result += `${padre} -> ${parm};\n`
+        result += `${padre} -> ${tipoFuncion};\n`
+        result += `${padre} -> ${padreId};\n`
+        result += `${padreId} -> ${ident};\n`
+        result += `${padre} -> ${par1};\n`
+        result += `${padre} -> ${parm};\n`
 
-    //     for(let i = 0; i < this.parametros.length; i++){
-    //         result += `${parm} -> ${contTipoParametro[i]};\n`
-    //         result += `${parm} -> ${contParametros[i]};\n`
-    //     }
+        for(let i = 0; i < this.parametros.length; i++){
+            result += `${parm} -> ${contTipoParametro[i]};\n`
+            result += `${parm} -> ${contParametros[i]};\n`
+        }
 
-    //     result += `${padre} -> ${par2};\n`
+        result += `${padre} -> ${par2};\n`
 
-    //     result += `${padre} -> ${llav1};\n`
+        result += `${padre} -> ${llav1};\n`
 
-    //     result += `${padre} -> ${padreInstr};\n`
+        result += `${padre} -> ${padreInstr};\n`
 
-    //     for(let i = 0; i < this.instrucciones.length; i++){
-    //         result += `${padreInstr} -> ${contInstrucciones[i]};\n`
-    //     }
+        for(let i = 0; i < this.instrucciones.length; i++){
+            result += `${padreInstr} -> ${contInstrucciones[i]};\n`
+        }
 
-    //     result += `${padre} -> ${llav2};\n`
+        result += `${padre} -> ${llav2};\n`
 
-    //     result += `${anterior} -> ${padre};\n`
+        result += `${anterior} -> ${padre};\n`
 
-    //     for(let i = 0; i < this.instrucciones.length; i++){
-    //         result += this.instrucciones[i].obtenerAST(contInstrucciones[i]);
-    //     }
+        for(let i = 0; i < this.instrucciones.length; i++){
+            result += this.instrucciones[i].ArbolGraph(contInstrucciones[i]);
+        }
 
 
-    //     return result;
-    // }
+        return result;
+    }
 
 }

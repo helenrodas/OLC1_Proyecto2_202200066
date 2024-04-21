@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import Simbolo from "../simbolo/Simbolo";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
+import Contador from "../simbolo/Contador";
 
 export default class DeclaracionInit extends Instruccion{
 
@@ -48,6 +49,9 @@ export default class DeclaracionInit extends Instruccion{
             }   
         });
 
+    }
+    ArbolGraph(anterior: string): string {
+        return "";
     }
 
 }

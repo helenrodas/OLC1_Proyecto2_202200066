@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 export default class Break extends Instruccion {
     constructor(linea: number, col: number) {
@@ -11,5 +12,23 @@ export default class Break extends Instruccion {
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         return;
+    }
+
+    ArbolGraph(anterior: string): string {
+
+        let contador = Contador.getInstancia();
+        let result = "";
+
+        let breakk = `n${contador.get()}`;
+        let puntocoma = `n${contador.get()}`;
+
+
+        result += `${breakk}[label="Break"];\n`;
+        result += `${puntocoma}[label=";"];\n`;
+
+        result += `${anterior} -> ${breakk};\n`;
+        result += `${anterior} -> ${puntocoma};\n`;
+
+        return result;
     }
 }

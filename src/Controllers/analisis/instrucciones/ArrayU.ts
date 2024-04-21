@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import Simbolo from "../simbolo/Simbolo";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
+import Contador from "../simbolo/Contador";
 
 export default class ArrayU extends Instruccion{
     private tipoPrincipal:Tipo;
@@ -11,6 +12,7 @@ export default class ArrayU extends Instruccion{
     private id:string;
     private size?:Instruccion |undefined;
     private listaDatos?: Instruccion[] | undefined;
+    
     
     constructor(tipoPrincipal:Tipo,id:string,linea:number,colum:number,tipoNew?:Tipo |undefined,size?:Instruccion |undefined,listaDatos?:any[] |undefined){
         super(tipoPrincipal, linea, colum)
@@ -61,5 +63,9 @@ export default class ArrayU extends Instruccion{
 
 
         } 
+    }
+
+    ArbolGraph(anterior: string): string {
+        return "";
     }
 }

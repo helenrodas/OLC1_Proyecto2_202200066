@@ -5,6 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Declaracion from "./Declaracion";
 import Metodo from "./Metodo";
+import Contador from "../simbolo/Contador";
 
 export default class Execute extends Instruccion {
     private id: string
@@ -24,22 +25,10 @@ export default class Execute extends Instruccion {
             let newTabla = new tablaSimbolo(arbol.getTablaGlobal())
             newTabla.setNombre("Metodo Execute")
 
-            /*
-                cantidad de parametros sea igual 
-                entre la llamada (run) y la definicion
-                de la funcion 
-            */
+
             if (busqueda.parametros.length != this.parametros.length) {
                 return new Errores("SEMANTICO", "Parametros invalidos", this.linea, this.col)
             }
-            /*
-                Usaremos el ciclo con un index para que sea el mismo orden 
-                tanto en la definicion como en el run (llamada)
-
-                Declaramos los parametros uno a uno pasando el tipo que deberia
-                tener segun la definicion de la funcion y el valor que le
-                vamos a asignar al llamarla con run
-            */
 
             // declaramos los parametros
             for (let i = 0; i < busqueda.parametros.length; i++) {
@@ -59,16 +48,51 @@ export default class Execute extends Instruccion {
 
         }
     }
+
+    ArbolGraph(anterior: string): string {
+
+        let contador = Contador.getInstancia();
+        let result = "";
+
+
+        let executee = `n${contador.get()}`;
+        let ident = `n${contador.get()}`;
+        let par1 = `n${contador.get()}`;
+        let padreParametros = `n${contador.get()}`;
+        let contParametros = [];
+
+        for (let i = 0; i < this.parametros.length; i++) {
+            contParametros.push(`n${contador.get()}`);
+        }
+
+        let par2 = `n${contador.get()}`;
+        let puntocoma = `n${contador.get()}`;
+
+        result += `${executee}[label="Execute"];\n`;
+        result += `${ident}[label="${this.id}"];\n`;
+        result += `${par1}[label="("];\n`;
+        result += `${padreParametros}[label="Parametros"];\n`;
+        result += `${par2}[label=")"];\n`;
+        result += `${puntocoma}[label=";"];\n`;
+
+        for(let i = 0; i < this.parametros.length; i++){
+            result += `${contParametros[i]}[label="Expresion"];\n`;
+        }
+
+        result += `${anterior} -> ${executee};\n`;
+        result += `${anterior} -> ${ident};\n`;
+        result += `${anterior} -> ${par1};\n`;
+        result += `${anterior} -> ${padreParametros};\n`;
+        for(let i = 0; i < this.parametros.length; i++){
+            result += `${padreParametros} -> ${contParametros[i]};\n`;
+        }
+        result += `${anterior} -> ${par2};\n`;
+        result += `${anterior} -> ${puntocoma};\n`;
+
+        for (let i = 0; i < this.parametros.length; i++) {
+            result += this.parametros[i].ArbolGraph(contParametros[i]);
+        }
+
+        return result;
+    }
 }
-
-/*
- run id(parametros);
-
- miFuncion(int param1, double param2, bool param3):void{
-    cout << param1 << endl;
-
- }
-
- miFuncion(1, 2.9, true)
-
-*/

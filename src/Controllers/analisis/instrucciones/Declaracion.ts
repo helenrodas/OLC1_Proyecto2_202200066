@@ -4,6 +4,8 @@ import Arbol from "../simbolo/Arbol";
 import Simbolo from "../simbolo/Simbolo";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
+import Contador from "../simbolo/Contador";
+
 
 export default class Declaracion extends Instruccion {
     private identificador: string[]
@@ -50,5 +52,64 @@ export default class Declaracion extends Instruccion {
         }
         
     }
+
+    ArbolGraph(anterior: string): string {
+        let result = "";
+        let contador = Contador.getInstancia();
+
+        let declar = `n${contador.get()}`;
+
+        let tipoD = `n${contador.get()}`;
+        let ids = `n${contador.get()}`;
+
+        let conjuntoID = [];
+        for(let i= 0; i < this.identificador.length; i++){
+            conjuntoID.push(`n${contador.get()}`);
+
+        }
+        let igual = `n${contador.get()}`;
+        let valor = `n${contador.get()}`;
+        let puntocoma = `n${contador.get()}`;
+
+        result += `${declar}[label="Declaracion"];\n`
+        if(this.tipoDato.getTipo() == tipoDato.INTEGER){
+            result += `${tipoD}[label="int"];\n`
+        }else if(this.tipoDato.getTipo() == tipoDato.DOUBLE){
+            result += `${tipoD}[label="double"];\n`
+        }else if(this.tipoDato.getTipo() == tipoDato.BOOLEAN){
+            result += `${tipoD}[label="bool"];\n`
+        }else if(this.tipoDato.getTipo() == tipoDato.STRING){
+            result += `${tipoD}[label="std::string"];\n`
+        }else if(this.tipoDato.getTipo() == tipoDato.CHAR){
+            result += `${tipoD}[label="char"];\n`
+        }
+
+        result += `${ids}[label="IDS"];\n`
+
+        for(let i= 0; i < this.identificador.length; i++){
+            result += `${conjuntoID[i]} [label = "${this.identificador[i]}"];\n`
+        }
+
+        result += `${igual}[label="="];\n`
+        result += `${valor}[label="Expresion"];\n`
+        result += `${puntocoma}[label=";"];\n`
+
+        result += `${anterior} -> ${declar};\n`
+        result += `${declar} -> ${ids};\n`
+        result += `${declar} -> ${tipoD};\n`
+        
+        for(let i= 0; i < this.identificador.length; i++){
+            result += `${ids} -> ${conjuntoID[i]};\n`
+        }
+
+        result += `${declar} -> ${igual};\n`
+        result += `${declar} -> ${valor};\n`
+        result += `${declar} -> ${puntocoma};\n`
+
+        this.valor.ArbolGraph(valor);
+
+        return result;
+    }
+
 
 }

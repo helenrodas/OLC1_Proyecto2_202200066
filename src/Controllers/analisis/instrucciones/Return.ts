@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
+import Contador from "../simbolo/Contador";
 
 
 export default class Return extends Instruccion{
@@ -23,6 +24,38 @@ export default class Return extends Instruccion{
             this.tipoDato = this.expresion.tipoDato
         }
         return this;
+    }
+
+    ArbolGraph(anterior: string): string {
+
+        let contador = Contador.getInstancia();
+        let result = "";
+
+        let returnn = `n${contador.get()}`;
+        let exp = `n${contador.get()}`;
+
+        let puntocoma = `n${contador.get()}`;
+
+        result += `${returnn}[label="Return"];\n`;
+        if(this.expresion != undefined){
+            result += `${exp}[label="Expresion"];\n`;
+        }
+
+        result += `${puntocoma}[label=";"];\n`;
+
+        result += `${anterior} -> ${returnn};\n`;
+        if(this.expresion != undefined){
+            result += `${anterior} -> ${exp};\n`;
+        }
+
+        result += `${anterior} -> ${puntocoma};\n`;
+
+        if(this.expresion != undefined){
+            result += this.expresion.ArbolGraph(exp);
+        }
+        
+
+        return result;
     }
 }
 

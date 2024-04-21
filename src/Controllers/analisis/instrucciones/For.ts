@@ -5,6 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
 import Continue from "./continue";
+import Contador from "../simbolo/Contador";
 
 export default class For extends Instruccion{
     private condicion: Instruccion;
@@ -45,5 +46,70 @@ export default class For extends Instruccion{
             this.inc_dec.interpretar(arbol, nuevaTabla);
         }
 
+    }
+
+    ArbolGraph(anterior: string): string {
+
+        let contador = Contador.getInstancia();
+        let result = "";
+        let contInstruc = [];
+
+        let padre = `n${contador.get()}`;
+        let nFor = `n${contador.get()}`;
+        let par1 = `n${contador.get()}`;
+        let decl = `n${contador.get()}`;
+        let cond = `n${contador.get()}`;
+        let inc = `n${contador.get()}`;
+        let par2 = `n${contador.get()}`;
+        let llav1 = `n${contador.get()}`;
+        let padreIns = `n${contador.get()}`;
+
+        for(let i = 0; i < this.instrucciones.length; i++){
+            contInstruc.push(`n${contador.get()}`);
+        }
+
+        let llav2 = `n${contador.get()}`;
+
+        result += `${padre}[label="ciclo"];\n`;
+        result += `${nFor}[label="for"];\n`;
+        result += `${par1}[label="("];\n`;
+        result += `${decl}[label="expresion"];\n`;
+        result += `${cond}[label="condicion"];\n`; 
+        result += `${inc}[label="expresion"];\n`;
+        result += `${par2}[label=")"];\n`;
+        result += `${llav1}[label="{"];\n`;
+        result += `${padreIns}[label="Instrucciones"];\n`;
+
+        for(let i = 0; i < contInstruc.length; i++){
+            result += ` ${contInstruc[i]}[label="Instruccion"];\n`;
+        }
+
+        result += `${llav2}[label="}"];\n`;
+
+        result += `${anterior} -> ${padre};\n`;
+        result += `${padre} -> ${nFor};\n`;
+        result += `${padre} -> ${par1};\n`;
+        result += `${padre} -> ${decl};\n`;
+        result += `${padre} -> ${cond};\n`;
+        result += `${padre} -> ${inc};\n`;
+        result += `${padre} -> ${par2};\n`;
+        result += `${padre} -> ${llav1};\n`;
+        result += `${padre} -> ${padreIns};\n`;
+
+        for(let i = 0; i < contInstruc.length; i++){
+            result += `${padreIns} -> ${contInstruc[i]};\n`;
+        }
+
+        result += `${padre} -> ${llav2};\n`;
+
+        result += this.variable.ArbolGraph(decl);
+        result += this.condicion.ArbolGraph(cond);
+        result += this.inc_dec.ArbolGraph(inc);
+
+        for(let i = 0; i < contInstruc.length; i++){
+            result += this.instrucciones[i].ArbolGraph(contInstruc[i]);
+        }
+
+        return result;
     }
 }

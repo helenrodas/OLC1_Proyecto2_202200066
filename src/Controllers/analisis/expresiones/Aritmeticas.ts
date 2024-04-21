@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 
 export default class Aritmeticas extends Instruccion {
@@ -616,6 +617,124 @@ export default class Aritmeticas extends Instruccion {
             default:
                 return new Errores("Semantico", "Negacion Unaria invalida", this.linea, this.col)
         }
+    }
+
+    ArbolGraph(anterior: string): string {
+
+        let contador = Contador.getInstancia();
+        let result = ""
+        if (this.operacion == Operadores.NEG) {
+
+            let nodoNeg = `n${contador.get()}`
+            let nodoExp = `n${contador.get()}`
+            result += `${nodoNeg}[label=\"Negacion Unaria\"];\n`
+            result += `${nodoExp}[label=\"Expresion\"];\n`
+            result += `${anterior}->${nodoNeg};\n`
+            result += `${anterior}-> ${nodoExp};\n`
+            result += this.operandoUnico?.ArbolGraph(nodoExp)
+            //return result;
+        } else if (this.operacion == Operadores.SUMA) {
+
+            let exp1 = `n${contador.get()}`
+            let nodoOp = `n${contador.get()}`
+            let exp2 = `n${contador.get()}`
+
+            result += `${exp1}[label= \"Expresion\"];\n`
+            result += `${nodoOp}[label=\"+\"];\n`
+            result += `${exp2}[label=\"Expresion\"];\n`
+            result += `${anterior} -> ${exp1};\n`
+            result += `${anterior} -> ${nodoOp};\n`
+            result += `${anterior} -> ${exp2};\n`
+            result += this.operando1?.ArbolGraph(exp1)
+            result += this.operando2?.ArbolGraph(exp2)
+
+        }else if(this.operacion == Operadores.RESTA){
+
+            let exp1 = `n${contador.get()}`
+            let nodoOp = `n${contador.get()}`
+            let exp2 = `n${contador.get()}`
+
+            result += `${exp1}[label= \"Expresion\"];\n`
+            result += `${nodoOp}[label=\"-\"];\n`
+            result += `${exp2}[label=\"Expresion\"];\n`
+            result += `${anterior} -> ${exp1};\n`
+            result += `${anterior} -> ${nodoOp};\n`
+            result += `${anterior} -> ${exp2};\n`
+            result += this.operando1?.ArbolGraph(exp1)
+            result += this.operando2?.ArbolGraph(exp2)
+
+        }else if(this.operacion == Operadores.MULT){
+
+            let exp1 = `n${contador.get()}`
+            let nodoOp = `n${contador.get()}`
+            let exp2 = `n${contador.get()}`
+
+            result += `${exp1}[label= \"Expresion\"];\n`
+            result += `${nodoOp}[label=\"*\"];\n`
+            result += `${exp2}[label=\"Expresion\"];\n`
+            result += `${anterior} -> ${exp1};\n`
+            result += `${anterior} -> ${nodoOp};\n`
+            result += `${anterior} -> ${exp2};\n`
+            result += this.operando1?.ArbolGraph(exp1)
+            result += this.operando2?.ArbolGraph(exp2)
+        }else if(this.operacion == Operadores.DIVI){
+
+            let exp1 = `n${contador.get()}`
+            let nodoOp = `n${contador.get()}`
+            let exp2 = `n${contador.get()}`
+
+            result += `${exp1}[label= \"Expresion\"];\n`
+            result += `${nodoOp}[label=\"/\"];\n`
+            result += `${exp2}[label=\"Expresion\"];\n`
+            result += `${anterior} -> ${exp1};\n`
+            result += `${anterior} -> ${nodoOp};\n`
+            result += `${anterior} -> ${exp2};\n`
+            result += this.operando1?.ArbolGraph(exp1)
+            result += this.operando2?.ArbolGraph(exp2)
+
+        }else if(this.operacion == Operadores.ARI_MODULO){
+
+            let exp1 = `n${contador.get()}`
+            let nodoOp = `n${contador.get()}`
+            let exp2 = `n${contador.get()}`
+
+            result += `${exp1}[label= \"Expresion\"];\n`
+            result += `${nodoOp}[label=\"%\"];\n`
+            result += `${exp2}[label=\"Expresion\"];\n`
+            result += `${anterior} -> ${exp1};\n`
+            result += `${anterior} -> ${nodoOp};\n`
+            result += `${anterior} -> ${exp2};\n`
+            result += this.operando1?.ArbolGraph(exp1)
+            result += this.operando2?.ArbolGraph(exp2)
+        }else if(this.operacion == Operadores.ARI_POTENCIA){
+
+            let exp1 = `n${contador.get()}`
+            let exp2 = `n${contador.get()}`
+            let par1 = `n${contador.get()}`
+            let par2 = `n${contador.get()}`
+            let nodoPow = `n${contador.get()}`
+            let nodoComa = `n${contador.get()}`
+            result += `${nodoPow}[label="pow"];\n`
+            result += `${par1}[label="("];\n`
+            result += `${exp1}[label="Expresion"];\n`
+            result += `${nodoComa}[label=","];\n`
+            result += `${exp2}[label="Expresion"];\n`
+            result += `${par2}[label=")"];\n`
+            result += `${anterior} -> ${nodoPow};\n`
+            result += `${anterior} -> ${par1};\n`
+            result += `${anterior} -> ${exp1};\n`
+            result += `${anterior} -> ${nodoComa};\n`
+            result += `${anterior} -> ${exp2};\n`
+            result += `${anterior} -> ${par2};\n`
+
+            result += this.operando1?.ArbolGraph(exp1)
+            result += this.operando2?.ArbolGraph(exp2)
+
+        }
+
+        return result;
+
+
     }
 
 }

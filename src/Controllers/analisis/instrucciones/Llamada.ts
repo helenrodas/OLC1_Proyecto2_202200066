@@ -5,6 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
 import Metodo from './Metodo';
 import Declaracion from "./Declaracion";
+import Contador from "../simbolo/Contador";
 
 
 export default class Llamada extends Instruccion {
@@ -99,52 +100,52 @@ export default class Llamada extends Instruccion {
 
     }
 
-    // obtenerAST(anterior: string): string {
+    ArbolGraph(anterior: string): string {
 
-    //     let contador = ContadorSingleton.getInstance();
-    //     let result = "";
+        let contador = Contador.getInstancia();
+        let result = "";
 
-    //     let llamada = `n${contador.getContador()}`;
-    //     let ident = `n${contador.getContador()}`;
-    //     let par1 = `n${contador.getContador()}`;
-    //     let puntocoma = `n${contador.getContador()}`;
+        let llamada = `n${contador.get()}`;
+        let ident = `n${contador.get()}`;
+        let par1 = `n${contador.get()}`;
+        let puntocoma = `n${contador.get()}`;
 
-    //     let arrayParametros = [];
+        let arrayParametros = [];
 
-    //     for (let i = 0; i < this.parametros.length; i++) {
-    //         arrayParametros.push(`n${contador.getContador()}`);
-    //     }
+        for (let i = 0; i < this.parametros.length; i++) {
+            arrayParametros.push(`n${contador.get()}`);
+        }
 
-    //     let par2 = `n${contador.getContador()}`;
+        let par2 = `n${contador.get()}`;
 
-    //     result += `${llamada}[label="Llamada"];\n`;
-    //     result += `${ident}[label="${this.id}"];\n`;
-    //     result += `${par1}[label="("];\n`;
+        result += `${llamada}[label="Llamada"];\n`;
+        result += `${ident}[label="${this.id}"];\n`;
+        result += `${par1}[label="("];\n`;
 
-    //     for(let i = 0; i < this.parametros.length; i++){
-    //         result += `${arrayParametros[i]}[label="Parametro"];\n`;
-    //     }
+        for(let i = 0; i < this.parametros.length; i++){
+            result += `${arrayParametros[i]}[label="Parametro"];\n`;
+        }
 
-    //     result += `${par2}[label=")"];\n`;
-    //     result += `${puntocoma}[label=";"];\n`
+        result += `${par2}[label=")"];\n`;
+        result += `${puntocoma}[label=";"];\n`
 
 
-    //     result += `${anterior} -> ${llamada};\n`;
-    //     result += `${llamada} -> ${ident};\n`;
-    //     result += `${llamada} -> ${par1};\n`;
+        result += `${anterior} -> ${llamada};\n`;
+        result += `${llamada} -> ${ident};\n`;
+        result += `${llamada} -> ${par1};\n`;
 
-    //     for(let i = 0; i < this.parametros.length; i++){
-    //         result += `${llamada} -> ${arrayParametros[i]};\n`;
-    //     }
+        for(let i = 0; i < this.parametros.length; i++){
+            result += `${llamada} -> ${arrayParametros[i]};\n`;
+        }
 
-    //     result += `${llamada} -> ${par2};\n`;
-    //     result += `${llamada} -> ${puntocoma};\n`;
+        result += `${llamada} -> ${par2};\n`;
+        result += `${llamada} -> ${puntocoma};\n`;
         
-    //     for(let i = 0; i < this.parametros.length; i++){
-    //         result += this.parametros[i].obtenerAST(arrayParametros[i]);
-    //     }
+        for(let i = 0; i < this.parametros.length; i++){
+            result += this.parametros[i].ArbolGraph(arrayParametros[i]);
+        }
 
-    //     return result;
-    // }
+        return result;
+    }
 
 }

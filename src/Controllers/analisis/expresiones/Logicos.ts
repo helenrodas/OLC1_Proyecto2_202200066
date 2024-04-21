@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 
 export default class Logicos extends Instruccion {
@@ -86,6 +87,61 @@ export default class Logicos extends Instruccion {
             } else {
                 return new Errores("Semantico", "comparacion not Invalida", this.linea, this.col)
             }
+    }
+
+    ArbolGraph(anterior: string): string {
+
+        let result = "";
+
+        let contador = Contador.getInstancia();
+
+        if (this.operacion == Operadores.AND) {
+
+            let exp1 = `n${contador.get()}`;
+            let exp2 = `n${contador.get()}`;
+            let operador = `n${contador.get()}`;
+            result += `${exp1}[label=\"Expresion\"];\n`;
+            result += `${exp2}[label=\"Expresion\"];\n`;
+            result += `${operador}[label=\"&&\"];\n`;
+
+            result += `${anterior} -> ${exp1};\n`;
+            result += `${anterior} -> ${operador};\n`;
+            result += `${anterior} -> ${exp2};\n`;
+
+            result += this.operando1?.ArbolGraph(exp1);
+            result += this.operando2?.ArbolGraph(exp2);
+
+        }else if(this.operacion == Operadores.OR){
+
+            let exp1 = `n${contador.get()}`;
+            let exp2 = `n${contador.get()}`;
+            let operador = `n${contador.get()}`;
+            result += `${exp1}[label=\"Expresion\"];\n`;
+            result += `${exp2}[label=\"Expresion\"];\n`;
+            result += `${operador}[label=\"||\"];\n`;
+
+            result += `${anterior} -> ${exp1};\n`;
+            result += `${anterior} -> ${operador};\n`;
+            result += `${anterior} -> ${exp2};\n`;
+
+            result += this.operando1?.ArbolGraph(exp1);
+            result += this.operando2?.ArbolGraph(exp2);
+
+        }else if(this.operacion == Operadores.NOT){
+
+            let nodoNot = `n${contador.get()}`;
+            let nodoExp = `n${contador.get()}`;
+            result += `${nodoNot}[label="!"];\n`;
+            result += `${nodoExp}[label="Expresion"];\n`;
+
+            result += `${anterior} -> ${nodoNot};\n`;
+            result += `${anterior} -> ${nodoExp};\n`;
+
+            result += this.operandoUnico?.ArbolGraph(nodoExp);
+
+        }
+
+        return result;
     }
 }
 

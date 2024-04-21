@@ -2,6 +2,7 @@ import { Instruccion } from "../abstracto/Instruccion";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 // enteros y decimales
 export default class Nativo extends Instruccion {
@@ -14,5 +15,16 @@ export default class Nativo extends Instruccion {
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         return this.valor
+    }
+
+    ArbolGraph(anterior: string): string {
+        let contador = Contador.getInstancia()
+        let nodoNativo = `n${contador.get()}`
+        let nodoValor = `n${contador.get()}`
+        let resultado = `${nodoNativo}[label=\"NATIVO\"];\n`
+        resultado += `${nodoValor}[label=\"${this.valor}\"];\n`
+        resultado += `${nodoNativo}->${nodoValor};\n`
+        resultado += `${anterior}->${nodoNativo};\n`
+        return resultado
     }
 }

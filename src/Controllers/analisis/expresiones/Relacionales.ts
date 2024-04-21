@@ -3,6 +3,7 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import Contador from "../simbolo/Contador";
 
 
 export default class Relacionales extends Instruccion {
@@ -783,6 +784,10 @@ export default class Relacionales extends Instruccion {
             default:
                 return new Errores("Semantico", "Operacion Relacional Invalida", this.linea, this.col)
         }
+    }
+
+    ArbolGraph(anterior: string): string {
+        return "";
     }
 }
 
