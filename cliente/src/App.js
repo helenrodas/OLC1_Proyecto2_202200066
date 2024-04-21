@@ -35,7 +35,7 @@ function App() {
         consolaRef.current.setValue(data.Respuesta);
       })
       .catch((error) => {
-        alert("Ya no sale comp1")
+        alert("Error en la ejecucion!")
         console.error('Error:', error);
       });
   }
@@ -53,7 +53,7 @@ function App() {
         console.log(data.AST);
       })
       .catch((error) => {
-        alert("Error al interpretar el archivo.")
+        alert("Error al generar grafica.")
         console.error('Error:', error);
       });
   }
@@ -71,7 +71,7 @@ function App() {
         console.log(data.listaErrores);
       })
       .catch((error) => {
-        alert("Error al interpretar el archivo.")
+        alert("Error al generar reporte.")
         console.error('Error:', error);
       });
   }
@@ -176,11 +176,11 @@ function abrirArchivo(nombre) {
         </div>
       </div>
       <div style={{ backgroundColor: '#cde1f2', height: '28px', borderTop: '1px solid #015092', position: 'fixed', bottom: '0', left: '0', right: '0' }}>
-      <li><a href="#" onClick={crearArchivoEnBlanco}>Crear archivo en blanco</a></li>
+      <li><a href="#" onClick={crearArchivoEnBlanco}>Nuevo</a></li>
       
-                    {archivos.map(archivo => (
-                        <li key={archivo.nombre}><a href="#" onClick={() => abrirArchivo(archivo.nombre)}>{archivo.nombre}</a></li>
-                    ))}
+          {archivos.map(archivo => (
+              <li key={archivo.nombre}><a href="#" onClick={() => abrirArchivo(archivo.nombre)}>{archivo.nombre}</a></li>
+          ))}
 
 
         
