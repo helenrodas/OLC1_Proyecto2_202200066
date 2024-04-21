@@ -19,11 +19,14 @@ export default class Declaracion extends Instruccion {
         
         let valorFinal = this.valor.interpretar(arbol, tabla)
         if (valorFinal instanceof Errores) return valorFinal
-
+        console.log("entro al interpretar de declaracion: ")
+        //console.log("este es valorFinal de declaracion: ",valorFinal)
+        // console.log(this.tipoDato)
         // Verificacion de que los tipos de las variables declarados sean del mismo tipo del valor asignado
         if(this.valor.tipoDato.getTipo() == tipoDato.INTEGER && this.tipoDato.getTipo() == tipoDato.DOUBLE){
-            console.log("entro al if")
+            //console.log("entro al if")
             this.identificador.forEach(id => {
+                console.log(id)
                 valorFinal = parseFloat(valorFinal);
                 if (!tabla.setVariable(new Simbolo(this.tipoDato, id, valorFinal))){
                     return new Errores("Semantico", "No se puede declarar variable que ya existe", this.linea, this.col)
@@ -31,18 +34,20 @@ export default class Declaracion extends Instruccion {
             });
         }
         else{
+           // console.log("entro al else")
             if (this.valor.tipoDato.getTipo() != this.tipoDato.getTipo()) {
                 return new Errores("SEMANTICO", "No se puede declarar variable", this.linea, this.col)
             }
+            
             this.identificador.forEach(elemento => {
+                // console.log("despues del else")
+                // console.log(elemento)
                 if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
                     return new Errores("SEMANTICO", "variable ya existe!", this.linea, this.col)
                 }   
             })
             
         }
-        
-        
         
     }
 

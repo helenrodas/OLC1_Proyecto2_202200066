@@ -34,6 +34,7 @@
 	const DeclaracionInit = require('./instrucciones/DeclaracionInit')
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
 	const ArrayU = require('./instrucciones/ArrayU')
+	const Return = require('./instrucciones/Return')
 
 	const Errores = require('./excepciones/Errores')
 	const indexController = require('../indexController')
@@ -85,9 +86,10 @@
 "["						return 'COR_IZQ'
 "]"						return 'COR_DER'
 //------------Otro operadores-------------
+";"                   	return 'PUNTO_COMA'
 ","                   	return 'COMA'
 "."                   	return 'PUNTO'
-";"                   	return 'PUNTO_COMA'
+
 ":"						return 'DOSPUNTOS'
 "{"                   	return 'LLAVE_IZQ'
 "}"                   	return 'LLAVE_DER'
@@ -120,8 +122,9 @@
 "tolower"				return 'SENT_TOLOWER'
 "toupper"				return 'SENT_TOUPPER'
 "round"					return 'SENT_ROUND'
+".length()"				return 'SENT_LENGTH'
 //--------Funciones Nativas--------
-"length"				return 'SENT_LENGTH'
+//"length"				return 'SENT_LENGTH'
 "typeof"				return 'SENT_TYPEOF'
 "toString"				return 'SENT_TOSTRING'
 "c_str"			        return 'SENT_TOCHARARRAY'
@@ -160,17 +163,18 @@
 
 // Precedencias
 %left 'OP_TERNARIO'
-
-%left 'AND'
 %left 'OR'
+%left 'AND'
 %right 'NOT'
 %left 'IGUALACIONDOBLE' 'DIFERENCIACION' 'MENOR' 'MENORIGUAL' 'MAYOR' 'MAYORIGUAL'
 %left 'ARI_SUMA' 'ARI_MENOS'
 %left 'ARI_MULTIPLICACION' 'ARI_DIVISION' 'ARI_MODULO'
 %left 'INCREMENTO','DECREMENTO'
 %left signoMenos
-%left PUNTO
-%left PARENTESIS_IZQ
+%left 'PARENTESIS_IZQ'
+%left 'SENT_LENGTH'
+
+
 
 
 %start INICIO
@@ -194,11 +198,12 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 			|INS_FOR						  {$$=$1;}
 			|INS_DOWHILE					  {$$=$1;}
 			| INS_SWITCH					{$$=$1;}
-			| DECLARACION_ARREGLO PUNTO_COMA  {$$=$1;}
+			| DECLARACION_ARREGLO 	  {$$=$1;}
 			| FUN_METODO						{$$=$1;}
-			| FUN_EXE PUNTO_COMA				{$$=$1;}
-			| FUN_LLAMADA PUNTO_COMA			{$$=$1;}
-			| MOD_VECTOR PUNTO_COMA						{$$=$1;}
+			| FUN_EXE 				{$$=$1;}
+			| FUN_LLAMADA PUNTO_COMA		        {$$=$1;}
+			| MOD_VECTOR 						{$$=$1;}
+			| INS_RETURN 				{$$=$1;}
 ;
 
 IMPRESION : SENT_COUT PRINTMENOR EXPRESION FINALPRINT    
@@ -231,7 +236,7 @@ ASIGNACION_DECLARACION : IGUALACION EXPRESION {$$= $2;}
 
 
 ASIGNACION : IDENTIFICADOR IGUALACION EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
-			| EXPRESION				{$$=$1;}
+			
 			| INC_DEC				{$$=$1;}
 ;
 
@@ -240,30 +245,31 @@ LISTA_VAR : LISTA_VAR COMA IDENTIFICADOR	{$1.push($3); $$=$1;}
 ;
 
 
-FUN_METODO : TIPOS IDENTIFICADOR PARENTESIS_IZQ PARAMETROS PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER		{$$ = new Metodo.default($2,$1,$7, @1.first_line, @1.first_column,$4);}
-			| TIPOS IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER				{$$ = new Metodo.default($2,$1,$6, @1.first_line, @1.first_column,[]);}
+FUN_METODO : TIPOS IDENTIFICADOR PARENTESIS_IZQ PARAMETROS PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER		{$$ = new Metodo.default($2,$1,$4,$7, @1.first_line, @1.first_column);}
+			| TIPOS IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ INSTRUCCIONES LLAVE_DER				{$$ = new Metodo.default($2,$1,[],$6, @1.first_line, @1.first_column);}
 ;
 
 
-PARAMETROS : PARAMETROS COMA TIPOS IDENTIFICADOR	{ $1.push({tipo:$3, id:$4}); $$=$1;} 
-			| TIPOS IDENTIFICADOR					{$$ = [{tipo:$1, id:$2}];}
+PARAMETROS : PARAMETROS COMA TIPOS IDENTIFICADOR	{ $1.push({tipo:$3, id:[$4]}); $$=$1;} 
+			| TIPOS IDENTIFICADOR					{$$ = [{tipo:$1, id:[$2]}];}
 ;
 
-FUN_EXE : SENT_EXECUTE IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER	{$$ = new Execute.default($2,@1.first_line, @1.first_column, $4 );}
-			| SENT_EXECUTE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER					{$$ = new Execute.default($2, @1.first_line, @1.first_column, [])}
+FUN_EXE : SENT_EXECUTE IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER PUNTO_COMA	{$$ = new Execute.default($2,@1.first_line, @1.first_column, $4 );}
+			| SENT_EXECUTE IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA					{$$ = new Execute.default($2, @1.first_line, @1.first_column, [])}
 ;
 
 PARAMETROSLLAMADA : PARAMETROSLLAMADA COMA EXPRESION		 {$1.push($3); $$=$1;}
 					| EXPRESION									{$$=[$1];}
 ;
 
-FUN_LLAMADA : IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER		{$$ = new Llamada.default($1, @1.first_line, @1.first_column, $3);}
-			| IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER						{$$ = new Llamada.default($1, @1.first_line, @1.first_column, []);}
+FUN_LLAMADA : IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER		{$$ = new Llamada.default($1, $3,@1.first_line, @1.first_column);}
+			| IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER 						{$$ = new Llamada.default($1, [], @1.first_line, @1.first_column);}
 ;
 
 EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION ARI_MENOS EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.RESTA, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION ARI_MULTIPLICACION EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.MULT, @1.first_line, @1.first_column, $1, $3);}
+			| EXPRESION ARI_DIVISION EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.DIVI, @1.first_line, @1.first_column, $1, $3);}
 			| ARI_POTENCIA PARENTESIS_IZQ EXPRESION COMA EXPRESION PARENTESIS_DER       {$$ = new Aritmeticas.default(Aritmeticas.Operadores.ARI_POTENCIA, @1.first_line, @1.first_column, $3, $5);}
 			| EXPRESION ARI_MODULO EXPRESION    {$$ = new Aritmeticas.default(Aritmeticas.Operadores.ARI_MODULO, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION IGUALACIONDOBLE EXPRESION        {$$ = new Relacionales.default(Relacionales.Operadores.IGUALACIONDOBLE, @1.first_line, @1.first_column, $1, $3);}
@@ -275,7 +281,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| EXPRESION OR EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.OR, @1.first_line, @1.first_column, $1, $3);}
 			| EXPRESION AND EXPRESION        		{$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
 			| NOT EXPRESION        					{$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
-			| EXPRESION PUNTO SENT_LENGTH PARENTESIS_IZQ PARENTESIS_DER 	{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_LENGTH, @1.first_line, @1.first_column, $1);}
+			| EXPRESION  SENT_LENGTH 	{$$ = new FuncionesNativas.default(FuncionesNativas.Operadores.SENT_LENGTH, @1.first_line, @1.first_column, $1);}
 			| CASTEO 									{$$ = $1;}
 			| FUNCION 									{$$ = $1;}
 			| FUN_NATIVA								{$$ = $1;}
@@ -290,7 +296,11 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| IDENTIFICADOR                           {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}    
 			| INS_TERNARIO								{$$=$1;}
 			| ACCESO_VECTOR								{$$=$1;}
+			| FUN_LLAMADA								{$$=$1;}
 ;
+
+// PROD_TEMP: IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER		{$$ = new Llamada.default($1, @1.first_line, @1.first_column, $3);}
+// ;
 
 TIPOS : INTEGER             {$$ = new Tipo.default(Tipo.tipoDato.INTEGER);}
 		| DOUBLE          {$$ = new Tipo.default(Tipo.tipoDato.DOUBLE);}
@@ -331,8 +341,8 @@ OPC_ELSE    :   SENT_ELSE OPC_IF
             { $$ = $3;}
 ;
 
-DECLARACION_ARREGLO : TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION NEW TIPOS COR_IZQ EXPRESION COR_DER	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,$7, $9,[]);}
-					| TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION COR_IZQ LISTAVALORES COR_DER	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,undefined, undefined,$7);}
+DECLARACION_ARREGLO : TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION NEW TIPOS COR_IZQ EXPRESION COR_DER PUNTO_COMA	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,$7, $9,[]);}
+					| TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION COR_IZQ LISTAVALORES COR_DER PUNTO_COMA	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,undefined, undefined,$7);}
 ;
 
 LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
@@ -342,7 +352,7 @@ LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
 ACCESO_VECTOR : IDENTIFICADOR COR_IZQ EXPRESION COR_DER  {$$= new AccesoArrayU.default($1,$3,@1.first_line, @1.first_column);}
 ;
 
-MOD_VECTOR : IDENTIFICADOR COR_IZQ EXPRESION COR_DER IGUALACION EXPRESION 			{$$= new ModArrayU.default($1,$3,$6,@1.first_line, @1.first_column);}
+MOD_VECTOR : IDENTIFICADOR COR_IZQ EXPRESION COR_DER IGUALACION EXPRESION PUNTO_COMA		{$$= new ModArrayU.default($1,$3,$6,@1.first_line, @1.first_column);}
 ;
 
 
@@ -377,4 +387,8 @@ LISTA_CASE : LISTA_CASE OPC_CASE {$1.push($2); $$=$1;}
 ;
 
 OPC_DEFAULT : SENT_DEFAULT DOSPUNTOS INSTRUCCIONES {$$ = new Default.default($3, @1.first_line,@1.first_column)}
+;
+
+INS_RETURN : SENT_RETURN PUNTO_COMA				{$$ = new Return.default(@1.first_line,@1.first_column)}
+			| SENT_RETURN EXPRESION PUNTO_COMA 	{$$ = new Return.default(@1.first_line,@1.first_column,$2)}
 ;

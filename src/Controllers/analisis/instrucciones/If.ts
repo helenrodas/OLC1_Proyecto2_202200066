@@ -5,7 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
 import Continue from "./continue";
-
+import Return from "./Return";
 
 export default class If extends Instruccion {
     private condicion: Instruccion
@@ -17,7 +17,6 @@ export default class If extends Instruccion {
         this.condicion = condicion
         this.instruccionesif = instrucciones1
         this.instruccioneselse=instrucciones2
-
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
@@ -34,17 +33,23 @@ export default class If extends Instruccion {
 
         if (condicion) {
             for (let i of this.instruccionesif) {
-                if (i instanceof Break) return i;
+                // if (i instanceof Break) return i;
+                // if (i instanceof Return) return i;
                 let resultado = i.interpretar(arbol, newTabla)
                 if (resultado instanceof Break) return;
+                if (resultado instanceof Return) return resultado;
             }
         }else{
             if(this.instruccioneselse){
                 for (let i of this.instruccioneselse) {
                         if (i instanceof Break) return i;
                         if (i instanceof Continue) return i;
+                        if (i instanceof Return) return i;
                         let resultado = i.interpretar(arbol, newTabla)
-                        if (resultado instanceof Break) return; }
+                        if (resultado instanceof Break) return; 
+                        if (resultado instanceof Return) return resultado;
+                    
+                    }
             }
         }
     }

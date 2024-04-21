@@ -43,9 +43,11 @@ export default class Execute extends Instruccion {
 
             // declaramos los parametros
             for (let i = 0; i < busqueda.parametros.length; i++) {
+                // console.log(busqueda.parametros[i].tipo)
+                // console.log(busqueda)
                 let declaracionParametro = new Declaracion(
                     busqueda.parametros[i].tipo, this.linea, this.col,
-                    [busqueda.parametros[i].id], this.parametros[i])
+                    busqueda.parametros[i].id, this.parametros[i])
 
                 // declarando parametro de metodo
                 let resultado = declaracionParametro.interpretar(arbol, newTabla)
