@@ -35,6 +35,8 @@
 	const AsignacionVar = require('./instrucciones/AsignacionVar')
 	const ArrayU = require('./instrucciones/ArrayU')
 	const ArrayD = require('./instrucciones/ArrayD')
+	const ModArrayD = require('./instrucciones/ModArrayD')
+	const AccesoArrayD = require('./instrucciones/AccesoArrayD')
 	const Return = require('./instrucciones/Return')
 
 	const Errores = require('./excepciones/Errores')
@@ -204,6 +206,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 			| FUN_EXE 				{$$=$1;}
 			| FUN_LLAMADA PUNTO_COMA		        {$$=$1;}
 			| MOD_VECTOR 						{$$=$1;}
+			|MOD_VECTOR_D					{$$=$1;}
 			| INS_RETURN 				{$$=$1;}
 			| DECLARACION_ARREGLO_D   {$$=$1;}
 ;
@@ -299,6 +302,7 @@ EXPRESION : EXPRESION ARI_SUMA EXPRESION          {$$ = new Aritmeticas.default(
 			| INS_TERNARIO								{$$=$1;}
 			| ACCESO_VECTOR								{$$=$1;}
 			| FUN_LLAMADA								{$$=$1;}
+			|ACCESO_VECTOR_D							{$$=$1;}
 ;
 
 // PROD_TEMP: IDENTIFICADOR PARENTESIS_IZQ PARAMETROSLLAMADA PARENTESIS_DER		{$$ = new Llamada.default($1, @1.first_line, @1.first_column, $3);}
@@ -407,4 +411,11 @@ DIMENSIONES : COR_IZQ INDEX COR_DER			{$$=$2}
 ;
 INDEX: INDEX COMA EXPRESION			{$1.push($3); $$=$1;}
 		| EXPRESION				{$$=[$1];}
+;
+
+
+ACCESO_VECTOR_D : IDENTIFICADOR COR_IZQ EXPRESION COR_DER COR_IZQ EXPRESION COR_DER   {$$= new AccesoArrayD.default($1,$3,$6,@1.first_line, @1.first_column);}
+;
+
+MOD_VECTOR_D : IDENTIFICADOR COR_IZQ EXPRESION COR_DER COR_IZQ EXPRESION COR_DER IGUALACION EXPRESION PUNTO_COMA		{$$= new ModArrayD.default($1,$3,$6,$9,@1.first_line, @1.first_column);}
 ;
