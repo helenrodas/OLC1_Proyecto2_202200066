@@ -62,9 +62,9 @@ ahora ya depende que exista la funcion execute para ejecutar el codigo
                 // console.log(resultado)
             }
             if(execute != null){
-                execute.interpretar(ast,tabla)
-                if (execute instanceof Errores){
-                    listaErrores.push(execute)
+               let res= execute.interpretar(ast,tabla)
+                if (res instanceof Errores){
+                    listaErrores.push(res)
                 }
             }
             console.log(tabla)
@@ -95,8 +95,13 @@ ahora ya depende que exista la funcion execute para ejecutar el codigo
             res.send({ "Error": "Error en el analisis" })
         }
     }
+
     public arbolAST(req: Request, res: Response) {
         res.json({ AST: AstDot })
+    }
+
+    public getListaErrores(req: Request, res: Response) {
+        res.json({ listaErrores : listaErrores })
     }
     
         

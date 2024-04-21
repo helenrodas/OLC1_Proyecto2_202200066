@@ -10,6 +10,7 @@ function App() {
   const [archivos, setArchivos] = useState([]); // Estado para mantener los archivos
   const [archivoActual, setArchivoActual] = useState(null);
   const [AST, obtenerAst] = useState("")
+  const [Errores, getErrores] = useState([])
 
 
   function handleEditorDidMount(editor, id) {
@@ -50,7 +51,24 @@ function App() {
       .then(data => {
         obtenerAst(data.AST);
         console.log(data.AST);
-        //consolaRef.current.setValue(data.message);
+      })
+      .catch((error) => {
+        alert("Error al interpretar el archivo.")
+        console.error('Error:', error);
+      });
+  }
+
+  function ErroresReporte(){
+    fetch('http://localhost:4000/getErrores', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        getErrores(data.listaErrores);
+        console.log(data.listaErrores);
       })
       .catch((error) => {
         alert("Error al interpretar el archivo.")
@@ -133,8 +151,12 @@ function abrirArchivo(nombre) {
             <a class="nav-link" href="#" onClick={interpretar}>Ejecutar</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onClick={reporteAST} >Reportes</a>
+                <a class="nav-link" href="#" onClick={reporteAST} >Arbol AST</a>
                 {AST && <Graphviz dot={AST} options={{zoom:true}} />}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onClick={ErroresReporte} >Reportes</a>
+                
             </li>
         </ul>
     </div>
@@ -159,7 +181,35 @@ function abrirArchivo(nombre) {
                     {archivos.map(archivo => (
                         <li key={archivo.nombre}><a href="#" onClick={() => abrirArchivo(archivo.nombre)}>{archivo.nombre}</a></li>
                     ))}
+
+
+        
       </div>
+      <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">No.</th>
+                          <th scope="col">Error</th>
+                          <th scope="col">Descripcion</th>
+                          <th scope="col">Fila</th>
+                          <th scope="col">Columna</th>
+                        </tr>
+                      </thead>
+                      <tbody>{
+                        Errores.map((Error,i)=>(
+                          <tr key ={ i + 1}>
+                          <td>{i+1}</td>
+                          <td>{Error.tipoError}</td>
+                          <td>{Error.desc}</td>
+                          <td>{Error.fila}</td>
+                          <td>{Error.col}</td>
+                        </tr>
+                        ))
+
+                        }
+                        
+                      </tbody>
+                    </table>
     </div>
   );
 }

@@ -787,7 +787,122 @@ export default class Relacionales extends Instruccion {
     }
 
     ArbolGraph(anterior: string): string {
-        return "";
+        
+        let indice = Contador.getInstancia();
+        let resultado =""
+
+        if(this.operacion == Operadores.IGUALACIONDOBLE){
+
+            let expresion1 = `n${indice.get()}`
+
+            let expresion2 = `n${indice.get()}`
+            
+            
+            let operando = `n${indice.get()}`
+
+            resultado += `${expresion1}[label = "Expresion"];\n`
+
+            resultado += `${operando}[label = "=="];\n`
+
+
+            resultado += `${expresion2}[label = "Expresion"];\n`
+            
+            resultado += `${anterior} -> ${expresion1};\n`
+            resultado += `${anterior} -> ${operando};\n`
+            resultado += `${anterior} -> ${expresion2};\n`
+
+            resultado += this.operando1?.ArbolGraph(expresion1)
+            resultado += this.operando2?.ArbolGraph(expresion2)
+
+        }else if(this.operacion == Operadores.DIFERENCIACION){
+
+            let expresion1 = `n${indice.get()}`
+            let expresion2 = `n${indice.get()}`
+            let operando = `n${indice.get()}`
+
+            resultado += `${expresion1}[label = "Expresion"];\n`
+            resultado += `${operando}[label = "!="];\n`
+            resultado += `${expresion2}[label = "Expresion"];\n`
+
+            resultado += `${anterior} -> ${expresion1};\n`
+            resultado += `${anterior} -> ${operando};\n`
+            resultado += `${anterior} -> ${expresion2};\n`
+
+            resultado += this.operando1?.ArbolGraph(expresion1)
+            resultado += this.operando2?.ArbolGraph(expresion2)
+
+        }else if(this.operacion == Operadores.MAYOR){
+
+            let expresion1 = `n${indice.get()}`
+            let expresion2 = `n${indice.get()}`
+            let operando = `n${indice.get()}`
+
+            resultado += `${expresion1}[label = "Expresion"];\n`
+            resultado += `${operando}[label = ">"];\n`
+            resultado += `${expresion2}[label = "Expresion"];\n`
+
+            resultado += `${anterior} -> ${expresion1};\n`
+            resultado += `${anterior} -> ${operando};\n`
+            resultado += `${anterior} -> ${expresion2};\n`
+
+            resultado += this.operando1?.ArbolGraph(expresion1)
+            resultado += this.operando2?.ArbolGraph(expresion2)
+
+        }else if(this.operacion == Operadores.MENOR){
+
+            let expresion1 = `n${indice.get()}`
+            let expresion2 = `n${indice.get()}`
+            let operando = `n${indice.get()}`
+
+            resultado += `${expresion1}[label = "Expresion"];\n`
+            resultado += `${operando}[label = "<"];\n`
+            resultado += `${expresion2}[label = "Expresion"];\n`
+
+            resultado += `${anterior} -> ${expresion1};\n`
+            resultado += `${anterior} -> ${operando};\n`
+            resultado += `${anterior} -> ${expresion2};\n`
+
+            resultado += this.operando1?.ArbolGraph(expresion1)
+            resultado += this.operando2?.ArbolGraph(expresion2)
+
+        }else if(this.operacion == Operadores.MAYORIGUAL){
+
+            let expresion1 = `n${indice.get()}`
+            let expresion2 = `n${indice.get()}`
+            let operando = `n${indice.get()}`
+
+            resultado += `${expresion1}[label = "Expresion"];\n`
+            resultado += `${operando}[label = ">="];\n`
+            resultado += `${expresion2}[label = "Expresion"];\n`
+
+            resultado += `${anterior} -> ${expresion1};\n`
+            resultado += `${anterior} -> ${operando};\n`
+            resultado += `${anterior} -> ${expresion2};\n`
+
+            resultado += this.operando1?.ArbolGraph(expresion1)
+            resultado += this.operando2?.ArbolGraph(expresion2)
+
+
+        }else if(this.operacion == Operadores.MENORIGUAL){
+
+            let expresion1 = `n${indice.get()}`
+            let expresion2 = `n${indice.get()}`
+            let operando = `n${indice.get()}`
+
+            resultado += `${expresion1}[label = "Expresion"];\n`
+            resultado += `${operando}[label = "<="];\n`
+            resultado += `${expresion2}[label = "Expresion"];\n`
+
+            resultado += `${anterior} -> ${expresion1};\n`
+            resultado += `${anterior} -> ${operando};\n`
+            resultado += `${anterior} -> ${expresion2};\n`
+
+            resultado += this.operando1?.ArbolGraph(expresion1)
+            resultado += this.operando2?.ArbolGraph(expresion2)
+
+        }
+
+        return resultado;
     }
 }
 
