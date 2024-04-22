@@ -32,6 +32,8 @@ export default class Case extends Instruccion {
            }
     }
     
+
+    
     ArbolGraph(anterior: string): string {
         
         let contador = Contador.getInstancia();

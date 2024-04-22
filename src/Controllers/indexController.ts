@@ -53,6 +53,7 @@ class controller {
                 }
                 if (i instanceof Execute){
                     if(executeEncontrado){
+                        ast.Print("Error Semantico: Solo se permite una instancia de Execute");
                         const error = new Errores("Semántico", "Solo se permite una instancia de Execute", 0, 0);
                         listaErrores.push(error);
                         break;

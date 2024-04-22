@@ -38,6 +38,7 @@
 	const ModArrayD = require('./instrucciones/ModArrayD')
 	const AccesoArrayD = require('./instrucciones/AccesoArrayD')
 	const Return = require('./instrucciones/Return')
+	const Cstr = require('./instrucciones/Cstr')
 
 	const Errores = require('./excepciones/Errores')
 	const indexController = require('../indexController')
@@ -349,6 +350,7 @@ OPC_ELSE    :   SENT_ELSE OPC_IF
 
 DECLARACION_ARREGLO : TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION NEW TIPOS COR_IZQ EXPRESION COR_DER PUNTO_COMA	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,$7, $9,[]);}
 					| TIPOS IDENTIFICADOR COR_IZQ COR_DER IGUALACION COR_IZQ LISTAVALORES COR_DER PUNTO_COMA	{$$ = new ArrayU.default($1, $2, @1.first_line, @1.first_column,undefined, undefined,$7);}
+					| TIPOS COR_IZQ COR_DER IDENTIFICADOR IGUALACION IDENTIFICADOR PUNTO SENT_TOCHARARRAY PARENTESIS_IZQ PARENTESIS_DER	PUNTO_COMA	{$$ = new Cstr.default($1,$4,$6, @1.first_line, @1.first_column);}
 ;
 
 LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
