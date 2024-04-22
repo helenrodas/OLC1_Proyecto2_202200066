@@ -17,7 +17,9 @@ class controller {
 
     public interpretar(req: Request, res: Response) {
         listaErrores = new Array<Errores>
+       
         try {
+            let executeEncontrado = false;
             AstDot = ""
             let parser = require('./analisis/analizador')
             let ast = new Arbol(parser.parse(req.body.entrada))
@@ -39,6 +41,9 @@ class controller {
                 if (i instanceof Metodo) {
                     i.id = i.id.toLocaleLowerCase()
                     ast.addFunciones(i)
+                    if(i instanceof Errores){
+                        listaErrores.push(i)
+                    }
                 }
                 if(i instanceof Declaracion){
                     i.interpretar(ast, tabla)
@@ -47,7 +52,14 @@ class controller {
                     }
                 }
                 if (i instanceof Execute){
+                    if(executeEncontrado){
+                        const error = new Errores("Semántico", "Solo se permite una instancia de Execute", 0, 0);
+                        listaErrores.push(error);
+                        break;
+                    }
+                    executeEncontrado = true;
                     execute = i
+                    
                 }
 //execute solo puede venir una vez, si vienve mas debe dar error semantico
 

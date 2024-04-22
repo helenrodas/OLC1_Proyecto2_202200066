@@ -424,7 +424,6 @@ export default class Aritmeticas extends Instruccion {
         }
 
     }
-
     modulo(op1: any, op2: any) {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
@@ -454,9 +453,7 @@ export default class Aritmeticas extends Instruccion {
             default:
                 return new Errores("Semantico", "Operacion modulo invalida", this.linea, this.col)
         }
-
     }
-
     negacion(op1: any) {
         let opU = this.operandoUnico?.tipoDato.getTipo()
         switch (opU) {
