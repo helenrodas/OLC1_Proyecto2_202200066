@@ -29,8 +29,8 @@ export default class FunCsrt extends Instruccion{
         }
 
         if (variable.getTipo().getTipo() !== tipoDato.STRING) {
-            arbol.Print("\n Error Semantico:"+"Variable no aceptada " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
-            return new Errores("SEMANTICO", "Variable no aceptada", this.linea, this.col);
+            arbol.Print("\n Error Semantico:"+"Variable no es del tipo esperado " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
+            return new Errores("SEMANTICO", "Variable no es del tipo esperado", this.linea, this.col);
         }
 
         let arrayCaracteres: any = [];
@@ -40,7 +40,7 @@ export default class FunCsrt extends Instruccion{
 
         
         if (!tabla.setVariable(new Simbolo(this.tipo, this.identificador, arrayCaracteres))) {
-            arbol.Print("\n Error Semantico:"+"Variable ya existe " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
+            arbol.Print("\n Error Semantico:"+"Variable no aceptada " + "linea: " + this.linea + " columna: " + (this.col+1) + "\n")
             return new Errores("SEMANTICO", "Variable ya existe", this.linea, this.col);
         }
     }
