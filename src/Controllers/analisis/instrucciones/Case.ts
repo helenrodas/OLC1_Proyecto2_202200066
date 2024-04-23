@@ -29,6 +29,7 @@ export default class Case extends Instruccion {
                 if (i instanceof Break) return i;
                 let resultado = i.interpretar(arbol, newTabla)
                 if (resultado instanceof Break) return resultado;
+                if (resultado instanceof Errores) return resultado;
            }
     }
     

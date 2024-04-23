@@ -4,7 +4,6 @@ import Arbol from "../simbolo/Arbol";
 import Simbolo from "../simbolo/Simbolo";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
-import Contador from "../simbolo/Contador";
 
 export default class ArrayU extends Instruccion{
     private tipoPrincipal:Tipo;
@@ -42,6 +41,7 @@ export default class ArrayU extends Instruccion{
                 return new Errores("SEMANTICO", "Variable ya existe", this.linea, this.col)
             }
 
+
         }
         else if(this.listaDatos){
             let arry: any= []
@@ -56,12 +56,11 @@ export default class ArrayU extends Instruccion{
                 }
                 arry[i] = dato
             }
+            
             if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arry))){
                 arbol.Print("\n Error Semantico:"+"Variable ya existe " + " linea: " + this.linea + "columna: " + (this.col+1) + "\n")
                 return new Errores("SEMANTICO", "Variable ya existe", this.linea, this.col)
             }
-
-
         } 
     }
 

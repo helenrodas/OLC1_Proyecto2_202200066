@@ -30,37 +30,41 @@ export default class Default extends Instruccion {
     ArbolGraph(anterior: string): string {
 
         let contador = Contador.getInstancia();
-        let result = "";
+        let resultado = "";
 
-        let defaultN = `n${contador.get()}`;
+        let Sent_default = `n${contador.get()}`;
+
         let dospuntos = `n${contador.get()}`;
-        let padreInstrucciones = `n${contador.get()}`;
-        let contInstrucciones = [];
+        
+        let instrucciones = `n${contador.get()}`;
+        
+        
+        let listaInstrucciones = [];
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            contInstrucciones.push(`n${contador.get()}`);
+            listaInstrucciones.push(`n${contador.get()}`);
         }
 
-        result += `${defaultN}[label="Default"];\n`;
-        result += `${dospuntos}[label=":"];\n`;
-        result += `${padreInstrucciones}[label="Instrucciones"];\n`;
+        resultado += `${Sent_default}[label="Default"];\n`;
+        resultado += `${dospuntos}[label=":"];\n`;
+        resultado += `${instrucciones}[label="Instrucciones"];\n`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += `${contInstrucciones[i]}[label="Instruccion"];\n`;
+            resultado += `${listaInstrucciones[i]}[label="Instruccion"];\n`;
         }
 
-        result += `${anterior} -> ${defaultN};\n`;
-        result += `${anterior} -> ${dospuntos};\n`;
-        result += `${anterior} -> ${padreInstrucciones};\n`;
+        resultado += `${anterior} -> ${Sent_default};\n`;
+        resultado += `${anterior} -> ${dospuntos};\n`;
+        resultado += `${anterior} -> ${instrucciones};\n`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += `${padreInstrucciones} -> ${contInstrucciones[i]};\n`;
+            resultado += `${instrucciones} -> ${listaInstrucciones[i]};\n`;
         }
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += this.instrucciones[i].ArbolGraph(contInstrucciones[i]);
+            resultado += this.instrucciones[i].ArbolGraph(listaInstrucciones[i]);
         }
 
-        return result;
+        return resultado;
     }
 }

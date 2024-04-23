@@ -42,6 +42,7 @@ export default class For extends Instruccion{
                 if(i instanceof Break) return;
                 if (i instanceof Continue) break;
                 let resultado = i.interpretar(arbol, nuevaTabla);
+                if(resultado instanceof Errores) return resultado;
                 if (resultado instanceof Return) return resultado;
                 if(resultado instanceof Break) return;
                 if (i instanceof Continue) break;
@@ -54,65 +55,80 @@ export default class For extends Instruccion{
     ArbolGraph(anterior: string): string {
 
         let indice = Contador.getInstancia();
-        let result = "";
-        let contenedorIns = [];
+        let resultado = "";
+        let listaInstrucciones = [];
 
-        let padre = `n${indice.get()}`;
-        let nFor = `n${indice.get()}`;
-        let par1 = `n${indice.get()}`;
+        let inicio = `n${indice.get()}`;
+    
+        let sentFor = `n${indice.get()}`;
+        let parIzq = `n${indice.get()}`;
         let decl = `n${indice.get()}`;
+    
         let cond = `n${indice.get()}`;
         let inc = `n${indice.get()}`;
-        let par2 = `n${indice.get()}`;
+   
+        let parDer = `n${indice.get()}`;
         let llav1 = `n${indice.get()}`;
+   
+   
         let padreIns = `n${indice.get()}`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            contenedorIns.push(`n${indice.get()}`);
+            listaInstrucciones.push(`n${indice.get()}`);
         }
 
         let llav2 = `n${indice.get()}`;
 
-        result += `${padre}[label="ciclo"];\n`;
-        result += `${nFor}[label="for"];\n`;
-        result += `${par1}[label="("];\n`;
-        result += `${decl}[label="expresion"];\n`;
-        result += `${cond}[label="condicion"];\n`; 
-        result += `${inc}[label="expresion"];\n`;
-        result += `${par2}[label=")"];\n`;
-        result += `${llav1}[label="{"];\n`;
-        result += `${padreIns}[label="Instrucciones"];\n`;
+        resultado += `${inicio}[label="ciclo"];\n`;
+        resultado += `${sentFor}[label="for"];\n`;
+        
+        resultado += `${parIzq}[label="("];\n`;
+        resultado += `${decl}[label="expresion"];\n`;
+        
+        
+        resultado += `${cond}[label="condicion"];\n`; 
+        resultado += `${inc}[label="expresion"];\n`;
+        resultado += `${parDer}[label=")"];\n`;
+        resultado += `${llav1}[label="{"];\n`;
+        resultado += `${padreIns}[label="Instrucciones"];\n`;
 
-        for(let i = 0; i < contenedorIns.length; i++){
-            result += ` ${contenedorIns[i]}[label="Instruccion"];\n`;
+        for(let i = 0; i < listaInstrucciones.length; i++){
+            resultado += ` ${listaInstrucciones[i]}[label="Instruccion"];\n`;
         }
 
-        result += `${llav2}[label="}"];\n`;
+        resultado += `${llav2}[label="}"];\n`;
 
-        result += `${anterior} -> ${padre};\n`;
-        result += `${padre} -> ${nFor};\n`;
-        result += `${padre} -> ${par1};\n`;
-        result += `${padre} -> ${decl};\n`;
-        result += `${padre} -> ${cond};\n`;
-        result += `${padre} -> ${inc};\n`;
-        result += `${padre} -> ${par2};\n`;
-        result += `${padre} -> ${llav1};\n`;
-        result += `${padre} -> ${padreIns};\n`;
+        resultado += `${anterior} -> ${inicio};\n`;
+        resultado += `${inicio} -> ${sentFor};\n`;
+        resultado += `${inicio} -> ${parIzq};\n`;
+    
+    
+        resultado += `${inicio} -> ${decl};\n`;
+        resultado += `${inicio} -> ${cond};\n`;
+    
+        resultado += `${inicio} -> ${inc};\n`;
+        resultado += `${inicio} -> ${parDer};\n`;
+    
+        resultado += `${inicio} -> ${llav1};\n`;
+        resultado += `${inicio} -> ${padreIns};\n`;
 
-        for(let i = 0; i < contenedorIns.length; i++){
-            result += `${padreIns} -> ${contenedorIns[i]};\n`;
+        for(let i = 0; i < listaInstrucciones.length; i++){
+            resultado += `${padreIns} -> ${listaInstrucciones[i]};\n`;
         }
 
-        result += `${padre} -> ${llav2};\n`;
+        resultado += `${inicio} -> ${llav2};\n`;
 
-        result += this.variable.ArbolGraph(decl);
-        result += this.condicion.ArbolGraph(cond);
-        result += this.inc_dec.ArbolGraph(inc);
 
-        for(let i = 0; i < contenedorIns.length; i++){
-            result += this.instrucciones[i].ArbolGraph(contenedorIns[i]);
+        resultado += this.variable.ArbolGraph(decl);
+        
+        
+        resultado += this.condicion.ArbolGraph(cond);
+        resultado += this.inc_dec.ArbolGraph(inc);
+
+        for(let i = 0; i < listaInstrucciones.length; i++){
+            resultado += this.instrucciones[i].ArbolGraph(listaInstrucciones[i]);
         }
 
-        return result;
+        return resultado;
     }
 }

@@ -19,7 +19,10 @@ export default class Execute extends Instruccion {
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let busqueda = arbol.getFuncion(this.id)
-        if (busqueda == null) return new Errores("SEMANTICO", "Funcion no existente", this.linea, this.col)
+        if (busqueda == null){
+            arbol.Print("Error Semantico: Funcion no existente"+ this.linea+" columna: " +(this.col+1));
+            return new Errores("SEMANTICO", "Funcion no existente", this.linea, this.col)
+        } 
 
         if (busqueda instanceof Metodo) {
             let newTabla = new tablaSimbolo(arbol.getTablaGlobal())

@@ -5,7 +5,6 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./Break";
 import Continue from "./continue";
-import Contador from "../simbolo/Contador";
 import Return from "./Return";
 
 export default class doWhile extends Instruccion{
@@ -23,13 +22,10 @@ export default class doWhile extends Instruccion{
         let condicion = this.condicion.interpretar(arbol, tabla)
         if (condicion instanceof Errores) return condicion
 
-        // validaciones
         if (this.condicion.tipoDato.getTipo() != tipoDato.BOOLEAN) {
             arbol.Print("Error Semantico: La condicion debe ser bool. linea:"+ this.linea+" columna: " +(this.col+1));
             return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
         }
-
-        //comienza hacer el do while
 
         do{
             let newTabla = new tablaSimbolo(tabla)
@@ -39,9 +35,11 @@ export default class doWhile extends Instruccion{
                 if (i instanceof Continue) break;
                 if (i instanceof Return) return i;
                 let resultado = i.interpretar(arbol, newTabla)
+                if (resultado instanceof Errores) return resultado;
                 if (resultado instanceof Return) return resultado;
                 if (resultado instanceof Break) return;
                 if (resultado instanceof Continue) break;
+                
                 
             }
 

@@ -35,8 +35,8 @@ export default class AccesoArrayD extends Instruccion {
         this.tipoDato = variable.getTipo()
 
         if (!Array.isArray(varVector)) {
-            arbol.Print("Error Semantico: "+"Variable no definida " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
-            return new Errores("SEMANTICO", "Variable no definida", this.linea, this.col);
+            arbol.Print("Error Semantico: "+"Variable del vector no aceptada " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+            return new Errores("SEMANTICO", "Variable del vector no aceptada", this.linea, this.col);
         }
 
         if (PrimeraPos < 0 || PrimeraPos >= varVector.length) {

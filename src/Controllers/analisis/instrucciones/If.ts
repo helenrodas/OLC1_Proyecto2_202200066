@@ -7,6 +7,8 @@ import Break from "./Break";
 import Continue from "./continue";
 import Return from "./Return";
 import Contador from "../simbolo/Contador";
+import { listaErrores } from "../../indexController";
+
 
 export default class If extends Instruccion {
     private condicion: Instruccion
@@ -39,6 +41,7 @@ export default class If extends Instruccion {
                 let resultado = i.interpretar(arbol, newTabla)
                 if (resultado instanceof Break) return;
                 if (resultado instanceof Return) return resultado;
+                if (resultado instanceof Errores) return resultado;
             }
         }else{
             if(this.instruccioneselse){
@@ -49,6 +52,7 @@ export default class If extends Instruccion {
                         let resultado = i.interpretar(arbol, newTabla)
                         if (resultado instanceof Break) return; 
                         if (resultado instanceof Return) return resultado;
+                        if (resultado instanceof Errores) return resultado;
                     
                     }
             }

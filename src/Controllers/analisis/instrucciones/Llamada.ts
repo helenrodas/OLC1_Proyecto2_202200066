@@ -22,11 +22,12 @@ export default class Llamada extends Instruccion {
         let BuscarFuncion = arbol.getFuncion(this.id.toLocaleLowerCase());
         
         if (BuscarFuncion == null) {
-            arbol.Print(`Error Semantico: Funcion ${this.id}. no existe  Linea: ${this.linea} Columna: ${(this.col + 1)}`);
-            return new Errores('Semantico', `Funcion ${this.id} no existe `, this.linea, this.col);
+            arbol.Print("Error Semantico: La funcion a llamar no existe. linea:"+ this.linea+" columna: " +(this.col+1));
+            return new Errores("SEMANTICO", "La funcion a llamar no existe", this.linea, this.col)
         }
 
-        console.log("si entro al interpretar de llamada")
+        //console.log("si entro al interpretar de llamada")
+        
         this.tipoDato.setTipo(BuscarFuncion.tipoDato.getTipo());
 
         if (BuscarFuncion instanceof Metodo) {
@@ -35,10 +36,11 @@ export default class Llamada extends Instruccion {
                 let tablaTemp = new tablaSimbolo(tabla);
                 tablaTemp.setNombre("Tabla metodo " + this.id);
                 
-                console.log("si entro al metodo void")
+                //console.log("si entro al metodo void")
+
                 if (BuscarFuncion.parametros.length != this.parametros.length) {
-                    arbol.Print(`Error Semantico: Numero de parametros no es el esperado para la funcion ${this.id}. Linea: ${this.linea} Columna: ${(this.col + 1)}`);
-                    return new Errores('Semantico', `Numero de parametros no es el esperado para la funcion ${this.id}`, this.linea, this.col);
+                    arbol.Print("Error Semantico: Numero de parametros no es el esperado para la funcion linea:"+ this.linea+" columna: " +(this.col+1));
+                    return new Errores("SEMANTICO", "Numero de parametros no es el esperado para la funcion", this.linea, this.col)
                 }
 
                 console.log(BuscarFuncion.parametros.length)
@@ -47,7 +49,6 @@ export default class Llamada extends Instruccion {
                     console.log("estoy en for")
                     let nuevaDeclaracion = new Declaracion(BuscarFuncion.parametros[i].tipo, this.linea, this.col, BuscarFuncion.parametros[i].id, this.parametros[i]);
 
-                    //interpreta la declaracion
                     let interpretacionDecla = nuevaDeclaracion.interpretar(arbol, tablaTemp);
 
                     if (interpretacionDecla instanceof Errores) return interpretacionDecla;
@@ -62,8 +63,9 @@ export default class Llamada extends Instruccion {
                 tablaTemp.setNombre("Tabla Funcion " + this.id);
 
                 if (BuscarFuncion.parametros.length != this.parametros.length) {
-                    arbol.Print(`Error Semantico: Numero de parametros no es el esperado para la funcion ${this.id}. Linea: ${this.linea} Columna: ${(this.col + 1)}`);
-                    return new Errores('Semántico', `Numero de parametros no es el esperado para la funcion ${this.id}`, this.linea, this.col);
+
+                    arbol.Print("Error Semantico: Numero de parametros no es el esperado para la funcion linea:"+ this.linea+" columna: " +(this.col+1));
+                    return new Errores("SEMANTICO", "Numero de parametros no es el esperado para la funcion", this.linea, this.col)
                 }
 
                 for (let i = 0; i < BuscarFuncion.parametros.length; i++) {
@@ -78,15 +80,15 @@ export default class Llamada extends Instruccion {
 
                     if(varInterpretada != null){
                         if(BuscarFuncion.parametros[i].tipo.getTipo() != varInterpretada.getTipo().getTipo()){
-                            arbol.Print(`Error Semantico: El parametro no coincide con la funcion ${this.id}. Linea: ${this.linea} Columna: ${(this.col + 1)}`);
-                            return new Errores('Semantico', `El parametro no coincide con la funcion ${this.id}`, this.linea, this.col);
+                            arbol.Print("Error Semantico: variable indefinida"+ "Linea: " + this.linea+" columna: " +(this.col+1));
+                            return new Errores("SEMANTICO", "variable indefinida", this.linea, this.col)
                         }else{
                             varInterpretada.setValor(nuevoParametro);  
                         }
                     }else{
 
-                        arbol.Print(`Error Semantico: El parametro no coincide con la funcion ${this.id}. Linea: ${this.linea} Columna: ${(this.col + 1)}`);
-                        return new Errores('Semantico', `El parametro no coincide con la funcion ${this.id}`, this.linea, this.col);
+                        arbol.Print("Error Semantico: El parametro no coincide con la funcion"+ "Linea: " + this.linea+" columna: " +(this.col+1));
+                        return new Errores("SEMANTICO", "El parametro no coincide con la funcion", this.linea, this.col)
                     
                     }
 
@@ -95,13 +97,9 @@ export default class Llamada extends Instruccion {
                 let ResultFunction: any = BuscarFuncion.interpretar(arbol, tablaTemp);
                 if (ResultFunction instanceof Errores) return ResultFunction;
                 return BuscarFuncion.returnValue.interpretar(arbol, tablaTemp);
-
-
             }
 
-
         }
-
     }
 
     ArbolGraph(anterior: string): string {
