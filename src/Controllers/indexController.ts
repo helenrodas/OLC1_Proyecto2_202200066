@@ -19,6 +19,7 @@ class controller {
         listaErrores = new Array<Errores>
        
         try {
+            
             let executeEncontrado = false;
             AstDot = ""
             let parser = require('./analisis/analizador')
@@ -62,7 +63,6 @@ class controller {
                     execute = i
                     
                 }
-//execute solo puede venir una vez, si vienve mas debe dar error semantico
 
 /*este if deja de funcionar al momento que se le agrega el execute(main) pues
 ahora ya depende que exista la funcion execute para ejecutar el codigo

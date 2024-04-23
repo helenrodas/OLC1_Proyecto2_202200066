@@ -9,6 +9,7 @@ import Case from "../instrucciones/Case";
 import Default from "../instrucciones/Default";
 import Contador from "../simbolo/Contador";
 import Return from "./Return";
+//import { listaErrores } from ".../indexController"
 
 export default class Switch extends Instruccion {
     private condicion: Instruccion

@@ -1,4 +1,5 @@
 import { Instruccion } from "../abstracto/Instruccion";
+
 import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import Simbolo from "../simbolo/Simbolo";
