@@ -36,39 +36,42 @@ export default class Funciones extends Instruccion {
 
         switch (this.operacion) {
             case Operadores.SENT_TOLOWER:
-                return this.casteo_lower(Unico)
+                return this.casteo_lower(Unico,arbol)
             case Operadores.SENT_TOUPPER:
-                return this.casteo_upper(Unico)
+                return this.casteo_upper(Unico,arbol)
             case Operadores.SENT_ROUND:
-                return this.casteo_round(Unico)
+                return this.casteo_round(Unico,arbol)
             default:
+                arbol.Print("Error Semantico: Casteo Invalido" + this.linea+" columna: " +(this.col+1));
                 return new Errores("Semantico", "Casteo Invalido", this.linea, this.col)
         }
     }
 
-    casteo_lower(op1: any) {
+    casteo_lower(op1: any,arbol:Arbol) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         switch (tipo1) {
             case tipoDato.STRING:
                 this.tipoDato = new Tipo(tipoDato.STRING)
                 return op1.toLowerCase()
             default:
+                    arbol.Print("Error Semantico: No se puede castear ToLower: " + op1 + this.linea+" columna: " +(this.col+1));
                     return new Errores("Semantico", "No se puede castear ToLower: " + op1, this.linea, this.col)
         }
     }
 
-    casteo_upper(op1: any) {
+    casteo_upper(op1: any,arbol:Arbol) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         switch (tipo1) {
             case tipoDato.STRING:
                 this.tipoDato = new Tipo(tipoDato.STRING)
                 return op1.toUpperCase()
             default:
+                    arbol.Print("Error Semantico: No se puede castear ToUpper: " + op1 + this.linea+" columna: " +(this.col+1));
                     return new Errores("Semantico", "No se puede castear ToUpper: " + op1, this.linea, this.col)
         }
     }
 
-    casteo_round(op1: any) {
+    casteo_round(op1: any,arbol:Arbol) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         switch (tipo1) {
             case tipoDato.DOUBLE:
@@ -78,6 +81,7 @@ export default class Funciones extends Instruccion {
                 this.tipoDato = new Tipo(tipoDato.INTEGER)
                 return  Math.round(op1)
             default:
+                    arbol.Print("Error Semantico: No se puede castear a round: " + op1 + this.linea+" columna: " +(this.col+1));
                     return new Errores("Semantico", "No se puede castear a round: " + op1, this.linea, this.col)
         }
     }

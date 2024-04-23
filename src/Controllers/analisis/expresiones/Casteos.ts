@@ -46,6 +46,7 @@ export default class Casteos extends Instruccion {
             case tipoDato.CHAR:
                 return this.casteo_char(Unico)
             default:
+                arbol.Print("Error Semantico: Casteo Invalido linea:"+ this.linea+" columna: " +(this.col+1));
                 return new Errores("Semantico", "Casteo Invalido", this.linea, this.col)
         }
     }
@@ -112,44 +113,52 @@ export default class Casteos extends Instruccion {
 
 
         let contador = Contador.getInstancia();
-        let result = "";
+        let resultado = "";
 
-        let padre = `n${contador.get()}`;
+        let casteoInit = `n${contador.get()}`;
+        
         let par1 = `n${contador.get()}`;
         let tipo = `n${contador.get()}`;
+        
         let par2 = `n${contador.get()}`;
         let valor = `n${contador.get()}`;
+        
         let puntocoma = `n${contador.get()}`;
 
-        result += `${padre}[label="casteo"];\n`;
-        result += `${par1}[label="("];\n`;
+        resultado += `${casteoInit}[label="casteo"];\n`;
+        resultado += `${par1}[label="("];\n`;
         if(this.tipoDato.getTipo() == tipoDato.INTEGER){
-            result += `${tipo}[label="int"];\n`;
+            resultado += `${tipo}[label="int"];\n`;
         }else if(this.tipoDato.getTipo() == tipoDato.DOUBLE){
-            result += `${tipo}[label="double"];\n`;
+            resultado += `${tipo}[label="double"];\n`;
         }else if(this.tipoDato.getTipo() == tipoDato.CHAR){
-            result += `${tipo}[label="char"];\n`;
+            resultado += `${tipo}[label="char"];\n`;
         }else if(this.tipoDato.getTipo() == tipoDato.STRING){
-            result += `${tipo}[label="std::string"];\n`;
+            resultado += `${tipo}[label="std::string"];\n`;
         }else if(this.tipoDato.getTipo() == tipoDato.BOOLEAN){
-            result += `${tipo}[label="bool"];\n`;
+            resultado += `${tipo}[label="bool"];\n`;
         }
 
-        result += `${par2}[label="("];\n`;
-        result += `${valor}[label="Expresion"];\n`;
-        result += `${puntocoma}[label=";"];\n`;
+        resultado += `${par2}[label="("];\n`;
+        
+        
+        resultado += `${valor}[label="Expresion"];\n`;
+        resultado += `${puntocoma}[label=";"];\n`;
 
 
-        result += `${anterior} -> ${padre};\n`;
-        result += `${padre} -> ${par1};\n`;
-        result += `${padre} -> ${tipo};\n`;
-        result += `${padre} -> ${par2};\n`;
-        result += `${padre} -> ${valor};\n`;
-        result += `${padre} -> ${puntocoma};\n`;
+        resultado += `${anterior} -> ${casteoInit};\n`;
+        
+        resultado += `${casteoInit} -> ${par1};\n`;
+    
+        resultado += `${casteoInit} -> ${tipo};\n`;
+        resultado += `${casteoInit} -> ${par2};\n`;
+        
+        resultado += `${casteoInit} -> ${valor};\n`;
+        resultado += `${casteoInit} -> ${puntocoma};\n`;
 
-        result += this.operandoUnico?.ArbolGraph(valor);
+        resultado += this.operandoUnico?.ArbolGraph(valor);
 
-        return result;
+        return resultado;
     }
 }
 

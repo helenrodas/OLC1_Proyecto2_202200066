@@ -28,47 +28,54 @@ export default class Switch extends Instruccion {
         let condicion = this.condicion.interpretar(arbol, tabla)
         if (condicion instanceof Errores) return condicion
 
-        // Verificar si algun caso se cumple
-        //let casoCumplido = false;
 
         for (let caso of this.listaCase) {
             let casoTemp = caso.condicion.interpretar(arbol,tabla)
             if (casoTemp instanceof Errores) return casoTemp
             if (casoTemp == condicion) {
                 let resultado = caso.interpretar(arbol, tabla)
+        
                 if (resultado instanceof Return) return resultado;
+        
+                if (resultado instanceof Errores) return resultado
                 if (resultado instanceof Break) return;
-                
-                //casoCumplido = true;
             
             }
         }
 
-        // Si ningun caso se cumplio y hay un caso default, ejecutarlo
         if (this.casoDefault) {
             let resultado = this.casoDefault.interpretar(arbol, tabla);
+            if (resultado instanceof Errores) return resultado
+            
             if (resultado instanceof Return) return resultado;
             if (resultado instanceof Break) return;
-           
+
         }
     }
 
 
     ArbolGraph(anterior: string): string {
-        let reult = "";
 
         let contador = Contador.getInstancia();
+        let resultado = "";
+
+        
         let contDefault: any = undefined;
+        
         let contCase = [];
         let switchN = `n${contador.get()}`;
-        let par1 = `n${contador.get()}`;
+        
+        let parIzq = `n${contador.get()}`;
         let exp = `n${contador.get()}`;
-        let par2 = `n${contador.get()}`;
+        
+        let parDer = `n${contador.get()}`;
         let llav1 = `n${contador.get()}`;
+        
         let padreCase = `n${contador.get()}`;
 
         if (this.listaCase != undefined) {
             for (let i = 0; i < this.listaCase.length; i++) {
+            
                 contCase.push(`n${contador.get()}`);
             }
         }
@@ -77,53 +84,56 @@ export default class Switch extends Instruccion {
             contDefault = `n${contador.get()}`;
         }
 
-        reult += `${switchN}[label="Switch"];\n`;
-        reult += `${par1}[label="("];\n`;
-        reult += `${exp}[label="Expresion"];\n`;
-        reult += `${par2}[label=")"];\n`;
-        reult += `${llav1}[label="{"];\n`;
-        reult += `${padreCase}[label="cases_default"];\n`;
+        resultado += `${switchN}[label="Switch"];\n`;
+        resultado += `${parIzq}[label="("];\n`;
+        resultado += `${exp}[label="Expresion"];\n`;
+        resultado += `${parDer}[label=")"];\n`;
+        resultado += `${llav1}[label="{"];\n`;
+        resultado += `${padreCase}[label="cases_default"];\n`;
 
         if (this.listaCase != undefined) {
             for (let i = 0; i < this.listaCase.length; i++) {
-                reult += `${contCase[i]}[label="Case"];\n`;
+                resultado += `${contCase[i]}[label="Case"];\n`;
             }
         }
 
         if (this.casoDefault != undefined) {
-            reult += `${contDefault}[label="Default"];\n`;
+            resultado += `${contDefault}[label="Default"];\n`;
         }
 
-        reult += `${anterior} -> ${switchN};\n`;
-        reult += `${anterior} -> ${par1};\n`;
-        reult += `${anterior} -> ${exp};\n`;
-        reult += `${anterior} -> ${par2};\n`;
-        reult += `${anterior} -> ${llav1};\n`;
-        reult += `${anterior} -> ${padreCase};\n`;
+        resultado += `${anterior} -> ${switchN};\n`;
+        
+        resultado += `${anterior} -> ${parIzq};\n`;
+        
+        resultado += `${anterior} -> ${exp};\n`;
+        resultado += `${anterior} -> ${parDer};\n`;
+        
+        resultado += `${anterior} -> ${llav1};\n`;
+        resultado += `${anterior} -> ${padreCase};\n`;
 
         if(this.listaCase != undefined){
             for (let i = 0; i < this.listaCase.length; i++) {
-                reult += `${padreCase} -> ${contCase[i]};\n`;
+                resultado += `${padreCase} -> ${contCase[i]};\n`;
             }
         }
 
         if (this.casoDefault != undefined) {
-            reult += `${padreCase} -> ${contDefault};\n`;
+            resultado += `${padreCase} -> ${contDefault};\n`;
         }
 
-        reult += this.condicion.ArbolGraph(exp);
+        resultado += this.condicion.ArbolGraph(exp);
 
         if(this.listaCase != undefined){
             for (let i = 0; i < this.listaCase.length; i++) {
-                reult += this.listaCase[i].ArbolGraph(contCase[i]);
+                resultado += this.listaCase[i].ArbolGraph(contCase[i]);
             }
         }
 
         if(this.casoDefault != undefined){
-            reult += this.casoDefault.ArbolGraph(contDefault);
+            resultado += this.casoDefault.ArbolGraph(contDefault);
         }
 
 
-        return reult;
+        return resultado;
     }
 }

@@ -39,24 +39,25 @@ export default class FuncionesNativas extends Instruccion {
                 if(Array.isArray(Unico)){
                     return this.arreglo(Unico);
                 }
-                return this.length(Unico)
+                return this.length(Unico,arbol)
             case Operadores.SENT_TYPEOF:
-                return this.type(Unico)
+                return this.type(Unico,arbol)
             case Operadores.SENT_TOSTRING:
-                return this.setString(Unico)
+                return this.setString(Unico,arbol)
             default:
                 return new Errores("Semantico", "Casteo Invalido", this.linea, this.col)
         }
     }
 
     // modifcar pues puede venir un vector, una lista tambien
-    length(op1: any) {
+    length(op1: any,arbol:Arbol) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         switch (tipo1) {
             case tipoDato.STRING:
                 this.tipoDato = new Tipo(tipoDato.INTEGER)
                 return op1.length;
             default:
+                arbol.Print("Error Semantico: o se puede ejecutar funcion length:" + this.linea+" columna: " +(this.col+1));
                     return new Errores("Semantico", "No se puede ejecutar funcion length: " + op1, this.linea, this.col)
         }
     }
@@ -85,7 +86,7 @@ export default class FuncionesNativas extends Instruccion {
     }
 
     //falta agregar caso que venga vector
-    type(op1: any) {
+    type(op1: any,arbol:Arbol) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         switch (tipo1) {
             case tipoDato.STRING:
@@ -104,11 +105,12 @@ export default class FuncionesNativas extends Instruccion {
                 this.tipoDato = new Tipo(tipoDato.STRING)
                 return "int"
             default:
-                    return new Errores("Semantico", "No se puede conocer el tipo: " + op1, this.linea, this.col)
+                arbol.Print("Error Semantico: No se puede conocer el tipo"+ op1 + this.linea+" columna: " +(this.col+1));
+                return new Errores("Semantico", "No se puede conocer el tipo: " + op1, this.linea, this.col)
         }
     }
 
-    setString(op1: any) {
+    setString(op1: any,arbol:Arbol) {
         let tipo1 = this.operandoUnico?.tipoDato.getTipo()
         switch (tipo1) {
             case tipoDato.INTEGER:
@@ -121,6 +123,7 @@ export default class FuncionesNativas extends Instruccion {
                 this.tipoDato = new Tipo(tipoDato.STRING)
                 return  op1.toString();
             default:
+                    arbol.Print("Error Semantico: No se puede convertir a string:"+ op1 + this.linea+" columna: " +(this.col+1));
                     return new Errores("Semantico", "No se puede convertir a string: " + op1, this.linea, this.col)
         }
     }

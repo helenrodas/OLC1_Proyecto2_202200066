@@ -8,19 +8,19 @@ import Contador from "../simbolo/Contador";
 
 export default class Print extends Instruccion {
     private expresion: Instruccion
-    private bandera: boolean
+    private indicador: boolean
 
-    constructor(exp: Instruccion,bandera:boolean ,linea: number, col: number) {
+    constructor(exp: Instruccion,indicador:boolean ,linea: number, col: number) {
         super(new Tipo(tipoDato.VOID), linea, col)
         this.expresion = exp
-        this.bandera = bandera
+        this.indicador = indicador
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let valor = this.expresion.interpretar(arbol, tabla)
         console.log(valor)
         if (valor instanceof Errores) return valor
-        if(this.bandera == true){
+        if(this.indicador == true){
             arbol.Print(valor + "\n")
         }else{
             arbol.Print(valor)
@@ -29,51 +29,64 @@ export default class Print extends Instruccion {
     }
 
     ArbolGraph(anterior: string): string {
-        let result = "";
 
         let contador = Contador.getInstancia();
-        let cout = `n${contador.get()}`;
-        let dobleSigno = `n${contador.get()}`;
+        let resultado = "";
+
+        
+        let imprimir = `n${contador.get()}`;
+        let signoImpr = `n${contador.get()}`;
+
         let nodoExpresion = `n${contador.get()}`;
-        let dobleSignoRepetido = `n${contador.get()}`;
+        let signoImpr2 = `n${contador.get()}`;
+
+
         let signoEndl = `n${contador.get()}`;
         let puntoComa = `n${contador.get()}`;
         
-        result += `${cout}[label="cout"];\n`;
-        result += `${dobleSigno}[label="<<"];\n`;
-        result += `${nodoExpresion}[label="Expresion"];\n`;
-        result += `${puntoComa}[label=";"];\n`;
+        resultado += `${imprimir}[label="imprimir"];\n`;
+        
+        resultado += `${signoImpr}[label="<<"];\n`;
+        
+        resultado += `${nodoExpresion}[label="Expresion"];\n`;
+        resultado += `${puntoComa}[label=";"];\n`;
 
-        if(this.bandera == true){
-            result += `${cout}[label="cout"];\n`;
-            result += `${dobleSigno}[label="<<"];\n`;
-            result += `${nodoExpresion}[label="Expresion"];\n`;
-            result += `${dobleSignoRepetido}[label="<<"];\n`;
-            result += `${signoEndl}[label="endl"];\n`;
-            result += `${puntoComa}[label=";"];\n`;
+        if(this.indicador == true){
+            resultado += `${imprimir}[label="imprimir"];\n`;
+            
+            resultado += `${signoImpr}[label="<<"];\n`;
+            resultado += `${nodoExpresion}[label="Expresion"];\n`;
+            resultado += `${signoImpr2}[label="<<"];\n`;
+            
+            
+            resultado += `${signoEndl}[label="endl"];\n`;
+            resultado += `${puntoComa}[label=";"];\n`;
 
-            result += `${anterior} -> ${cout};\n`;
-            result += `${anterior} -> ${dobleSigno};\n`;
-            result += `${anterior} -> ${nodoExpresion};\n`;
-            result += `${anterior} -> ${dobleSignoRepetido};\n`;
-            result += `${anterior} -> ${signoEndl};\n`;
-            result += `${anterior} -> ${puntoComa};\n`;
-            result += this.expresion.ArbolGraph(nodoExpresion);
+            resultado += `${anterior} -> ${imprimir};\n`;
+        
+            resultado += `${anterior} -> ${signoImpr};\n`;
+            resultado += `${anterior} -> ${nodoExpresion};\n`;
+        
+            resultado += `${anterior} -> ${signoImpr2};\n`;
+            resultado += `${anterior} -> ${signoEndl};\n`;
+            resultado += `${anterior} -> ${puntoComa};\n`;
+            resultado += this.expresion.ArbolGraph(nodoExpresion);
         
         }else{
-            result += `${cout}[label="cout"];\n`;
-            result += `${dobleSigno}[label="<<"];\n`;
-            result += `${nodoExpresion}[label="Expresion"];\n`;
-            result += `${puntoComa}[label=";"];\n`;
+            resultado += `${imprimir}[label="imprimir"];\n`;
+            resultado += `${signoImpr}[label="<<"];\n`;
+            resultado += `${nodoExpresion}[label="Expresion"];\n`;
+            resultado += `${puntoComa}[label=";"];\n`;
 
-            result += `${anterior} -> ${cout};\n`;
-            result += `${anterior} -> ${dobleSigno};\n`;
-            result += `${anterior} -> ${nodoExpresion};\n`;
-            result += `${anterior} -> ${puntoComa};\n`;
-            result += this.expresion.ArbolGraph(nodoExpresion);
+            resultado += `${anterior} -> ${imprimir};\n`;
+            resultado += `${anterior} -> ${signoImpr};\n`;
+        
+            resultado += `${anterior} -> ${nodoExpresion};\n`;
+            resultado += `${anterior} -> ${puntoComa};\n`;
+            resultado += this.expresion.ArbolGraph(nodoExpresion);
         }
 
 
-        return result;
+        return resultado;
     }
 }

@@ -52,15 +52,11 @@ export default class Metodo extends Instruccion {
 
                     if(i.expresion != undefined){
                         this.returnValue = i.expresion;
-                        //No hace esa validacion de tipos :(
-                        // if(this.tipo.getTipo() != i.expresion.tipoDato.getTipo()){
-                        //     arbol.Print("Error Semantico: El tipo de retorno no coincide con el tipo de la función. linea:"+ this.linea+" columna: " +(this.col+1));
-                        //     return new Errores("Semantico", "El tipo de retorno no coincide con el tipo de la función", this.linea, this.col);
-                        // }
+
                         return i.expresion;
                     }else{
-                        arbol.Print("Error Semantico: return en funcion no retorna nada. linea:"+ this.linea+" columna: " +(this.col+1));
-                        return new Errores("Semantico", "return en funcion no retorna nada", this.linea, this.col);
+                        arbol.Print("Error Semantico: El return en la funcion es indefinido"+ "Linea: " + this.linea+" columna: " +(this.col+1));
+                        return new Errores("SEMANTICO", "El return en la funcion es indefinido", this.linea, this.col)
                     }
                 }
                 let resultado = i.interpretar(arbol, tabla);
@@ -74,7 +70,9 @@ export default class Metodo extends Instruccion {
                         this.returnValue = resultado.expresion;
                         return resultado.expresion;
                     }else{
+                    
                         arbol.Print("Error Semantico: La funcion no retorna nada. linea:"+ this.linea+" columna: " +(this.col+1));
+                    
                         return new Errores("Semantico", "La funcion no retorna un valor", this.linea, this.col);
                     }
                 }
@@ -82,7 +80,9 @@ export default class Metodo extends Instruccion {
             }
 
             if(ReturnEncontrado == false){
+            
                 arbol.Print("Error Semantico: Funcion invalida, falta return. linea:"+ this.linea+" columna: " +(this.col+1));
+            
                 return new Errores("Semantico", "Funcion invalida, falta return", this.linea, this.col);
             }
 
@@ -91,13 +91,16 @@ export default class Metodo extends Instruccion {
 
     ArbolGraph(anterior: string): string {
 
-        let result = "";
+        let resultado = "";
         let contador = Contador.getInstancia();
 
-        let contTipoParametro = [];
-        let contParametros = [];
-        let contInstrucciones = [];
+      
+        let listaTipos = [];
+        let listaParametros = [];
+      
+        let listaInstrucciones = [];
 
+        
         let padre = `n${contador.get()}`;
         let tipoFuncion = `n${contador.get()}`;
         let padreId = `n${contador.get()}`;
@@ -106,8 +109,8 @@ export default class Metodo extends Instruccion {
         let parm = `n${contador.get()}`;
 
         for(let i = 0; i < this.parametros.length; i++){
-            contTipoParametro.push(`n${contador.get()}`);
-            contParametros.push(`n${contador.get()}`);
+            listaTipos.push(`n${contador.get()}`);
+            listaParametros.push(`n${contador.get()}`);
         }
 
         let par2 = `n${contador.get()}`;
@@ -115,84 +118,84 @@ export default class Metodo extends Instruccion {
         let padreInstr = `n${contador.get()}`;
 
         for(let i= 0; i< this.instrucciones.length; i++){
-            contInstrucciones.push(`n${contador.get()}`);
+            listaInstrucciones.push(`n${contador.get()}`);
         }
 
         let llav2 = `n${contador.get()}`;
 
-        result += `${padre}[label="metodo/funcion"];\n`
+        resultado += `${padre}[label="metodo/funcion"];\n`
         if(this.tipo.getTipo() == tipoDato.VOID){
-            result += `${tipoFuncion}[label="void"];\n`
+            resultado += `${tipoFuncion}[label="void"];\n`
         }else if(this.tipo.getTipo() == tipoDato.INTEGER){
-            result += `${tipoFuncion}[label="int"];\n`
+            resultado += `${tipoFuncion}[label="int"];\n`
         }else if(this.tipo.getTipo() == tipoDato.DOUBLE){
-            result += `${tipoFuncion}[label="double"];\n`
+            resultado += `${tipoFuncion}[label="double"];\n`
         }else if(this.tipo.getTipo() == tipoDato.STRING){
-            result += `${tipoFuncion}[label="std::string"];\n`
+            resultado += `${tipoFuncion}[label="std::string"];\n`
         }else if(this.tipo.getTipo() == tipoDato.BOOLEAN){
-            result += `${tipoFuncion}[label="bool"];\n`
+            resultado += `${tipoFuncion}[label="bool"];\n`
         }
 
-        result += `${padreId}[label="ID"];\n`
-        result += `${ident}[label="${this.id}"];\n`
-        result += `${par1}[label="("];\n`
-        result += `${parm}[label="parametros"];\n`
+        resultado += `${padreId}[label="ID"];\n`
+        resultado += `${ident}[label="${this.id}"];\n`
+        resultado += `${par1}[label="("];\n`
+        resultado += `${parm}[label="parametros"];\n`
         for(let i = 0; i < this.parametros.length; i++){
             if(this.parametros[i].tipo.getTipo() == tipoDato.INTEGER){
-                result += `${contTipoParametro[i]}[label="int"];\n`
+                resultado += `${listaTipos[i]}[label="int"];\n`
             }else if(this.parametros[i].tipo.getTipo() == tipoDato.DOUBLE){
-                result += `${contTipoParametro[i]}[label="double"];\n`
+                resultado += `${listaTipos[i]}[label="double"];\n`
             }else if(this.parametros[i].tipo.getTipo() == tipoDato.STRING){
-                result += `${contTipoParametro[i]}[label="std::string"];\n`
+                resultado += `${listaTipos[i]}[label="std::string"];\n`
             }else if(this.parametros[i].tipo.getTipo() == tipoDato.BOOLEAN){
-                result += `${contTipoParametro[i]}[label="bool"];\n`
+                resultado += `${listaTipos[i]}[label="bool"];\n`
             }else if(this.parametros[i].tipo.getTipo() == tipoDato.VOID){
-                result += `${contTipoParametro[i]}[label="void"];\n`
+                resultado += `${listaTipos[i]}[label="void"];\n`
             }else if(this.parametros[i].tipo.getTipo() == tipoDato.CHAR){
-                result += `${contTipoParametro[i]}[label="char"];\n`
+                resultado += `${listaTipos[i]}[label="char"];\n`
             }
             
-            result += `${contParametros[i]}[label="${this.parametros[i].id}"];\n`
+            resultado += `${listaParametros[i]}[label="${this.parametros[i].id}"];\n`
         }
-        result += `${par2}[label=")"];\n`
-        result += `${llav1}[label="{"];\n`
-        result += `${padreInstr}[label="instrucciones"];\n`
+        resultado += `${par2}[label=")"];\n`
+        resultado += `${llav1}[label="{"];\n`
+        resultado += `${padreInstr}[label="instrucciones"];\n`
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += `${contInstrucciones[i]}[label="instruccion"];\n`
+            resultado += `${listaInstrucciones[i]}[label="instruccion"];\n`
         }
-        result += `${llav2}[label="}"];\n`
+        resultado += `${llav2}[label="}"];\n`
 
-        result += `${padre} -> ${tipoFuncion};\n`
-        result += `${padre} -> ${padreId};\n`
-        result += `${padreId} -> ${ident};\n`
-        result += `${padre} -> ${par1};\n`
-        result += `${padre} -> ${parm};\n`
+        resultado += `${padre} -> ${tipoFuncion};\n`
+        resultado += `${padre} -> ${padreId};\n`
+        resultado += `${padreId} -> ${ident};\n`
+        resultado += `${padre} -> ${par1};\n`
+        resultado += `${padre} -> ${parm};\n`
 
         for(let i = 0; i < this.parametros.length; i++){
-            result += `${parm} -> ${contTipoParametro[i]};\n`
-            result += `${parm} -> ${contParametros[i]};\n`
+            resultado += `${parm} -> ${listaTipos[i]};\n`
+            resultado += `${parm} -> ${listaParametros[i]};\n`
         }
 
-        result += `${padre} -> ${par2};\n`
+        resultado += `${padre} -> ${par2};\n`
 
-        result += `${padre} -> ${llav1};\n`
+        resultado += `${padre} -> ${llav1};\n`
 
-        result += `${padre} -> ${padreInstr};\n`
+        resultado += `${padre} -> ${padreInstr};\n`
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += `${padreInstr} -> ${contInstrucciones[i]};\n`
+            resultado += `${padreInstr} -> ${listaInstrucciones[i]};\n`
         }
 
-        result += `${padre} -> ${llav2};\n`
+        resultado += `${padre} -> ${llav2};\n`
 
-        result += `${anterior} -> ${padre};\n`
+        resultado += `${anterior} -> ${padre};\n`
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += this.instrucciones[i].ArbolGraph(contInstrucciones[i]);
+            resultado += this.instrucciones[i].ArbolGraph(listaInstrucciones[i]);
         }
 
 
-        return result;
+        return resultado;
     }
 
 }

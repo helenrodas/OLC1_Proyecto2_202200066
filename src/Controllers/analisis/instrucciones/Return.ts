@@ -3,7 +3,6 @@ import Errores from "../excepciones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
-import Break from "./Break";
 import Contador from "../simbolo/Contador";
 
 
@@ -58,27 +57,3 @@ export default class Return extends Instruccion{
         return result;
     }
 }
-
-// export default class Return extends Instruccion {
-//     public exp?: Instruccion
-//     public expresion = null
-
-//     constructor(linea: number, columna: number, exp?: Instruccion) {
-//         super(new Tipo(tipoDato.VOID), linea, columna)
-//         this.exp = exp
-//     }
-
-//     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
-//         console.log("entro al return")
-//         if(this.exp) {
-//             console.log("esto es la expresion enviada: ",this.exp)
-//             console.log("entro al interpretar de return")
-//             let valorExpre = this.exp.interpretar(arbol, tabla)
-//             console.log("valor interprretado de return: ",valorExpre)
-//             this.expresion = valorExpre
-//             if(valorExpre instanceof Errores) return valorExpre
-//             this.tipoDato.setTipo(this.exp.tipoDato.getTipo())
-//         }
-//         return this
-//     }
-// }

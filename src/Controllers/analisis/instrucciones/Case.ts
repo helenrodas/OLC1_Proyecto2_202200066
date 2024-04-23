@@ -38,43 +38,52 @@ export default class Case extends Instruccion {
     ArbolGraph(anterior: string): string {
         
         let contador = Contador.getInstancia();
-        let result = "";
+        let resultado = "";
 
-        let caseN = `n${contador.get()}`;
-        let cond = `n${contador.get()}`;
+        let Caso = `n${contador.get()}`;
+      
+        let condicional = `n${contador.get()}`;
+     
+     
         let dospuntos = `n${contador.get()}`;
-        let padreInstrucciones = `n${contador.get()}`;
-        let contInstrucciones = [];
+        let Instruccion = `n${contador.get()}`;
+        let listaInstrucciones = [];
 
         for (let i = 0; i < this.instrucciones.length; i++) {
-            contInstrucciones.push(`n${contador.get()}`);
+            listaInstrucciones.push(`n${contador.get()}`);
         }
 
-        result += `${caseN}[label="case"];\n`;
-        result += `${cond}[label="Expresion"];\n`;
-        result += `${dospuntos}[label=":"];\n`;
-        result += `${padreInstrucciones}[label="Instrucciones"];\n`;
+        resultado += `${Caso}[label="case"];\n`;
+       
+       
+        resultado += `${condicional}[label="Expresion"];\n`;
+     
+        resultado += `${dospuntos}[label=":"];\n`;
+        resultado += `${Instruccion}[label="Instrucciones"];\n`;
 
         for (let i = 0; i < this.instrucciones.length; i++) {
-            result += `${contInstrucciones[i]}[label="Instruccion"];\n`;
+            resultado += `${listaInstrucciones[i]}[label="Instruccion"];\n`;
         }
 
-        result += `${anterior} -> ${caseN};\n`;
-        result += `${anterior} -> ${cond};\n`;
-        result += `${anterior} -> ${dospuntos};\n`;
-        result += `${anterior} -> ${padreInstrucciones};\n`;
+        resultado += `${anterior} -> ${Caso};\n`;
+       
+        resultado += `${anterior} -> ${condicional};\n`;
+        
+        resultado += `${anterior} -> ${dospuntos};\n`;
+        resultado += `${anterior} -> ${Instruccion};\n`;
 
         for (let i = 0; i < this.instrucciones.length; i++) {
-            result += `${padreInstrucciones} -> ${contInstrucciones[i]};\n`;
+            resultado += `${Instruccion} -> ${listaInstrucciones[i]};\n`;
         }
 
-        result += this.condicion.ArbolGraph(cond);
+        resultado += this.condicion.ArbolGraph(condicional);
 
         for (let i = 0; i < this.instrucciones.length; i++) {
-            result += this.instrucciones[i].ArbolGraph(contInstrucciones[i]);
+        
+            resultado += this.instrucciones[i].ArbolGraph(listaInstrucciones[i]);
         }
 
-        return result;
+        return resultado;
 
     }
 }

@@ -43,15 +43,17 @@ export default class While extends Instruccion {
                 let resultado = i.interpretar(arbol, newTabla)
                 if (resultado instanceof Break) return;
                 if (resultado instanceof Continue) break;
-                if (resultado instanceof Errores) return cond
+                if (resultado instanceof Errores) return resultado;
                 
             }
         }
     }
     ArbolGraph(anterior: string): string {
-        let result = "";
+
         let contador = Contador.getInstancia();
-        let contInstruc = [];
+        let resultado = "";
+        
+        let listaInstrucciones = [];
 
         let padre = `n${contador.get()}`;
         let nWhile = `n${contador.get()}`;
@@ -62,46 +64,52 @@ export default class While extends Instruccion {
         let padreIns = `n${contador.get()}`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            contInstruc.push(`n${contador.get()}`);
+            listaInstrucciones.push(`n${contador.get()}`);
         }
 
         let llav2 = `n${contador.get()}`;
 
-        result += ` ${padre}[label="ciclo"];\n`;
-        result += ` ${nWhile}[label="while"];\n`;
-        result += ` ${par1}[label="("];\n`;
-        result += ` ${cond}[label="Expresion"];\n`;
-        result += ` ${par2}[label=")"];\n`;
-        result += ` ${llav1}[label="{"];\n`;
-        result += ` ${padreIns}[label="Instrucciones"];\n`;
+        resultado += ` ${padre}[label="ciclo"];\n`;
+        
+        resultado += ` ${nWhile}[label="while"];\n`;
+        
+        resultado += ` ${par1}[label="("];\n`;
+        resultado += ` ${cond}[label="Expresion"];\n`;
+     
+        resultado += ` ${par2}[label=")"];\n`;
+        resultado += ` ${llav1}[label="{"];\n`;
+        resultado += ` ${padreIns}[label="Instrucciones"];\n`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += ` ${contInstruc[i]}[label="Instruccion"];\n`;
+            resultado += ` ${listaInstrucciones[i]}[label="Instruccion"];\n`;
         }
 
-        result += ` ${llav2}[label="}"];\n`;
+        resultado += ` ${llav2}[label="}"];\n`;
 
-        result += ` ${anterior} -> ${padre};\n`;
-        result += ` ${padre} -> ${nWhile};\n`;
-        result += ` ${padre} -> ${par1};\n`;
-        result += ` ${padre} -> ${cond};\n`;
-        result += ` ${padre} -> ${par2};\n`;
-        result += ` ${padre} -> ${llav1};\n`;
-        result += ` ${padre} -> ${padreIns};\n`;
+        resultado += ` ${anterior} -> ${padre};\n`;
+        resultado += ` ${padre} -> ${nWhile};\n`;
+        
+        resultado += ` ${padre} -> ${par1};\n`;
+        
+        resultado += ` ${padre} -> ${cond};\n`;
+        resultado += ` ${padre} -> ${par2};\n`;
+        
+        resultado += ` ${padre} -> ${llav1};\n`;
+        resultado += ` ${padre} -> ${padreIns};\n`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += ` ${padreIns} -> ${contInstruc[i]};\n`;
+            resultado += ` ${padreIns} -> ${listaInstrucciones[i]};\n`;
         }
 
-        result += ` ${padre} -> ${llav2};\n`;
+        resultado += ` ${padre} -> ${llav2};\n`;
 
         for(let i = 0; i < this.instrucciones.length; i++){
-            result += this.instrucciones[i].ArbolGraph(contInstruc[i]);
+            resultado += this.instrucciones[i].ArbolGraph(listaInstrucciones[i]);
         }
 
-        result += this.condicion.ArbolGraph(cond);
+        resultado += this.condicion.ArbolGraph(cond);
         
 
-        return result;
+        return resultado;
     }
 }

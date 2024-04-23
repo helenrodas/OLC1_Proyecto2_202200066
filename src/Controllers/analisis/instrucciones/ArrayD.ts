@@ -71,7 +71,8 @@ export default class ArrayD extends Instruccion{
             if (this.PrimeraPos && this.SegundaPos) {
                 const dim1 = this.PrimeraPos.interpretar(arbol, tabla);
                 const dim2 = this.SegundaPos.interpretar(arbol, tabla);
-                
+                if(dim1 instanceof Errores) return dim1
+                if(dim2 instanceof Errores) return dim2
 
 
                 if (this.PrimeraPos.tipoDato.getTipo() !=  tipoDato.INTEGER && this.SegundaPos.tipoDato.getTipo() !=  tipoDato.INTEGER) {

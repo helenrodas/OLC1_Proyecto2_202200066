@@ -19,9 +19,15 @@ export default class IncreDecre extends Instruccion {
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         //console.log("paso por aquiii")
         let valor = tabla.getVariable(this.id.toLocaleLowerCase());
-        if (valor == null) return new Errores("SEMANTICO", "No existe variable", this.linea, this.col)
+        if (valor == null){
+            arbol.Print("Error Semantico: No existe variable" + this.linea+" columna: " +(this.col+1));
+            return new Errores("SEMANTICO", "No existe variable", this.linea, this.col)
+        } 
         //console.log("el valor es:",valor.getTipo().getTipo());
-        if (valor.getTipo().getTipo() != tipoDato.INTEGER) return new Errores("SEMANTICO", "Variable invalida para operar", this.linea, this.col);
+        if (valor.getTipo().getTipo() != tipoDato.INTEGER){
+            arbol.Print("Error Semantico: Variable invalida para operar" + this.linea+" columna: " +(this.col+1));
+            return new Errores("SEMANTICO", "Variable invalida para operar", this.linea, this.col);
+        } 
         if (this.instruc == true) {
             valor.setValor(parseInt(valor.getValor()) + 1);
         } else {

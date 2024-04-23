@@ -809,6 +809,7 @@ export default class Relacionales extends Instruccion {
             
             resultado += `${anterior} -> ${expresion1};\n`
             resultado += `${anterior} -> ${operando};\n`
+            
             resultado += `${anterior} -> ${expresion2};\n`
 
             resultado += this.operando1?.ArbolGraph(expresion1)

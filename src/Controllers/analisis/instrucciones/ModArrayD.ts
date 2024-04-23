@@ -44,21 +44,27 @@ export default class  ModArrayU extends Instruccion{
 
         let nuevoValor = this.Modificacion.interpretar(arbol,tabla)
 
+        if(nuevoValor instanceof Errores) return nuevoValor
+
         if (!Array.isArray(valorVector)) {
+
             arbol.Print("Error Semantico: "+"Variable no definida " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "Variable no definida", this.linea, this.col);
         }
 
-        if (ubicacion1 < 0 || ubicacion1 >= valorVector.length) {
-            arbol.Print("Error Semantico: "+"La posicion esta fuera de rango " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
-            return new Errores("SEMANTICO", "La posicion esta fuera de rango", this.linea, this.col);
-        }
+        
 
         if (ubicacion2 < 0 || ubicacion2 >= valorVector.length) {
+            
             arbol.Print("Error Semantico: "+"La posicion esta fuera de rango " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La posicion esta fuera de rango", this.linea, this.col);
         }
 
+        if (ubicacion1 < 0 || ubicacion1 >= valorVector.length) {
+
+            arbol.Print("Error Semantico: "+"La posicion esta fuera de rango " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+            return new Errores("SEMANTICO", "La posicion esta fuera de rango", this.linea, this.col);
+        }
 
         valorVector[ubicacion1][ubicacion2] = nuevoValor;
     }

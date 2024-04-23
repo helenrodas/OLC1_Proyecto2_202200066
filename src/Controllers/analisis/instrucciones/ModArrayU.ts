@@ -30,6 +30,8 @@ export default class  ModArrayU extends Instruccion{
         this.tipoDato = variable.getTipo()
 
         let nuevoValor = this.modificacion.interpretar(arbol,tabla)
+        if(nuevoValor instanceof Errores) return nuevoValor
+        
 
         if (!Array.isArray(varVector)) {
             arbol.Print("Error Semantico: " + " La variable no esta definida para un vector" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")

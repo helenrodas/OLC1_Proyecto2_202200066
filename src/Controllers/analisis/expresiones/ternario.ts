@@ -27,7 +27,10 @@ export default class Ternario extends Instruccion {
         let operacion2 = this.op2.interpretar(arbol,tabla)
         if(operacion2 instanceof Errores) return operacion2
 
-        if(this.condicion.tipoDato.getTipo() != tipoDato.BOOLEAN) return new Errores("Semantico", "el tipo de la condicion es invalido",this.linea,this.col)
+        if(this.condicion.tipoDato.getTipo() != tipoDato.BOOLEAN){
+            arbol.Print("Error Semantico: El tipo de la condicion es invalido" + this.linea+" columna: " +(this.col+1));
+            return new Errores("Semantico", "El tipo de la condicion es invalido",this.linea,this.col)
+        } 
             if(condicion){
                 this.tipoDato = this.op1.tipoDato
                 return operacion1

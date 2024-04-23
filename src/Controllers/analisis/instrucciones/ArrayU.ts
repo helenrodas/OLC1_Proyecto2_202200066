@@ -31,6 +31,7 @@ export default class ArrayU extends Instruccion{
             }
             
             let tamanio = this.size.interpretar(arbol,tabla)
+            if(tamanio instanceof Errores) return tamanio
             if(this.size.tipoDato.getTipo() !=  tipoDato.INTEGER) return new Errores("SEMANTICA", "Dato no es entero", this.linea, this.col);
             let arry: any = [];
             for(let i=0;i < tamanio ;i++){

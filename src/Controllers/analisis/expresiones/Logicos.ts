@@ -36,17 +36,17 @@ export default class Logicos extends Instruccion {
 
         switch (this.operacion) {
             case Operadores.OR:
-                return this.comparacion_or(opIzq, opDer)
+                return this.comparacion_or(opIzq, opDer,arbol)
             case Operadores.AND:
-                return this.comparacion_and(opIzq, opDer)
+                return this.comparacion_and(opIzq, opDer,arbol)
             case Operadores.NOT:
-                return this.comparacion_not(Unico)
+                return this.comparacion_not(Unico,arbol)
             default:
                 return new Errores("Semantico", "Operador logico Invalido", this.linea, this.col)
         }
     }
 
-    comparacion_or(op1: any, op2: any) {
+    comparacion_or(op1: any, op2: any, arbol:Arbol) {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
         switch (tipo1) {
@@ -56,14 +56,16 @@ export default class Logicos extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.BOOLEAN)
                         return op1 || op2
                     default:
+                        arbol.Print("Error Semantico: No se puede operar boolean con: " + op2 + this.linea+" columna: " +(this.col+1));
                         return new Errores("Semantico", "No se puede operar boolean con: " + op2, this.linea, this.col)
                 }
             default:
+                arbol.Print("Error Semantico: comparacion or Invalida" + this.linea+" columna: " +(this.col+1));
                 return new Errores("Semantico", "comparacion or Invalida", this.linea, this.col)
         }
     }
 
-    comparacion_and(op1: any, op2: any) {
+    comparacion_and(op1: any, op2: any, arbol: Arbol) {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
         switch (tipo1) {
@@ -73,18 +75,21 @@ export default class Logicos extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.BOOLEAN)
                         return op1 && op2
                     default:
+                        arbol.Print("Error Semantico: No se puede operar boolean con: " + op2 + this.linea+" columna: " +(this.col+1));
                         return new Errores("Semantico", "No se puede operar boolean con: " + op2, this.linea, this.col)
                 }
             default:
+                arbol.Print("Error Semantico: comparacion or Invalida" + this.linea+" columna: " +(this.col+1));
                 return new Errores("Semantico", "comparacion and Invalida", this.linea, this.col)
         }
     }
 
-    comparacion_not(op1: any) {
+    comparacion_not(op1: any,arbol:Arbol) {
         let tipo1 = this.operando1?.tipoDato.getTipo()      
             if (typeof op1 === 'boolean') {
                 return !op1;
             } else {
+                arbol.Print("Error Semantico: comparacion or Invalida" + this.linea+" columna: " +(this.col+1));
                 return new Errores("Semantico", "comparacion not Invalida", this.linea, this.col)
             }
     }

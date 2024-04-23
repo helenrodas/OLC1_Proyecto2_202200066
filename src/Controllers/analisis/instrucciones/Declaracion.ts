@@ -30,7 +30,7 @@ export default class Declaracion extends Instruccion {
         if(this.valor.tipoDato.getTipo() == tipoDato.INTEGER && this.tipoDato.getTipo() == tipoDato.DOUBLE){
             //console.log("entro al if")
             this.identificador.forEach(id => {
-                console.log(id)
+                //console.log(id)
                 valorFinal = parseFloat(valorFinal);
                 if (!tabla.setVariable(new Simbolo(this.tipoDato, id, valorFinal))){
                     arbol.Print("Error Semantico: No se puede declarar variable que ya existe:"+ this.linea+" columna: " +(this.col+1));
