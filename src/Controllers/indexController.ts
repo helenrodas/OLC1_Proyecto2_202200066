@@ -82,20 +82,25 @@ ahora ya depende que exista la funcion execute para ejecutar el codigo
             }
             console.log(tabla)
             let contador = Contador.getInstancia()
-            let cadena = "digraph ast{\n"
-            cadena += "nINICIO[label=\"INICIO\"];\n"
-            cadena += "nINSTRUCCIONES[label=\"INSTRUCCIONES\"];\n"
-            cadena += "nINICIO->nINSTRUCCIONES;\n"
+            let nodo_dot = "digraph ast{\n"
+            nodo_dot += "node [\n"
+            nodo_dot += "shape = rectangle\n"
+            nodo_dot += "color = \" #6294e1 \"\n"
+            nodo_dot += "width = 0.7\n"
+            nodo_dot += "]\n"
+            nodo_dot += "nINICIO[label=\"INICIO\"];\n"
+            nodo_dot += "nINSTRUCCIONES[label=\"INSTRUCCIONES\"];\n"
+            nodo_dot += "nINICIO->nINSTRUCCIONES;\n"
 
             for (let i of ast.getInstrucciones()) {
                 if (i instanceof Errores) continue
                 let nodo = `n${contador.get()}`
-                cadena += `${nodo}[label=\"INSTRUCCION\"];\n`
-                cadena += `nINSTRUCCIONES->${nodo};\n`
-                cadena += i.ArbolGraph(nodo)
+                nodo_dot += `${nodo}[label=\"INSTRUCCION\"];\n`
+                nodo_dot += `nINSTRUCCIONES->${nodo};\n`
+                nodo_dot += i.ArbolGraph(nodo)
             }
-            cadena += "\n}"
-            AstDot = cadena
+            nodo_dot += "\n}"
+            AstDot = nodo_dot
             res.send({ "Respuesta": ast.getConsola() })
             
             console.log("Errores: ",listaErrores.length)
