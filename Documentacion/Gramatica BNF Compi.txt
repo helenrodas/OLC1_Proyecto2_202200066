@@ -1,0 +1,186 @@
+<INICIO> ::= <INSTRUCCIONES> <EOF> 
+;
+<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION> 
+		| <INSTRUCCION> 
+;
+<INSTRUCCION> ::= <IMPRESION> 
+		| <DECLARACION> ';' 
+		| <ASIGNACION> ';' 
+		| <OPC_IF> 
+		| <INS_WHILE> 
+		| <INS_BREAK> 
+		| <INS_CONTINUE> 
+		| <INS_FOR> 
+		| <INS_DOWHILE> 
+		| <INS_SWITCH> 
+		| <DECLARACION_ARREGLO> 
+		| <FUN_METODO> 
+		| <FUN_EXE> 
+		| <FUN_LLAMADA> ';' 
+		| <MOD_VECTOR> 
+		| <MOD_VECTOR_D> 
+		| <INS_RETURN> 
+		| <DECLARACION_ARREGLO_D> ;
+
+<IMPRESION> ::= 'cout' <PRINTMENOR> <EXPRESION> <FINALPRINT> 
+;
+
+<FINALPRINT> ::= <PRINTMENOR> 'endl' ';' 
+		| ';' 
+
+<DECLARACION> ::= <TIPOS> <LISTA_VAR> <ASIGNACION_DECLARACION> 
+;
+
+<ASIGNACION_DECLARACION> ::= <IGUALACION> <EXPRESION> 
+			|  ;
+
+<ASIGNACION> ::= <IDENTIFICADOR> <IGUALACION> <EXPRESION> 
+		 | <INC_DEC> 
+;
+
+<LISTA_VAR> ::= <LISTA_VAR> ',' <IDENTIFICADOR> 
+		 | <IDENTIFICADOR> 
+;
+
+<FUN_METODO> ::= <TIPOS> <IDENTIFICADOR> '(' <PARAMETROS> ')' '{' <INSTRUCCIONES> '}' 
+;
+
+<PARAMETROS> ::= <PARAMETROS> ',' <TIPOS> <IDENTIFICADOR> 
+		 | <TIPOS> <IDENTIFICADOR> 
+ ;
+
+<FUN_EXE> ::= 'execute' <IDENTIFICADOR> '(' <PARAMETROSLLAMADA> ')' ';' | 'execute' <IDENTIFICADOR> '(' ')' ';' 
+;
+
+<PARAMETROSLLAMADA> ::= <PARAMETROSLLAMADA> ',' <EXPRESION>
+ 		| <EXPRESION>
+ ;
+
+<FUN_LLAMADA> ::= <IDENTIFICADOR> '(' <PARAMETROSLLAMADA> ')' | <IDENTIFICADOR> '(' ')' 
+;
+
+<EXPRESION> ::= <EXPRESION> '+' <EXPRESION> 
+		| <EXPRESION> '-' <EXPRESION> 
+		| <EXPRESION> '*' <EXPRESION> 
+		| <EXPRESION> '/' <EXPRESION> 
+		| 'pow' '(' <EXPRESION> ',' <EXPRESION> ')' 
+		| <EXPRESION> '%' <EXPRESION> 
+		| <EXPRESION> '==' <EXPRESION> 
+		| <EXPRESION> '!=' <EXPRESION> 
+		| <EXPRESION> '<' <EXPRESION> 
+		| <EXPRESION> '<=' <EXPRESION> 
+		| <EXPRESION> '>' <EXPRESION> 
+		| <EXPRESION> '>=' <EXPRESION> 
+		| <EXPRESION> '||' <EXPRESION> 
+		| <EXPRESION> '&&' <EXPRESION> 
+		| '!' <EXPRESION> 
+		| <EXPRESION> '.length()' 
+		| <CASTEO> 
+		| <FUNCION> 
+		| <FUN_NATIVA> 
+		| '(' <EXPRESION> ')' 
+		| '-' <EXPRESION> %prec UMENOS
+		| <NUM_ENTERO> 
+		| <NUM_DECIMAL> 
+		| 'true'
+		| 'false' 
+		| <CARACTER_UNICO> 
+		| <CADENA> 
+		| <IDENTIFICADOR> 
+		| <INS_TERNARIO> 
+		| <ACCESO_VECTOR> 
+		| <FUN_LLAMADA> 
+		| <ACCESO_VECTOR_D> 
+;
+
+<CASTEO> ::= '(' <TIPOS> ')' <EXPRESION> 
+;
+
+<FUNCION> ::= <IDENTIFICADOR> '(' <PARAMETROSLLAMADA> ')' 
+;
+
+<FUN_NATIVA> ::= 'typeof' '(' <EXPRESION> ')' | 'std::' '(' <EXPRESION> ')' 
+;
+
+<INC_DEC> ::= <IDENTIFICADOR> <SIG_INCDEC> 
+;
+
+<SIG_INCDEC> ::= '++' | '--' 
+;
+
+<OPC_IF> ::= 'if' '(' <EXPRESION> ')' '{' <INSTRUCCIONES> '}' 
+	| 'if' '(' <EXPRESION> ')' '{' <INSTRUCCIONES> '}' 'else' <OPC_IF> 
+	| 'if' '(' <EXPRESION> ')' '{' <INSTRUCCIONES> '}' 'else'
+ ;
+
+<INS_WHILE> ::= 'while' '(' <EXPRESION> ')' '{' <INSTRUCCIONES> '}' 
+;
+
+<INS_DOWHILE> ::= 'do' '{' <INSTRUCCIONES> '}' 'while' '(' <EXPRESION> ')' ';' 
+;
+
+<INS_FOR> ::= 'for' '(' <DECLARACION> ';' <EXPRESION> ';' <ASIGNACION> ')' '{' <INSTRUCCIONES> '}' 
+;
+
+<INS_BREAK> ::= 'break' ';' 
+;
+
+<INS_CONTINUE> ::= 'continue' ';' 
+;
+
+<INS_TERNARIO> ::= <EXPRESION> '?' <EXPRESION> ':' <EXPRESION> 
+;
+
+<INS_SWITCH> ::= 'switch' '(' <EXPRESION> ')' '{' <LISTA_CASE> <OPC_DEFAULT> '}' 
+		| 'switch' '(' <EXPRESION> ')' '{' <LISTA_CASE> '}' 
+		| 'switch' '(' <EXPRESION> ')' <OPC_DEFAULT> '{' <INSTRUCCIONES> '}' 
+;
+
+<OPC_CASE> ::= 'case' <EXPRESION> ':' <INSTRUCCIONES> 
+;
+
+<LISTA_CASE> ::= <LISTA_CASE> <OPC_CASE> 
+		| <OPC_CASE> 
+;
+
+<OPC_DEFAULT> ::= 'default' ':' <INSTRUCCIONES> 
+;
+
+<INS_RETURN> ::= 'return' ';' 
+		| 'return' <EXPRESION> ';' 
+;
+
+<DECLARACION_ARREGLO> ::= <TIPOS> <IDENTIFICADOR> '[' ']' '=' 'new' <TIPOS> '[' <EXPRESION> ']' '[' <EXPRESION> ']' ';' 
+			| <TIPOS> <IDENTIFICADOR> '[' ']' '=' 'new' <TIPOS> '[' <EXPRESION> ']' '[' <COR_IZQ> <LISTAVALORES> <COR_DER> ']' ';' 
+			| <TIPOS> '[' ']' <IDENTIFICADOR> '=' <IDENTIFICADOR> '.' 'c_str''(' ')' ';' 
+;
+
+<LISTAVALORES> ::= <LISTAVALORES> ',' <EXPRESION> 
+		| <EXPRESION> 
+;
+
+<ACCESO_VECTOR> ::= <IDENTIFICADOR> '[' <EXPRESION> ']' 
+;
+
+<MOD_VECTOR> ::= <IDENTIFICADOR> '[' <EXPRESION> ']' '=' <EXPRESION> ';' 
+;
+
+<DECLARACION_ARREGLO_D> ::= <TIPOS> <IDENTIFICADOR> '[' ']' '[' ']' '=' 'new' <TIPOS> '[' <EXPRESION> ']' '[' <EXPRESION> ']' '[' ']' '[' <EXPRESION> ']' '[' <EXPRESION> ']' ';' | <TIPOS> <IDENTIFICADOR> '[' ']' '[' ']' '=' 'new' <TIPOS> '[' <EXPRESION> ']' '[' <EXPRESION> ']' '[' <COR_IZQ> <LISTA_PARA_ARREGLO> <COR_DER> ']' '[' ']' ';' 
+;
+
+<LISTA_PARA_ARREGLO> ::= <LISTA_PARA_ARREGLO> ',' <DIMENSIONES> 
+			| <DIMENSIONES> 
+;
+
+<DIMENSIONES> ::= <COR_IZQ> <INDEX> <COR_DER> 
+;
+
+<INDEX> ::= <INDEX> ',' <EXPRESION> 
+	| <EXPRESION> 
+;
+
+<ACCESO_VECTOR_D> ::= <IDENTIFICADOR> '[' <EXPRESION> ']' '[' <EXPRESION> ']' 
+;
+
+<MOD_VECTOR_D> ::= <IDENTIFICADOR> '[' <EXPRESION> ']' '[' <EXPRESION> ']' '=' <EXPRESION> ';' 
+;
