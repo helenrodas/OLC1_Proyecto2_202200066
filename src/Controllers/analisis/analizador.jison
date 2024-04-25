@@ -92,7 +92,7 @@
 //------------Otro operadores-------------
 ";"                   	return 'PUNTO_COMA'
 ","                   	return 'COMA'
-"."                   	return 'PUNTO'
+
 
 ":"						return 'DOSPUNTOS'
 "{"                   	return 'LLAVE_IZQ'
@@ -127,6 +127,7 @@
 "toupper"				return 'SENT_TOUPPER'
 "round"					return 'SENT_ROUND'
 ".length()"				return 'SENT_LENGTH'
+"."                   	return 'PUNTO'
 //--------Funciones Nativas--------
 //"length"				return 'SENT_LENGTH'
 "typeof"				return 'SENT_TYPEOF'

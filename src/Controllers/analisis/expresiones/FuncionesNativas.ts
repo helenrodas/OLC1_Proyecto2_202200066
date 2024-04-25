@@ -37,6 +37,7 @@ export default class FuncionesNativas extends Instruccion {
         switch (this.operacion) {
             case Operadores.SENT_LENGTH:
                 if(Array.isArray(Unico)){
+                    console.log("reconocio arreglo")
                     return this.arreglo(Unico);
                 }
                 return this.length(Unico,arbol)

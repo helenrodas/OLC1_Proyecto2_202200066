@@ -6,6 +6,8 @@ import Metodo from './analisis/instrucciones/Metodo';
 import Declaracion from './analisis/instrucciones/Declaracion';
 import Execute from './analisis/instrucciones/Execute';
 import Contador from './analisis/simbolo/Contador';
+import ArrayU from './analisis/instrucciones/ArrayU';
+import ArrayD from './analisis/instrucciones/ArrayD';
 
 export let listaErrores: Array<Errores> = []
 
@@ -46,7 +48,7 @@ class controller {
                         listaErrores.push(i)
                     }
                 }
-                if(i instanceof Declaracion){
+                if(i instanceof Declaracion || i instanceof ArrayU || i instanceof ArrayD){
                     i.interpretar(ast, tabla)
                     if(i instanceof Errores){
                         listaErrores.push(i)
